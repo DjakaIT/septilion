@@ -1,7 +1,7 @@
 {
     "format": 1,
-    "verzija": 2,
-    "azurirano": "2026-10-15T17:00:11.757Z",
+    "verzija": 3,
+    "azurirano": "2026-10-15T17:00:26.113Z",
     "azurirao": "drajic",
     "kategorije": {
         "pasta-rhymes/strana-a": {
@@ -35,7 +35,7 @@
                         "hr": "",
                         "en": ""
                     },
-                    "cijena": 18,
+                    "cijena": 19,
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
