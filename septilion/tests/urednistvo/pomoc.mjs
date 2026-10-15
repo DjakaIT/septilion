@@ -177,7 +177,7 @@ async function phpPosluzitelj(env) {
   const pokreniPhp = async () => {
     proces = spawn(PHP, ['-S', `127.0.0.1:${port}`, path.join(ROOT, 'tests/urednistvo/php-router.php')], { cwd: ROOT, env: procesEnv, stdio: ['ignore', 'pipe', 'pipe'] });
     proces.stdout.on('data', (d) => zapisi.push(String(d))); proces.stderr.on('data', (d) => zapisi.push(String(d)));
-    for (let i = 0; i < 100; i++) { try { await fetch(`http://127.0.0.1:${port}/urednistvo/static/app.css`); return; } catch { await cekaj(100); } }
+    for (let i = 0; i < 100; i++) { try { await (await fetch(`http://127.0.0.1:${port}/urednistvo/static/app.css`)).arrayBuffer(); return; } catch { await cekaj(100); } }
     throw new Error(`php -S se nije pokrenuo: ${zapisi.join('')}`);
   };
   const ugasi = () => new Promise((r) => { if (!proces || proces.exitCode !== null) return r(); proces.once('exit', r); proces.kill(); });
@@ -189,9 +189,9 @@ async function phpPosluzitelj(env) {
     /** php -S radi jedan zahtjev za drugim: kad odgovori, slanje na GitHub iz prošlog zahtjeva je gotovo; zatim gradnja,
      *  pa postavljanje paketa kao cPanel Cron Job (/api/osvjezi) */
     async objavljeno() {
-      await fetch(`${url}/urednistvo/api/stanje`);
+      await (await fetch(`${url}/urednistvo/api/stanje`)).arrayBuffer();
       await github.gotovo();
-      await fetch(`${url}/urednistvo/api/osvjezi`);
+      await (await fetch(`${url}/urednistvo/api/osvjezi`)).arrayBuffer();
       const j = JSON.parse(github.datoteka('podaci/jelovnik.json')?.toString('utf8') ?? 'null');
       return { stanje: github.runovi[0]?.conclusion === 'failure' ? 'greska' : 'spremno', verzija: j?.verzija ?? null };
     },

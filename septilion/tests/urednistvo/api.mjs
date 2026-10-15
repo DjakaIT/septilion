@@ -14,6 +14,8 @@ import { zip } from '../../scripts/zip.mjs';
 
 sharp.cache(false); // sharp inače drži datoteke otvorenima (Windows ih tada ne može obrisati)
 const API = '/urednistvo/api';
+/** samo status odgovora; tijelo se pročita do kraja (nepročitan odgovor u Node 22 ruši fetch kad poslužitelj zatvori vezu) */
+const status = async (...a) => { const r = await fetch(...a); await r.arrayBuffer(); return r.status; };
 const NODE = POSLUZITELJ === 'node', PHP = POSLUZITELJ === 'php';
 const preskoci = PHP && !imaPhp() ? 'nema PHP-a (postavi PHP_BINARY)' : false;
 
@@ -24,6 +26,7 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
 
   test('zaglavlja uredništva (default-src none, noindex, no-store); nema pristupa izvornim datotekama', async () => {
     const u = await fetch(`${srv.url}/urednistvo`);
+    await u.arrayBuffer();
     assert.equal(u.status, 200);
     assert.match(u.headers.get('content-security-policy'), /^default-src 'none'; script-src 'self'; style-src 'self';/);
     assert.match(u.headers.get('content-security-policy'), /frame-ancestors 'none'/);
@@ -36,18 +39,20 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
       assert.ok(r.status === 404 || (r.status === 200 && tekst.startsWith('<!doctype html>') && tekst.includes('Uredništvo')), `${put} -> ${r.status}`);
       assert.ok(!tekst.includes('"name": "septillion-web"') && !tekst.includes('export function api') && !tekst.includes('<?php') && !tekst.includes('"lokalneSlike"'), `${put} otkriva datoteku`);
     }
-    assert.equal((await fetch(`${srv.url}/urednistvo`, { method: 'DELETE' })).status, 405);
+    assert.equal((await status(`${srv.url}/urednistvo`, { method: 'DELETE' })), 405);
     const qr = await fetch(`${srv.url}/urednistvo/static/qrcode.mjs`);
+    await qr.arrayBuffer();
     assert.equal(qr.status, 200); assert.match(qr.headers.get('content-type'), /javascript/);
   });
 
   test('stranica (node): strogi CSP s hashom; robots.txt ne oglašava uredništvo', { skip: !NODE && 'stranicu na hostingu poslužuje Apache (.htaccess)' }, async () => {
     const s = await fetch(`${srv.url}/pasta-rhymes`);
+    await s.arrayBuffer();
     assert.equal(s.status, 200, srv.zapisi.join('\n'));
     assert.match(s.headers.get('content-security-policy'), /^default-src 'self'; script-src 'self' 'sha256-/);
     assert.equal(s.headers.get('cache-control'), 'public, max-age=0, must-revalidate');
-    for (const put of ['/.htaccess', '/_headers', '/..%2fpackage.json']) assert.equal((await fetch(srv.url + put)).status, 404, put);
-    assert.equal((await fetch(`${srv.url}/pasta-rhymes`, { method: 'DELETE' })).status, 405);
+    for (const put of ['/.htaccess', '/_headers', '/..%2fpackage.json']) assert.equal(await status(srv.url + put), 404, put);
+    assert.equal((await status(`${srv.url}/pasta-rhymes`, { method: 'DELETE' })), 405);
     assert.ok(!(await srv.stranica('/robots.txt')).includes('urednistvo'));
   });
 
@@ -187,7 +192,7 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     assert.equal(meta.format, 'webp'); assert.equal(meta.exif, undefined);
     assert.ok(!spremljena.includes('tajni-podatak'));
     assert.deepEqual([meta.width, meta.height], [600, 900], 'uspravljeno prema EXIF oznaci (mobitel snima položeno)');
-    assert.equal((await fetch(`${srv.url}${API}/slike/${r.j.kljuc}`)).status, 401);
+    assert.equal((await status(`${srv.url}${API}/slike/${r.j.kljuc}`)), 401);
     const m = await t.k.z('GET', `${API}/slike/${r.j.kljuc}`);
     assert.equal(m.status, 200); assert.equal(m.h.get('content-type'), 'image/webp');
     assert.equal((await t.k.z('GET', `${API}/slike/pr_shrimp`)).status, 200, 'minijatura lokalne slike');
@@ -218,7 +223,12 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
   });
 
   test('održavanje: samo administrator; posjetitelji dobiju 503 stranicu, datoteke i uredništvo rade; administratorov preglednik vidi stranicu', async () => {
-    const posjeti = (put, cookie) => fetch(srv.url + put, { redirect: 'manual', headers: cookie ? { cookie } : {} });
+    // tijelo se uvijek pročita do kraja (nepročitan odgovor u Node 22 ruši fetch kad poslužitelj zatvori vezu)
+    const posjeti = async (put, cookie) => {
+      const r = await fetch(srv.url + put, { redirect: 'manual', headers: cookie ? { cookie } : {} });
+      const tekst = await r.text();
+      return { status: r.status, headers: r.headers, text: async () => tekst };
+    };
     // na hostingu oznaku čita .htaccess (public_html/.odrzavanje), lokalno poslužitelj (podaci/odrzavanje.json)
     const oznaka = PHP ? path.join(srv.dir, 'stranica', '.odrzavanje') : path.join(srv.podaci, 'odrzavanje.json');
     assert.equal((await posjeti('/pasta-rhymes')).status, 200);
@@ -405,7 +415,7 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
       })()
       : await posluzitelj({ produkcija: true });
     try {
-      assert.equal((await fetch(`${p.url}/urednistvo`)).status, 421, 'kriv Host');
+      assert.equal((await status(`${p.url}/urednistvo`)), 421, 'kriv Host');
       const k = klijent(p.url, { host });
       const st = await k.z('GET', `${API}/stanje`);
       assert.equal(st.j.kodPotreban, true);
