@@ -1,0 +1,19 @@
+---
+import mark from '../assets/svg/septillion.svg?raw';
+import { ui, href, type Lang, type Route } from '../i18n/ui';
+interface Props { lang: Lang; route: Route }
+const { lang, route } = Astro.props;
+const t = ui[lang];
+const other: Lang = lang === 'hr' ? 'en' : 'hr';
+---
+<header class="topbar" aria-label="Septillion">
+  <a class="home" href={href('gate', lang)} aria-label={t.home} data-nav="gate"><Fragment set:html={mark} /></a>
+  <div class="tb-r">
+    <a class="lang" href={href(route, other)} hreflang={other} lang={other} aria-label={t.langSwitch.aria} data-nav-lang>{t.langSwitch.short}</a>
+    <nav class="switch" aria-label={t.chooseVenue}>
+      <span class="pill" aria-hidden="true"></span>
+      <a href={href('pasta-rhymes', lang)} data-to="pasta-rhymes" data-nav="pasta-rhymes" aria-current={route === 'pasta-rhymes' ? 'page' : undefined}>Pasta<span class="xl"> Rhymes</span></a>
+      <a href={href('jellyfish-in-space', lang)} data-to="jellyfish-in-space" data-nav="jellyfish-in-space" aria-current={route === 'jellyfish-in-space' ? 'page' : undefined}>Jellyfish<span class="xl"> in Space</span></a>
+    </nav>
+  </div>
+</header>

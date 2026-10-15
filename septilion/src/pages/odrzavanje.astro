@@ -1,0 +1,61 @@
+---
+// Održavanje: ovo posjetitelji vide (503) dok administrator u uredništvu ne isključi održavanje (public/.htaccess,
+// urednistvo/lib/odrzavanje.mjs). Samostalna, bez JS-a i bez poveznica na ostatak stranice; nije u sitemapu.
+import '../styles/fonts.css';
+import '../styles/prototype.css';
+import '../styles/additions.css';
+import mark from '../assets/svg/septillion.svg?raw';
+import { WOLT, INSTAGRAM_PASTA, PHONE_JELLY } from '../site.config.mjs';
+import { ADDR_PASTA, ADDR_JELLY } from '../lib/seo';
+
+const adresa = (a: { streetAddress: string; addressLocality: string }) => `${a.streetAddress}, ${a.addressLocality}`;
+---
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>Uskoro se vraćamo — Septillion</title>
+<meta name="theme-color" content="#0F0F10" />
+<link rel="icon" href="/septillion-icon.svg" type="image/svg+xml" />
+</head>
+<body class="nf">
+<main class="nf-in">
+  <span class="mark" set:html={mark} />
+  <h1 class="gate-q">Uskoro se vraćamo.</h1>
+  <p lang="en">We'll be back soon.</p>
+  <p class="od-uvod">Stranicu upravo osvježavamo. Do tada nas nađi ovdje: <span lang="en">Meanwhile, find us here:</span></p>
+  <ul class="od-lokali">
+    <li>
+      <h2>Pasta Rhymes</h2>
+      <p>{adresa(ADDR_PASTA)}</p>
+      <p class="od-veze">
+        <a class="pr-btn solid" href={WOLT['pasta-rhymes']}>Wolt</a>
+        <a class="od-veza" href={INSTAGRAM_PASTA}>Instagram</a>
+      </p>
+    </li>
+    <li>
+      <h2>Jellyfish in Space</h2>
+      <p>{adresa(ADDR_JELLY)}</p>
+      <p class="od-veze">
+        <a class="jf-btn solid" href={WOLT['jellyfish-in-space']}>Wolt</a>
+        <a class="od-veza" href={PHONE_JELLY.href}>{PHONE_JELLY.label}</a>
+      </p>
+    </li>
+  </ul>
+</main>
+</body>
+</html>
+<style>
+  .nf{min-height:100svh;display:grid;place-items:center;padding:24px var(--pad);text-align:center}
+  .nf-in{display:flex;flex-direction:column;align-items:center;gap:22px;max-width:720px}
+  .mark{width:clamp(150px,17vw,250px);color:#fff}
+  .nf-in p{color:rgba(242,241,238,.7)}
+  .od-uvod span{display:block}
+  .od-lokali{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;width:100%}
+  .od-lokali h2{font-family:var(--f-wide);font-size:clamp(18px,2vw,22px);color:#fff;margin:0 0 6px}
+  .od-veze{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;margin-top:14px}
+  .od-veze .pr-btn{background:#FE0000;color:#000;border-color:#FE0000}
+  .od-veza{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;color:#fff;text-underline-offset:3px}
+</style>

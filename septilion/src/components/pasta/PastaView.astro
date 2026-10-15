@@ -1,0 +1,234 @@
+---
+import wordmark from '../../assets/svg/pasta-wordmark.svg?raw';
+import Pic from '../Pic.astro';
+import Faq from '../Faq.astro';
+import { ui, href, type Lang } from '../../i18n/ui';
+import { WOLT, RESERVE_PASTA, INSTAGRAM_PASTA } from '../../site.config.mjs';
+import { SIDE_A, SALADS, SIDES, nameOf } from '../../data/pasta';
+import { FAQ_PASTA } from '../../data/faq';
+import { price } from '../../lib/format';
+import { srcset, single } from '../../lib/images';
+import { HERO_STICKERS, stickerSvg } from '../../lib/stickers';
+import { tracksHtml } from '../../lib/tracks';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang], p = t.pasta;
+const other: Lang = lang === 'hr' ? 'en' : 'hr';
+const wolt = WOLT['pasta-rhymes'];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+// kaseta: slike za prozorčić (JS ih mijenja po odabranoj pjesmi)
+const tapes = await Promise.all(SIDE_A.map((x) => srcset(x.img!, [480, 900], 'webp')));
+const first = SIDE_A[0];
+
+// galerija: 9 kadrova kao u prototipu
+const gal = [
+  { k: 'pr_hero', b: p.gallery[0].b, s: p.gallery[0].s },
+  { k: 'pr_phone', b: p.gallery[1].b, s: p.gallery[1].s },
+  ...SIDE_A.filter((x) => x.gallery !== false).map((x) => ({ k: x.img!, b: nameOf(x, lang), s: price(x.price, lang) })),
+];
+const galFull = await Promise.all(gal.map((g) => single(g.k, 1600, 'webp')));
+const chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg>';
+const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 5l7 7-7 7"/></svg>';
+---
+<div class="view view-pasta on" data-view="pasta-rhymes">
+
+  <section class="pr-hero" aria-labelledby="pr-h">
+    <div class="stage">
+      <figure class="pr-frame"><Pic k="pr_hero" alt={p.heroAlt} widths={[340, 680]} sizes="(max-width: 875px) 210px, 340px" loading="eager" fetchpriority="high" /></figure>
+      <h1 id="pr-h" class="word"><span class="sr">Pasta Rhymes</span><Fragment set:html={wordmark} /></h1>
+      <div class="pr-stickers" id="pr-stickers">
+        {HERO_STICKERS.map((s, i) => (
+          <div class="stk" data-k={s.kind} style={`left:${s.x};top:${s.y};width:${s.w};--r:${s.r}deg`} set:html={stickerSvg(s.kind, `h${i}`)} />
+        ))}
+      </div>
+    </div>
+    <p class="pr-hint" aria-hidden="true"><span class="hint-d">{p.hintDesktop}</span><span class="hint-m">{p.hintMobile}</span></p>
+    <div class="bar">
+      <div class="cta">
+        <a class="pr-btn solid" href={wolt}>{t.orderWolt}</a>
+        <a class="pr-btn line" href="#spraylist" data-smooth>The Spraylist ↓</a>
+      </div>
+      <div class="cta-res">
+        <a class="pr-btn solid" href={RESERVE_PASTA} target="_blank" rel="noopener">{p.reserve}</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="pr-mq" aria-hidden="true"><div class="tr" id="pr-mq">
+    {[0, 1].map(() => (<>
+      <span class="lemon-wide">Rap beats. Hot eats.</span><i>✦</i>
+      <span class="graf">Mics, Murals &amp; Macaroni</span><i>✦</i>
+      <span class="lemon-wide">From the block to the bowl</span><i>✦</i>
+      <span class="graf">Mic drop. Fork up.</span><i>✦</i>
+    </>))}
+  </div></div>
+
+  <section class="pr-menu" id="spraylist" aria-labelledby="sl-h">
+    <div class="pr-wrap">
+      <!-- desktop: lijevi stupac naslov + popis, desni uvod + kaseta; stupci dijele gornji i donji rub.
+           mobitel/tablet: .sl-l/.sl-r su display:contents, redoslijed naslov, uvod, popis (additions.css) -->
+      <div class="tapes">
+        <div class="sl-l">
+          <h2 id="sl-h" class="lemon rv"><span class="graf">The</span>Spraylist</h2>
+          <ol class="spines" id="spines" aria-label={p.sideA}>
+            {SIDE_A.map((x, i) => (
+              <li class="sp" style={`--c:${x.color};--t:${x.ink}`}><button class="spine" type="button" aria-expanded="false" aria-controls="deck"
+                data-i={i} data-n={nameOf(x, lang)} data-d={x.desc[lang]} data-now={price(x.price, lang)} data-src={tapes[i].src} data-srcset={tapes[i].srcset}>
+                <span class="no">{pad(i + 1)}</span><span class="nm">{nameOf(x, lang)}</span>
+                <span class="pr"><b>{price(x.price, lang)}</b></span></button></li>
+            ))}
+          </ol>
+        </div>
+        <div class="sl-r">
+          <p class="sl-lead rv">{p.spraylistLead}</p>
+          <div class="deck-col">
+            <div class="deck" id="deck" aria-live="polite">
+              <div class="cas-wrap"><div class="cas" id="cas" style={`--lab:${first.color};--ink:${first.ink}`}>
+                <span class="scr a"></span><span class="scr b"></span><span class="scr c"></span><span class="scr d"></span>
+                <div class="win"><div class="strip"><img id="c-img" src={tapes[0].src} srcset={tapes[0].srcset} sizes="(max-width: 900px) 320px, 540px" alt={nameOf(first, lang)} width="900" height="600" decoding="async" loading="lazy" /></div><span class="glass"></span>
+                  <span class="side" id="c-no" data-label={p.sideALabel}>{p.sideALabel} · 01</span></div>
+                <div class="clab">
+                  <span class="hub" aria-hidden="true"><span class="reel"></span></span>
+                  <p class="cname" id="c-name">{nameOf(first, lang)}</p>
+                  <span class="hub" aria-hidden="true"><span class="reel rr"></span></span>
+                </div>
+              </div></div>
+              <div class="inlay" id="inlay">
+                <p class="jspine" aria-hidden="true">Spraylist Vol. 1 · Pasta Rhymes®</p>
+                <div class="jbody">
+                  <p class="jh">Tracklist</p>
+                  <ol class="tracks" id="c-tracks" data-bonus={p.bonus} set:html={tracksHtml(first.desc[lang], p.bonus)} />
+                  <a class="pr-btn solid" href={wolt}>{t.orderWolt}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pr-sideb" aria-labelledby="sb-h">
+    <div class="pr-wrap">
+      <div class="head rv">
+        <h2 id="sb-h" class="lemon">{p.sideB}</h2>
+        <p>{p.sideBLead}</p>
+      </div>
+      <div class="cases">
+        <article class="case l" aria-labelledby="cd1">
+          <span class="hinge" aria-hidden="true"></span>
+          <div class="inlay">
+            <span class="ispine" aria-hidden="true">Pasta Rhymes® · {p.sideB} · 1</span>
+            <div class="inner">
+              <div class="chead"><h3 id="cd1">{p.salads}</h3><span>B1–B4</span></div>
+              <ol class="tl">
+                {SALADS.map((x, i) => (
+                  <li><span class="i">B{i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
+                ))}
+              </ol>
+              <div class="cfoot"><p>{p.cfootA[0]}<br />{p.cfootA[1]}</p><span class="code" aria-hidden="true"><i></i></span></div>
+            </div>
+          </div>
+        </article>
+        <article class="case r" aria-labelledby="cd2">
+          <span class="hinge" aria-hidden="true"></span>
+          <div class="inlay">
+            <span class="ispine" aria-hidden="true">Pasta Rhymes® · {p.sideB} · 2</span>
+            <div class="inner">
+              <div class="chead"><h3 id="cd2">{p.sides}</h3><span>B5</span></div>
+              <ol class="tl">
+                {SIDES.map((x, i) => (
+                  <li><span class="i">B{SALADS.length + i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
+                ))}
+              </ol>
+              <a class="bonus" href={wolt}>{p.bonusTrack}</a>
+              <div class="cfoot"><p>Rap beats. Hot eats.<br />@pasta_rhymes__</p><span class="code" aria-hidden="true"><i></i></span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pr-gal" aria-labelledby="gal-h">
+    <div class="pr-wrap">
+      <div class="head rv">
+        <h2 id="gal-h" class="lemon">Mics, murals <em>&amp;</em><br />macaroni.</h2>
+        <div class="gnav">
+          <p class="gcount" aria-live="polite"><b id="g-cur">01</b> / <span id="g-tot">{pad(gal.length)}</span></p>
+          <button class="gbtn" id="g-prev" type="button" aria-label={t.prevPhoto}><Fragment set:html={chevL} /></button>
+          <button class="gbtn" id="g-next" type="button" aria-label={t.nextPhoto}><Fragment set:html={chevR} /></button>
+        </div>
+      </div>
+    </div>
+    <div class="gtrack" id="gtrack" tabindex="0" aria-label={p.galleryAria}>
+      {gal.map((g, i) => (
+        <figure class="gcard"><button class="gopen" type="button" data-i={i} data-full={galFull[i]} aria-label={`${t.openPhoto}: ${g.b}`}><Pic k={g.k} alt={g.b} widths={i === 0 ? [320, 520, 820, 1200] : [320, 480, 660]} sizes={i === 0 ? '(max-width: 760px) 56vw, 33vw' : '(max-width: 760px) 56vw, 21vw'} /></button><figcaption><b>{g.b}</b><span>{g.s}</span></figcaption></figure>
+      ))}
+    </div>
+    <div class="pr-wrap"><div class="gbar"><i id="g-bar"></i></div><p class="ghint">{p.galleryHint}</p></div>
+  </section>
+
+  <section class="pr-music" id="pr-music" aria-labelledby="mu-h"
+    data-play={p.play} data-stop={p.stop} data-idle={p.idle} data-playing={p.playing} data-switching={p.switching}>
+    <div class="pr-wrap in">
+      <div class="tt">
+        <div class="plinth">
+          <div class="vinyl-wrap" id="vinyl" aria-hidden="true">
+            <div class="platter"></div>
+            <div class="vinyl" id="vinyl-disc"><div class="lbl" id="v-lbl"><span class="lt">Pasta Rhymes®</span><b id="v-name">Boom bap</b><span class="lt">{p.side33}</span></div><span class="hole"></span></div>
+            <div class="arm"><span class="piv"></span><span class="rod"><span class="head"></span></span></div>
+          </div>
+          <span class="knob" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="txt rv">
+        <h2 id="mu-h" class="lemon">Rhymes music session<span class="sub">{p.musicSub}</span></h2>
+        <p>{p.musicLead}</p>
+        <div class="crate" role="radiogroup" aria-label={p.crate}>
+          <button class="sleeve" type="button" role="radio" aria-checked="true" data-rec="0" style="--c:#FFCE53"><span class="disc" aria-hidden="true"></span><b>Boom bap</b><small>90 BPM</small></button>
+          <button class="sleeve" type="button" role="radio" aria-checked="false" data-rec="1" style="--c:#63CFFE"><span class="disc" aria-hidden="true"></span><b>Lo-fi</b><small>78 BPM</small></button>
+          <button class="sleeve" type="button" role="radio" aria-checked="false" data-rec="2" style="--c:#FF8800"><span class="disc" aria-hidden="true"></span><b>Funk</b><small>100 BPM</small></button>
+        </div>
+        <div class="controls">
+          <button class="play" id="play" type="button" aria-pressed="false"><span class="ico" aria-hidden="true"></span><span id="play-t">{p.play}</span></button>
+          <p class="state" role="status"><span class="led"></span><span id="vinyl-state">{p.idle}</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pr-rev" aria-labelledby="rev-h">
+    <div class="pr-wrap">
+      <div class="rev-head rv"><h2 id="rev-h" class="lemon">Shoutouts</h2><p>{p.revLead}</p></div>
+      <div class="rev-list">
+        {p.reviews.map((r) => (
+          <figure class="rq rv"><blockquote>{r.q}</blockquote><figcaption><b>{r.b}</b><span>{r.s}</span></figcaption></figure>
+        ))}
+      </div>
+      <div class="rev-g rv">
+        <p class="gl"><b>{t.googleReviews}</b><span class="gscore">—,—</span></p>
+        <a class="pr-btn solid" href="https://www.google.com/maps/search/?api=1&query=Pasta+Rhymes+Ulica+Pavla+Hatza+5+Zagreb" target="_blank" rel="noopener">{t.leaveReview}</a>
+      </div>
+    </div>
+  </section>
+
+  <Faq lang={lang} items={FAQ_PASTA} id="prfaq-h" wrap="pr-wrap" />
+
+  <footer class="pr-foot">
+    <div class="pr-wrap">
+      <div class="big" aria-hidden="true" set:html={wordmark} />
+      <div class="foot-grid">
+        <div><h3>{t.foot.address}</h3><p>Ulica Pavla Hatza 5<br />10000 Zagreb</p></div>
+        <div><h3>{t.foot.delivery}</h3><p><a href={wolt}>Wolt</a></p></div>
+        <div><h3>Instagram</h3><p><a href={INSTAGRAM_PASTA}>@pasta_rhymes__</a></p></div>
+        <div><h3>Septillion</h3><p><a href={href('jellyfish-in-space', lang)} data-nav="jellyfish-in-space">Jellyfish in Space →</a></p></div>
+      </div>
+      <p class="foot-legal">{p.legal} · <a href={href('pasta-rhymes', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>
+    </div>
+  </footer>
+</div>
+<script>
+  import '../../scripts/pasta';
+</script>

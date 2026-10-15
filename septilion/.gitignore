@@ -11,6 +11,31 @@ node_modules
 dist
 dist-ssr
 *.local
+.astro
+# uredništvo: živi sadržaj, korisnici (hashevi lozinki), dnevnik i izgrađena izdanja — samo na poslužitelju
+podaci/
+izdanja/
+# ostatak napuštenog Sanity pokušaja (premješten u private/arhiva)
+studio/
+
+# tajne (Sanity tokeni, podaci za objavu) — nikad u git; primjer bez vrijednosti je .env.example
+.env
+.env.*
+!.env.example
+
+# Licencirano ili preveliko za git (vidi README):
+# trial/licencirani fontovi, originalne fotografije, izvorni PDF-ovi
+private/
+# woff2 generiran iz private/fonts (licenca ne dopušta distribuciju)
+public/fonts/tt-lakes-neue/
+# referentni prototip (2,7 MB base64) i izvorni PDF jelovnika (10 MB)
+/septillion-prototip-*.html
+/*.pdf
+
+# Playwright
+test-results/
+playwright-report/
+tests/**/*-snapshots/
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +47,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# paket za hosting (npm run paket)
+hosting/
+hosting.zip

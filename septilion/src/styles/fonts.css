@@ -1,0 +1,25 @@
+/* ============ FONTOVI ============
+   TT Lakes Neue — Septillion i zajedničko sučelje (zamjenjuje Instrument Sans i Michromu iz prototipa).
+   Datoteke generira scripts/build-fonts.mjs iz private/fonts (licenca: ne idu u git).
+   Brand fontovi lokala (Lemon, Don Graffiti, IBM Plex Mono, Instrument Serif) ostaju kao u prototipu. */
+@font-face{font-family:'TT Lakes Neue';src:url(/fonts/tt-lakes-neue/tt-lakes-neue-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'TT Lakes Neue';src:url(/fonts/tt-lakes-neue/tt-lakes-neue-500.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'TT Lakes Neue';src:url(/fonts/tt-lakes-neue/tt-lakes-neue-600.woff2) format('woff2');font-weight:600 700;font-display:swap}
+@font-face{font-family:'TT Lakes Neue Expanded';src:url(/fonts/tt-lakes-neue/tt-lakes-neue-expanded-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'TT Lakes Neue Expanded';src:url(/fonts/tt-lakes-neue/tt-lakes-neue-expanded-500.woff2) format('woff2');font-weight:500;font-display:swap}
+
+@font-face{font-family:Lemon;src:url(../assets/fonts/lemon-var.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Don Graffiti';src:url(../assets/fonts/don-graffiti.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Plex Mono';src:url(../assets/fonts/plex-mono-400-normal-latin.woff2) format('woff2');font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
+@font-face{font-family:'Plex Mono';src:url(../assets/fonts/plex-mono-400-normal-ext.woff2) format('woff2');font-weight:400;font-display:swap;unicode-range:U+0100-024F}
+@font-face{font-family:'Plex Mono';src:url(../assets/fonts/plex-mono-500-normal-latin.woff2) format('woff2');font-weight:500;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
+@font-face{font-family:'Plex Mono';src:url(../assets/fonts/plex-mono-500-normal-ext.woff2) format('woff2');font-weight:500;font-display:swap;unicode-range:U+0100-024F}
+@font-face{font-family:'Instrument Serif';src:url(../assets/fonts/instrument-serif-latin.woff2) format('woff2');font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:'Instrument Serif';src:url(../assets/fonts/instrument-serif-ext.woff2) format('woff2');font-style:normal;font-display:swap;unicode-range:U+0100-024F}
+@font-face{font-family:'Instrument Serif';src:url(../assets/fonts/instrument-serif-italic-latin.woff2) format('woff2');font-style:italic;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:'Instrument Serif';src:url(../assets/fonts/instrument-serif-italic-ext.woff2) format('woff2');font-style:italic;font-display:swap;unicode-range:U+0100-024F}
+
+:root{
+  --f-sans:'TT Lakes Neue',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --f-wide:'TT Lakes Neue Expanded','TT Lakes Neue',system-ui,sans-serif;
+}

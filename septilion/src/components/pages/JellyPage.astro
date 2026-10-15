@@ -1,0 +1,28 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import Base from '../../layouts/Base.astro';
+import JellyView from '../jelly/JellyView.astro';
+import { ui, fill, type Lang } from '../../i18n/ui';
+import { graph } from '../../lib/seo';
+import { FAQ_JELLY } from '../../data/faq';
+import { platePrices } from '../../data/jelly-menu';
+import { priceShort } from '../../lib/format';
+import { JELLY_MENU_PDF } from '../../site.config.mjs';
+import serifItalic from '../../assets/fonts/instrument-serif-italic-latin.woff2?url';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = ui[lang].meta.jelly;
+const ps = platePrices();
+const desc = fill(m.desc, { min: priceShort(Math.min(...ps), lang), max: priceShort(Math.max(...ps), lang) });
+// veličina PDF-a za oznaku linka u FAQ-u
+const pdfPath = path.join(process.cwd(), 'public', JELLY_MENU_PDF);
+const bytes = fs.existsSync(pdfPath) ? fs.statSync(pdfPath).size : 0;
+const mb = bytes / 1024 / 1024;
+const pdfSize = bytes ? `${(lang === 'hr' ? mb.toFixed(1).replace('.', ',') : mb.toFixed(1))} MB` : undefined;
+---
+<Base lang={lang} route="jellyfish-in-space" title={m.title} description={desc} jsonld={graph('jellyfish-in-space', lang, FAQ_JELLY)} ogImage="jf_platter"
+  preload={[serifItalic]}>
+  <canvas id="swarm" aria-hidden="true" slot="before-main"></canvas>
+  <JellyView lang={lang} pdfSize={pdfSize} />
+</Base>

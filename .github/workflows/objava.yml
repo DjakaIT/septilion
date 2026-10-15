@@ -1,0 +1,115 @@
+# Provjere i objava na hosting (infonet cPanel: Apache + PHP, prijenos FTPS-om).
+# Projekt je u podmapi septilion/ (korijen repozitorija je mapa iznad), pa sve naredbe rade u njoj.
+#  - push na main (kod): provjere (testovi, i za PHP uredništvo) -> objava
+#  - repository_dispatch "sadrzaj" (uredništvo je spremilo jelovnik na granu sadrzaj): odmah objava
+#  - ručno: Actions -> Objava -> Run workflow
+# Objava: kod s grane main + jelovnik i fotografije s grane sadrzaj -> npm run build -> npm run paket -> FTPS u public_html.
+# Podaci uredništva su na hostingu izvan public_html i objava ih nikad ne dira (ništa se ne briše na hostingu).
+#
+# Postavke:
+#   varijable repozitorija (Settings -> Secrets and variables -> Actions -> Variables; uvjet posla ne vidi varijable environmenta):
+#              OBJAVA_UKLJUCENA = da, FTP_MAPA (zadano "/", tj. korijen FTP računa = public_html)
+#   tajne environmenta produkcija (Settings -> Environments -> produkcija):     FTP_HOST (cp29.infonet.hr — certifikat FTPS-a glasi na *.infonet.hr), FTP_KORISNIK, FTP_LOZINKA, FONTOVI_ZIP_B64 (nije obavezno: licencirani TT Lakes Neue, zip u base64)
+name: Objava
+run-name: ${{ github.event_name == 'repository_dispatch' && format('Objava {0}', github.event.client_payload.sha) || format('Objava koda {0}', github.sha) }}
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  repository_dispatch:
+    types: [sadrzaj]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: septilion
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && github.ref || 'objava' }}
+  cancel-in-progress: false
+
+jobs:
+  provjere:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: septilion/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: PHP za testove uredništva (hosting)
+        run: |
+          php -v && php -m | grep -qi '^gd$' && php -r 'exit(gd_info()["WebP Support"] ? 0 : 1);'
+      - run: npm run check
+      - run: npm run build
+      - run: npm test
+      - run: npm run test:urednistvo
+        env:
+          PHP_BINARY: php
+
+  objava:
+    needs: provjere
+    if: always() && vars.OBJAVA_UKLJUCENA == 'da' && github.event_name != 'pull_request' && (needs.provjere.result == 'success' || needs.provjere.result == 'skipped')
+    runs-on: ubuntu-24.04
+    environment: produkcija
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+      - name: Jelovnik i fotografije iz uredništva (grana sadrzaj)
+        run: |
+          if git ls-remote --exit-code --heads origin sadrzaj > /dev/null; then
+            git fetch --depth=1 origin sadrzaj
+            # grana sadrzaj ima samo podaci/ u korijenu -> septilion/podaci
+            # (git archive iz korijena repozitorija: iz podmape bi uzeo samo datoteke te podmape)
+            mkdir -p podaci && git -C .. archive FETCH_HEAD:podaci | tar -x -C podaci
+            echo "jelovnik verzija $(node -p "require('./podaci/jelovnik.json').verzija")"
+          else
+            echo "Grana sadrzaj još ne postoji — stranica se gradi iz lokalnih podataka."
+          fi
+          git config --local --unset-all http.https://github.com/.extraheader || true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: septilion/package-lock.json
+      - run: npm ci
+      - name: Licencirani fontovi (ako su postavljeni)
+        env:
+          FONTOVI: ${{ secrets.FONTOVI_ZIP_B64 }}
+        run: |
+          if [ -n "$FONTOVI" ]; then
+            mkdir -p private/fonts/tt-lakes-neue
+            echo "$FONTOVI" | base64 -d > "$RUNNER_TEMP/fontovi.zip"
+            unzip -o -q "$RUNNER_TEMP/fontovi.zip" -d private/fonts/tt-lakes-neue
+          fi
+      - run: npm run build
+        env:
+          NODE_ENV: production
+      - run: npm run paket
+      - name: Prijenos na hosting (FTPS)
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_KORISNIK: ${{ secrets.FTP_KORISNIK }}
+          FTP_LOZINKA: ${{ secrets.FTP_LOZINKA }}
+          FTP_MAPA: ${{ vars.FTP_MAPA || '/' }}
+        run: |
+          sudo apt-get install -y -qq lftp > /dev/null
+          # redom: datoteke s hashom i slike (samo nove), uredništvo, pa HTML i .htaccess — stranica nikad ne pokazuje na datoteku koje još nema
+          lftp -c "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate yes; set net:max-retries 3; set net:timeout 30;
+            open -u \"$FTP_KORISNIK\",\"$FTP_LOZINKA\" \"$FTP_HOST\";
+            mirror -R --parallel=4 --no-perms --ignore-time -x '^urednistvo/' -X '*.html' -X '*.xml' -X '*.txt' -X '.htaccess' hosting/ \"$FTP_MAPA\";
+            mirror -R --parallel=4 --no-perms hosting/urednistvo/ \"${FTP_MAPA%/}/urednistvo/\";
+            mirror -R --parallel=4 --no-perms -x '^urednistvo/' -I '*.html' -I '*.xml' -I '*.txt' -I '.htaccess' hosting/ \"$FTP_MAPA\""

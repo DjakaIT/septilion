@@ -1,0 +1,76 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import '../styles/fonts.css';
+import '../styles/prototype.css';
+import '../styles/additions.css';
+import Topbar from '../components/Topbar.astro';
+import { SITE_URL, WOLT } from '../site.config.mjs';
+import { ui, href, type Lang, type Route } from '../i18n/ui';
+import { single } from '../lib/images';
+import { csp, BOOT_JS } from '../lib/csp.mjs';
+
+interface Props {
+  lang: Lang;
+  route: Route;
+  title: string;
+  description: string;
+  jsonld: string;
+  ogImage: string;
+  preload?: string[];
+}
+const { lang, route, title, description, jsonld, ogImage, preload = [] } = Astro.props;
+const t = ui[lang];
+const url = (l: Lang) => new URL(href(route, l), SITE_URL).href;
+const og = new URL(await single(ogImage, 1200, 'webp'), SITE_URL).href;
+const menuAnchor = route === 'pasta-rhymes' ? '#spraylist' : '#orbita';
+
+// CSP kao <meta> rezerva; ista politika ide u zaglavlja (build hook u astro.config.mjs). U dev načinu Vite treba inline skripte.
+const policy = csp();
+// TT Lakes Neue je izvan gita (licenca): bez izrađenih datoteka nema ni preloada (inače 404)
+const postoji = (p: string) => !p.startsWith('/fonts/') || fs.existsSync(path.join(process.cwd(), 'public', p));
+const preloadi = ['/fonts/tt-lakes-neue/tt-lakes-neue-400.woff2', ...preload].filter(postoji);
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+{import.meta.env.PROD && <meta http-equiv="content-security-policy" content={policy} />}
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="theme-color" content="#0F0F10" />
+<link rel="canonical" href={url(lang)} />
+<link rel="alternate" hreflang="hr" href={url('hr')} />
+<link rel="alternate" hreflang="en" href={url('en')} />
+<link rel="alternate" hreflang="x-default" href={url('hr')} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Septillion" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url(lang)} />
+<meta property="og:image" content={og} />
+<meta property="og:locale" content={t.locale} />
+<meta property="og:locale:alternate" content={lang === 'hr' ? ui.en.locale : ui.hr.locale} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/septillion-icon.svg" type="image/svg+xml" />
+<script is:inline set:html={BOOT_JS}></script>
+{preloadi.map((p) => <link rel="preload" href={p} as="font" type="font/woff2" crossorigin />)}
+<script type="application/ld+json" set:html={jsonld} />
+</head>
+<body data-route={route} data-lang={lang}>
+<a class="skip" href="#main">{t.skip}</a>
+<Topbar lang={lang} route={route} />
+<slot name="before-main" />
+<main id="main">
+<slot />
+</main>
+{route !== 'gate' && (
+  <nav class="orderbar" id="orderbar" aria-label={t.quickActions}>
+    <a class="ob-main" id="ob-main" href={WOLT[route]}>{t.orderWolt}</a>
+    <a class="ob-sec" href={menuAnchor} id="ob-menu">{t.menu}</a>
+  </nav>
+)}
+<div id="wipe" aria-hidden="true"><canvas></canvas></div>
+</body>
+</html>

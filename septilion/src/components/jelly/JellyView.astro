@@ -1,0 +1,208 @@
+---
+import Pic from '../Pic.astro';
+import Faq from '../Faq.astro';
+import { ui, href, plural, fill, type Lang } from '../../i18n/ui';
+import { WOLT, PHONE_JELLY } from '../../site.config.mjs';
+import { JELLY_MENU, itemCount, type MenuItem } from '../../data/jelly-menu';
+import { FAQ_JELLY } from '../../data/faq';
+import { price, sizeLabel } from '../../lib/format';
+import { img, srcset, single } from '../../lib/images';
+interface Props { lang: Lang; pdfSize?: string }
+const { lang, pdfSize } = Astro.props;
+const t = ui[lang], j = t.jelly;
+const other: Lang = lang === 'hr' ? 'en' : 'hr';
+const wolt = WOLT['jellyfish-in-space'];
+const pad = (n: number) => String(n).padStart(2, '0');
+const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// panel: fotografija kategorije u retku s naslovom (JS je mijenja pri odabiru)
+const panelImgs = await Promise.all(JELLY_MENU.map((c) => (c.img ? srcset(c.img, [240, 480, 720], 'webp') : null)));
+const firstImg = panelImgs[0]!;
+// zaglavlje ima stalnu visinu: samo broj stavki; napomena kategorije (npr. Plate) ide na vrh popisa
+const desc = (n: number) => `${n} ${plural(n, j.items)}`;
+const prices = (i: MenuItem) => i.prices.map((p) => price(p.amount, lang)).join(' / ');
+// porcija ("3 kom", "4 ili 8 zalogaja") ide kao oznaka uz naziv; volumen ("0,03 l") sitno ispod cijene
+const nt = (i: MenuItem) => (i.portion ? i.portion[lang] : null);
+const vol = (i: MenuItem) => {
+  const sizes = i.prices.map((p) => p.size).filter(Boolean) as string[];
+  return sizes.length ? sizes.map((s) => sizeLabel(s, lang)).join(' / ') : null;
+};
+
+// kokteli (prototip): pozadina iz malih zamućenih slika + veliki listovi
+const COCK = [
+  { k: 'jf_pour2', bg: 'ckb_0', pos: '38% 50%' }, { k: 'jf_s3', bg: 'ckb_1', pos: '60% 30%' },
+  { k: 'jf_moon', bg: 'ckb_2', pos: '50% 45%' }, { k: 'jf_oldf', bg: 'ckb_3', pos: '50% 45%' },
+  { k: 'jf_hand', bg: 'ckb_4', pos: '55% 50%' }, { k: 'jf_mart_wood', bg: 'ckb_5', pos: '50% 60%' },
+];
+// galerija (prototip, 12 kadrova)
+const GAL = ['jf_platter', 'jf_mart2', 'jf_tiradito', 'jf_poke', 'jf_tacos', 'jf_juice', 'jf_tartare', 'jf_nigiri', 'jf_astro', 'jf_nachos', 'jf_sushi', 'jf_bowl2'];
+const galFull = await Promise.all(GAL.map((k) => single(k, 1600, 'webp')));
+const chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>';
+const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>';
+---
+<div class="view view-jelly on" data-view="jellyfish-in-space">
+
+  <section class="jf-hero" aria-labelledby="jf-h">
+    <div>
+      <Pic k="jf_logo" class="logo" alt={j.logoAlt} widths={[210, 420]} sizes="(max-width: 923px) 120px, 210px" loading="eager" fetchpriority="high" />
+      <h1 id="jf-h" class="serif">Somewhere out there, there is a jellyfish floating in space.</h1>
+      <p class="sub">{j.sub}</p>
+      <div class="cta">
+        <a class="jf-btn solid" href={wolt}>{t.orderWolt}</a>
+        <a class="jf-btn line" href="#orbita" data-smooth>{j.menuCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="jf-story" aria-labelledby="st-h">
+    <div class="jf-wrap in">
+      <h2 id="st-h" class="yr serif rv">1991.</h2>
+      <div class="rv">
+        <p>{j.story.p} <em>{j.story.em}</em></p>
+        <p class="q">{j.story.q}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="jf-menu" id="orbita" aria-labelledby="or-h">
+    <div class="jf-wrap orbit-grid">
+      <div class="head rv">
+        <h2 id="or-h" class="serif">{j.orbit}</h2>
+        <p>{j.orbitLead}</p>
+      </div>
+      <div class="chips" id="chips" role="tablist" aria-label={j.cats}>
+        {JELLY_MENU.map((c, i) => (
+          <button type="button" role="tab" id={`tab-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`list-${c.id}`} tabindex={i === 0 ? 0 : -1}>{c.title[lang]}</button>
+        ))}
+      </div>
+      <div class="orbit-wrap">
+        <div class="orbit-side">
+          <div class="orbit" id="orbit">
+            <div class="ring"></div>
+            <div class="core"><Pic k="jf_word" alt="" widths={[160, 320]} sizes="150px" /></div>
+            {JELLY_MENU.map((c, i) => {
+              const pim = c.img || c.pimg;
+              return (
+                <button class={`planet${pim ? '' : ' sphere'}`} type="button" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={c.title[lang]} data-i={i}>
+                  {pim && <Pic k={pim} alt="" widths={[120, 240]} sizes="124px" />}<span>{c.title[lang]}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div class="orbit-ctl" aria-label={j.orbitAria}><button class="oc-btn p" type="button" aria-label={j.prevCat}><Fragment set:html={chevL} /></button><span>{j.orbitCtl}</span><button class="oc-btn n" type="button" aria-label={j.nextCat}><Fragment set:html={chevR} /></button></div>
+        </div>
+        <div class="panel">
+          <div class="phead">
+            <div class={`ph${JELLY_MENU[0].img ? '' : ' nophoto'}`} id="pn-ph"><img id="pn-img" src={firstImg.src} srcset={firstImg.srcset} sizes="(max-width: 900px) 34vw, 260px" alt={JELLY_MENU[0].title[lang]} width="720" height="480" decoding="async" loading="lazy" /><Pic k="jf_logo" class="pn-mark" alt="" widths={[120, 240]} sizes="100px" /></div>
+            <div class="ptl" aria-live="polite">
+              <h3 id="pn-t" class="serif">{JELLY_MENU[0].title[lang]}</h3>
+              <p class="pdesc" id="pn-d">{desc(itemCount(JELLY_MENU[0]))}</p>
+            </div>
+          </div>
+          {JELLY_MENU.map((c, i) => c.groups.filter((g) => g.title).length > 1 && (
+            <div class="pgroups" data-cat={i} hidden={i !== 0} role="navigation" aria-label={j.groups}>
+              {c.groups.filter((g) => g.title).map((g) => (
+                <button type="button" data-target={`g-${c.id}-${slug(g.title!.hr)}`}>{g.title![lang]}</button>
+              ))}
+            </div>
+          ))}
+          {JELLY_MENU.map((c, i) => (
+            <div class="pcat" id={`list-${c.id}`} role="tabpanel" aria-labelledby={`tab-${c.id}`} data-cat={i} hidden={i !== 0}
+              data-title={c.title[lang]} data-desc={desc(itemCount(c))}
+              data-src={panelImgs[i]?.src} data-srcset={panelImgs[i]?.srcset}>
+            <ul class="plist" tabindex="0" aria-label={c.title[lang]}>
+              {c.note && <li class="cn">{c.note[lang]}</li>}
+              {c.groups.map((g) => (<>
+                {g.title && <li class="gh" id={`g-${c.id}-${slug(g.title.hr)}`}>{g.title[lang]}{g.note && <small>{g.note[lang]}</small>}</li>}
+                {g.pairing && <li class="cn">{j.pairing} {g.pairing[lang]}</li>}
+                {g.items.map((it) => (
+                  <li><span class="it"><b>{it.name[lang]}</b>{it.desc && <span class="ds">{it.desc[lang]}</span>}{it.pairing && <span class="ds pp">{j.pairing} {it.pairing[lang]}</span>}{nt(it) && <small class="nt">{nt(it)}</small>}</span><span class="pr">{prices(it)}{vol(it) && <small>{vol(it)}</small>}</span></li>
+                ))}
+              </>))}
+            </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="jf-wrap"><p class="pnote">{j.legalNote}</p></div>
+  </section>
+
+  <section class="jf-cock" id="kokteli" aria-labelledby="ck-h">
+    <div class="ck-track" id="ck-track">
+      <div class="ck-stage">
+        <div class="ck-bg" id="ck-bg" aria-hidden="true">
+          {COCK.map((c) => <img src={img(c.bg).src} alt="" width={img(c.bg).width} height={img(c.bg).height} style={`object-position:${c.pos}`} decoding="async" />)}
+        </div>
+        <div class="ck-copy">
+          <p class="kick">{j.kick}</p>
+          <h2 id="ck-h" class="serif">{j.ckTitle[0]}<br /><em>{j.ckTitle[1]}</em></h2>
+          <div class="ck-caps" aria-live="polite">
+            {j.cocktails.map((c, i) => (
+              <div class="ck-cap" data-i={i}><p class="ck-no">{pad(i + 1)} / {pad(j.cocktails.length)}</p><h3 class="serif">{c.h}</h3><p class="ck-line">{c.p}</p></div>
+            ))}
+          </div>
+        </div>
+        <div class="ck-deck" id="ck-deck">
+          {COCK.map((c, i) => (
+            <figure class="ck-card" data-i={i}><Pic k={c.k} alt={j.cocktails[i].alt} widths={[340, 520, 940]} sizes="(max-width: 900px) 66vw, 34vw" style={`object-position:${c.pos}`} /></figure>
+          ))}
+        </div>
+        <div class="ck-prog" aria-hidden="true"><i id="ck-prog"></i></div>
+        <div class="ck-mnav"><button class="ck-btn p" type="button" aria-label={j.prevCk}><Fragment set:html={chevL} /></button><span>{j.ckNav}</span><button class="ck-btn n" type="button" aria-label={j.nextCk}><Fragment set:html={chevR} /></button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="jf-gal" id="galerija" aria-labelledby="jg-h">
+    <div class="jf-wrap">
+      <div class="head rv">
+        <h2 id="jg-h" class="serif">{j.galTitle[0]} <em>{j.galTitle[1]}</em></h2>
+        <p>{j.galLead}</p>
+      </div>
+      <div class="cflow" id="pgrid" role="region" aria-roledescription={j.carousel} aria-label={j.galAria}>
+        <div class="cf-stage" id="cf-stage">
+          {GAL.map((k, i) => (
+            <figure class="pg" data-i={i}><button class="pg-open" type="button" data-i={i} data-full={galFull[i]} aria-label={`${fill(j.photoOf, { n: i + 1, t: GAL.length })}: ${j.gallery[i]}`}><Pic k={k} alt={j.gallery[i]} widths={[300, 460, 800]} sizes="(max-width: 760px) 52vw, 360px" draggable="false" /></button></figure>
+          ))}
+        </div>
+        <div class="cf-ui">
+          <button class="cf-nav p" type="button" aria-label={t.prevPhoto}><Fragment set:html={chevL} /></button>
+          <div class="cf-meta"><p class="cf-count"><b id="cf-n">01</b> / {pad(GAL.length)}</p><p class="cf-cap" id="cf-cap" aria-live="polite">{j.gallery[0]}</p></div>
+          <button class="cf-nav n" type="button" aria-label={t.nextPhoto}><Fragment set:html={chevR} /></button>
+        </div>
+        <div class="cf-dots">
+          {GAL.map((_, i) => <button class="cf-dot" type="button" data-i={i} aria-label={`${t.photo} ${i + 1}`}></button>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="jf-rev" aria-labelledby="jr-h">
+    <div class="jf-wrap">
+      <h2 id="jr-h" class="serif rv">{j.revTitle}</h2>
+      <div class="grid">
+        <article class="jcard rv"><p class="src">{j.timeout.src}</p><blockquote>{j.timeout.q}</blockquote><p class="stars" role="img" aria-label={j.timeout.stars}>★★★★☆</p><p class="by">{j.timeout.by}</p></article>
+        <article class="jcard rv"><p class="src">{t.googleReviews}</p><p class="big">—,—</p><a class="jf-btn line" href="https://www.google.com/maps/search/?api=1&query=Jellyfish+in+Space+Marti%C4%87eva+71+Zagreb" target="_blank" rel="noopener">{t.leaveReview}</a></article>
+      </div>
+    </div>
+  </section>
+
+  <Faq lang={lang} items={FAQ_JELLY} id="jfq-h" wrap="jf-wrap" pdfSize={pdfSize} />
+
+  <footer class="jf-foot">
+    <div class="jf-wrap">
+      <p class="big serif" aria-hidden="true">Jellyfish in Space</p>
+      <div class="foot-grid">
+        <div><h3>{t.foot.address}</h3><p>Martićeva 71<br />10000 Zagreb</p></div>
+        <div><h3>{t.foot.delivery}</h3><p><a href={wolt}>Wolt</a></p></div>
+        <div><h3>{t.foot.phone}</h3><p><a href={PHONE_JELLY.href}>{PHONE_JELLY.label}</a></p></div>
+        <div><h3>Septillion</h3><p><a href={href('pasta-rhymes', lang)} data-nav="pasta-rhymes">Pasta Rhymes →</a></p></div>
+      </div>
+      <p class="foot-legal">{j.legal} · <a href={href('jellyfish-in-space', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>
+    </div>
+  </footer>
+</div>
+<script>
+  import '../../scripts/jelly';
+</script>

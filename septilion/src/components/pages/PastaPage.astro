@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import PastaView from '../pasta/PastaView.astro';
+import { ui, fill, type Lang } from '../../i18n/ui';
+import { graph } from '../../lib/seo';
+import { FAQ_PASTA } from '../../data/faq';
+import { pastaPrices } from '../../data/pasta';
+import { priceShort } from '../../lib/format';
+import plexMono500 from '../../assets/fonts/plex-mono-500-normal-latin.woff2?url';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = ui[lang].meta.pasta;
+const ps = pastaPrices();
+const desc = fill(m.desc, { min: priceShort(Math.min(...ps), lang), max: priceShort(Math.max(...ps), lang) });
+---
+<Base lang={lang} route="pasta-rhymes" title={m.title} description={desc} jsonld={graph('pasta-rhymes', lang, FAQ_PASTA)} ogImage="pr_hero"
+  preload={[plexMono500]}>
+  <PastaView lang={lang} />
+</Base>

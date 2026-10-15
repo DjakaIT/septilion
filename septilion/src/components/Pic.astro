@@ -1,0 +1,17 @@
+---
+// <picture> s AVIF + WebP i srcset. CSS prototipa cilja <img>, pa je <picture> display:contents (additions.css).
+import { srcset, type ImgRef } from '../lib/images';
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'srcset' | 'width' | 'height'> {
+  /** ključ lokalne slike ili slika iz uredništva */
+  k: ImgRef;
+  alt: string;
+  widths?: number[];
+  sizes: string;
+}
+const { k, alt, widths = [320, 480, 640, 900, 1200], sizes, loading = 'lazy', decoding = 'async', ...rest } = Astro.props;
+const avif = await srcset(k, widths, 'avif');
+const webp = await srcset(k, widths, 'webp');
+---
+<picture><source type="image/avif" srcset={avif.srcset} sizes={sizes} /><img src={webp.src} srcset={webp.srcset} sizes={sizes} width={webp.width} height={webp.height} alt={alt} loading={loading} decoding={decoding} {...rest} /></picture>

@@ -1,0 +1,16 @@
+# Sigurnosne i redovne nadogradnje ovisnosti (GUIDE.md: npm audit / Dependabot). Akcije su prikvačene na SHA,
+# pa ih Dependabot i nadograđuje.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /septilion # projekt je u podmapi
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      manje-nadogradnje:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

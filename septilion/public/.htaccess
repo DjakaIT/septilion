@@ -1,0 +1,92 @@
+# Septillion — Apache (naručiteljev postojeći hosting). Za Netlify/Cloudflare Pages vidi _headers.
+
+Options -MultiViews -Indexes
+DirectorySlash Off
+ErrorDocument 404 /404.html
+ErrorDocument 503 /odrzavanje.html
+
+# oznaka održavanja (piše je uredništvo) nije za javnost
+<Files ".odrzavanje">
+  Require all denied
+</Files>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # unutarnja preusmjeravanja (ErrorDocument, /x -> x.html) se ne prepisuju ponovno
+  RewriteCond %{ENV:REDIRECT_STATUS} .
+  RewriteRule ^ - [L]
+
+  # samo HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # www. -> bez www. (jedna kanonska adresa; uredništvo prihvaća samo nju)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Održavanje: dok postoji datoteka .odrzavanje (uključuje je administrator u uredništvu, ili ručno prazna datoteka
+  # u public_html), posjetitelji dobiju odrzavanje.html sa statusom 503. Datoteke (slike, fontovi, CSS, JS) i
+  # /urednistvo rade normalno, a preglednik administratora koji ga je uključio (kolačić septillion_pregled) vidi stranicu.
+  RewriteCond %{DOCUMENT_ROOT}/.odrzavanje -f
+  RewriteCond %{HTTP_COOKIE} !(^|;\s*)septillion_pregled=1(;|$)
+  RewriteCond %{REQUEST_URI} !^/urednistvo(/|$)
+  RewriteCond %{REQUEST_URI} !\.(css|js|mjs|woff2|svg|ico|png|jpe?g|webp|avif|gif|pdf|xml|txt|webmanifest)$ [NC]
+  RewriteRule ^ - [R=503,L]
+  # stranica za održavanje postoji samo dok je održavanje uključeno
+  RewriteCond %{DOCUMENT_ROOT}/.odrzavanje !-f
+  RewriteRule ^odrzavanje(\.html)?$ - [R=404,L]
+
+  # /stranica.html -> /stranica (jedna kanonska adresa)
+  RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+  # /stranica/ -> /stranica
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # /en -> en.html (mapa en/ postoji, pa ide prije općeg pravila)
+  RewriteRule ^en$ en.html [L]
+  # /stranica -> stranica.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "__CSP__"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+  # održavanje: tražilice dođu ponovno za sat vremena (stranicu ne izbacuju iz indeksa)
+  Header always set Retry-After "3600" "expr=%{REQUEST_STATUS} == 503"
+
+  # trajni cache za datoteke s hashom u imenu; HTML se uvijek provjerava
+  <FilesMatch "\.(js|css|woff2|webp|avif|jpg|png)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.pdf$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+</IfModule>
+
+# /fonts/* nemaju hash u imenu: kraći cache
+<IfModule mod_headers.c>
+  <If "%{REQUEST_URI} =~ m#^/fonts/#">
+    Header set Cache-Control "public, max-age=604800"
+  </If>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml text/plain application/xml
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/avif .avif
+  AddType image/webp .webp
+</IfModule>

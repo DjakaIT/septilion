@@ -1,0 +1,48 @@
+---
+import mark from '../../assets/svg/septillion.svg?raw';
+import pastaLogo from '../../assets/svg/pasta-logo.svg?raw';
+import Pic from '../Pic.astro';
+import { ui, href, type Lang } from '../../i18n/ui';
+import { single } from '../../lib/images';
+import { GATE_STICKERS, stickerSvg } from '../../lib/stickers';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const other: Lang = lang === 'hr' ? 'en' : 'hr';
+// WebGL tekstura strane Paste (isti kadar kao u heroju)
+const tex = await single('pr_hero', 1600, 'webp');
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+---
+<section class="view view-gate on" data-view="gate" aria-labelledby="gate-h">
+  <canvas id="gate-gl" aria-hidden="true" data-tex={tex}></canvas>
+  <canvas id="gate-jelly" aria-hidden="true"></canvas>
+  <div class="gate-layer gate-a" aria-hidden="true">
+    {GATE_STICKERS.map((s, i) => (
+      <div class="stk" data-k={s.kind} style={`left:${s.x};top:${s.y};width:${s.w};--r:${s.r}deg`} set:html={stickerSvg(s.kind, `g${i}`)} />
+    ))}
+  </div>
+  <div class="gate-layer gate-b" aria-hidden="true"></div>
+  <div class="gate-ui">
+    <div class="gate-top">
+      <span class="mark" set:html={mark} />
+      <h1 id="gate-h" class="gate-q">{t.gate.q}</h1>
+    </div>
+    <div class="gate-sides">
+      <a class="side a" href={href('pasta-rhymes', lang)} data-side="a" data-astro-prefetch="viewport">
+        <span class="logo" set:html={pastaLogo} />
+        <span class="sr">Pasta Rhymes</span>
+        <span class="meta">{t.gate.aMeta[0]}<br />{t.gate.aMeta[1]}</span>
+        <span class="go">{t.gate.aGo} <Fragment set:html={arrow} /></span>
+      </a>
+      <a class="side b" href={href('jellyfish-in-space', lang)} data-side="b" data-astro-prefetch="viewport">
+        <Pic k="jf_logo" class="logo" alt="Jellyfish in Space" widths={[260, 520]} sizes="(max-width: 760px) 150px, 260px" loading="eager" />
+        <span class="meta">{t.gate.bMeta[0]}<br />{t.gate.bMeta[1]}</span>
+        <span class="go">{t.gate.bGo} <Fragment set:html={arrow} /></span>
+      </a>
+    </div>
+    <p class="gate-foot"><span><b>Septillion</b> · {t.gate.foot} · <a href={href('gate', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></span></p>
+  </div>
+</section>
+<script>
+  import '../../scripts/gate';
+</script>

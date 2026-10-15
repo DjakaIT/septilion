@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import GateView from '../gate/GateView.astro';
+import { ui, type Lang } from '../../i18n/ui';
+import { graph } from '../../lib/seo';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = ui[lang].meta.gate;
+---
+<Base lang={lang} route="gate" title={m.title} description={m.desc} jsonld={graph('gate', lang)} ogImage="pr_hero"
+  preload={['/fonts/tt-lakes-neue/tt-lakes-neue-expanded-400.woff2']}>
+  <GateView lang={lang} />
+</Base>

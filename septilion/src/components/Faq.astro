@@ -1,0 +1,19 @@
+---
+import type { Faq } from '../data/faq';
+import { ui, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; items: Faq[]; id: string; wrap: 'pr-wrap' | 'jf-wrap'; pdfSize?: string }
+const { lang, items, id, wrap, pdfSize } = Astro.props;
+---
+<section class="faq" aria-labelledby={id}>
+  <div class={wrap}>
+    <h2 id={id}>{ui[lang].questions}</h2>
+    <div class="list">
+      {items.map((f) => (
+        <details>
+          <summary>{f.q[lang]}</summary>
+          <p>{f.a[lang]}{f.link && <> <a class="faq-link" href={f.link.href} type="application/pdf">{f.link.label[lang]} (PDF{pdfSize && `, ${pdfSize}`})</a>.</>}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

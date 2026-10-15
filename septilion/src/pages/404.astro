@@ -1,0 +1,39 @@
+---
+// Nepostojeća adresa: Septillion ulaz u malom, s oba lokala. Bez JS-a.
+import '../styles/fonts.css';
+import '../styles/prototype.css';
+import '../styles/additions.css';
+import mark from '../assets/svg/septillion.svg?raw';
+---
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>Stranica ne postoji — Septillion</title>
+<meta name="theme-color" content="#0F0F10" />
+<link rel="icon" href="/septillion-icon.svg" type="image/svg+xml" />
+</head>
+<body class="nf">
+<main class="nf-in">
+  <span class="mark" set:html={mark} />
+  <h1 class="gate-q">Ova orbita je prazna.</h1>
+  <p lang="en">This orbit is empty.</p>
+  <nav class="nf-go" aria-label="Septillion">
+    <a class="pr-btn solid" href="/pasta-rhymes">Pasta Rhymes</a>
+    <a class="jf-btn solid" href="/jellyfish-in-space">Jellyfish in Space</a>
+    <a class="nf-home" href="/">Septillion</a>
+  </nav>
+</main>
+</body>
+</html>
+<style>
+  .nf{min-height:100svh;display:grid;place-items:center;padding:24px var(--pad);text-align:center}
+  .nf-in{display:flex;flex-direction:column;align-items:center;gap:22px;max-width:640px}
+  .mark{width:clamp(150px,17vw,250px);color:#fff}
+  .nf-in p{color:rgba(242,241,238,.7)}
+  .nf-go{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;align-items:center}
+  .nf-go .pr-btn{background:#FE0000;color:#000;border-color:#FE0000}
+  .nf-home{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;color:#fff;text-underline-offset:3px}
+</style>

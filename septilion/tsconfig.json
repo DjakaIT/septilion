@@ -1,0 +1,9 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "src/**/*.ts", "src/**/*.astro", "src/**/*.mjs", "tests/**/*.ts"],
+  "exclude": ["dist", "src/App.jsx", "src/main.jsx"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": false
+  }
+}

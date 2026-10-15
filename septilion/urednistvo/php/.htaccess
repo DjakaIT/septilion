@@ -1,0 +1,38 @@
+# Uredništvo (public_html/urednistvo): sve adrese ide kroz index.php — nijedna druga datoteka iz ove mape
+# (lib/*.php, konfiguracija.json, minijature) nije dostupna izravno. Zaglavlja (strogi CSP, noindex, no-store)
+# šalje index.php; zaglavlja stranice iz nadređenog .htaccess-a ovdje se uklanjaju da se ne zbroje.
+
+Options -Indexes -MultiViews
+
+<IfModule mod_headers.c>
+  Header always unset Content-Security-Policy
+  Header always unset X-Frame-Options
+  Header always unset Referrer-Policy
+  Header always unset Permissions-Policy
+  Header always unset X-Content-Type-Options
+  Header always unset Strict-Transport-Security
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # /urednistvo bez kose crte je adresa mape: mod_rewrite je inače preskače (čeka da mod_dir doda "/", a stranica
+  # ima DirectorySlash Off) i Apache vrati 404. Ovako i ona ide kroz pravila ispod.
+  RewriteOptions AllowNoSlash
+
+  # samo HTTPS (nadređena pravila se ovdje ne nasljeđuju)
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # www. -> bez www.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  RewriteRule ^ index.php [END]
+</IfModule>
+
+# bez mod_rewrite ništa osim index.php
+<IfModule !mod_rewrite.c>
+  <FilesMatch "^(?!index\.php$)">
+    Require all denied
+  </FilesMatch>
+</IfModule>

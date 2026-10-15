@@ -1,0 +1,5102 @@
+{
+  "generated": "npm run menu — ne uređivati ručno; izvor: src/data/source/*.md + scripts/menu/corrections.mjs",
+  "categories": [
+    {
+      "id": "predjela",
+      "title": {
+        "hr": "Predjela",
+        "en": "Appetizers"
+      },
+      "img": "jf_tacos",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "predjela-tacos-puretina",
+              "name": {
+                "hr": "Tacos puretina",
+                "en": "Tacos turkey"
+              },
+              "desc": {
+                "hr": "Trgana puretina, topljeni sir, kukuruz, guasacaca, kumkvat",
+                "en": "Pulled turkey, processed cheese, corn, guasacaca, kumquat"
+              },
+              "portion": {
+                "hr": "3 kom",
+                "en": "3 pcs"
+              },
+              "pairing": {
+                "hr": "Bertoša Malvazija",
+                "en": "Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "predjela-tacos-beef",
+              "name": {
+                "hr": "Tacos beef",
+                "en": "Tacos beef"
+              },
+              "desc": {
+                "hr": "Junetina 90g, topljeni sir, avokado mus, prženi luk, konkase rajčice",
+                "en": "Beef 90g, melted cheese, avocado mousse, fried onions, tomato puree"
+              },
+              "portion": {
+                "hr": "3 kom",
+                "en": "3 pcs"
+              },
+              "pairing": {
+                "hr": "Matsu El Picaro",
+                "en": "Matsu El Picaro"
+              },
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "predjela-tuna-tartare",
+              "name": {
+                "hr": "Tuna tartare",
+                "en": "Tuna tartare"
+              },
+              "desc": {
+                "hr": "Začinjena svježa tuna, guasacaca, limun perle, cikla prah, nachosi",
+                "en": "Spicy fresh tuna, guasacaca, lemon pearls, beetroot powder, nachos"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Bubbly Cocktail ili Kolarić Coletti Blanc Nature Pjenušac",
+                "en": "Bubbly Cocktail or Kolarić Coletti Blanc Nature Pjenušac"
+              },
+              "prices": [
+                {
+                  "amount": 16
+                }
+              ]
+            },
+            {
+              "id": "predjela-tuna-tataki",
+              "name": {
+                "hr": "Tuna tataki",
+                "en": "Tuna tataki"
+              },
+              "desc": {
+                "hr": "Tuna 100g, svježi mango, jalapeño, teriyaki, ulje vlasca",
+                "en": "Tuna 100g, fresh mango, jalapeño, teriyaki, chive oil"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Puhelek Sauvignon ili Jakovac Rose",
+                "en": "Puhelek Sauvignon or Jakovac Rose"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "predjela-kozice-tempura",
+              "name": {
+                "hr": "Kozice tempura",
+                "en": "Prawns tempura"
+              },
+              "desc": {
+                "hr": "Kozica u tempuri, spicy majoneza",
+                "en": "Shrimp in tempura, spicy mayonnaise"
+              },
+              "portion": {
+                "hr": "6 kom",
+                "en": "6 pcs"
+              },
+              "pairing": {
+                "hr": "Bubbly Cocktail ili Kolarić Coletti Blanc Nature Pjenušac",
+                "en": "Bubbly Cocktail or Kolarić Coletti Blanc Nature Pjenušac"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "predjela-gyoza-vege",
+              "name": {
+                "hr": "Gyoza vege",
+                "en": "Gyoza vege"
+              },
+              "desc": {
+                "hr": "Sezam, mladi luk, tzatziki",
+                "en": "Sesame, spring onion, tzatziki"
+              },
+              "portion": {
+                "hr": "5 kom",
+                "en": "5 pcs"
+              },
+              "pairing": {
+                "hr": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac",
+                "en": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac"
+              },
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "predjela-gyoza-pork",
+              "name": {
+                "hr": "Gyoza pork",
+                "en": "Gyoza pork"
+              },
+              "desc": {
+                "hr": "Spicy majoneza, mladi luk, sezam",
+                "en": "Spicy mayo, spring onion, sesame"
+              },
+              "portion": {
+                "hr": "5 kom",
+                "en": "5 pcs"
+              },
+              "pairing": {
+                "hr": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac",
+                "en": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac"
+              },
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "predjela-spring-roll-vege",
+              "name": {
+                "hr": "Spring roll vege",
+                "en": "Spring roll vege"
+              },
+              "desc": {
+                "hr": "Kineski kupus, mrkva, đumbir, hoisin",
+                "en": "Chinese cabbage, carrots, ginger, hoisin"
+              },
+              "portion": {
+                "hr": "1 kom",
+                "en": "1 pcs"
+              },
+              "pairing": {
+                "hr": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac",
+                "en": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac"
+              },
+              "prices": [
+                {
+                  "amount": 3.5
+                }
+              ]
+            },
+            {
+              "id": "predjela-spring-roll-piletina",
+              "name": {
+                "hr": "Spring roll piletina",
+                "en": "Spring roll chicken"
+              },
+              "desc": {
+                "hr": "Kineski kupus, mrkva, piletina u soja umaku",
+                "en": "Chinese cabbage, carrots, chicken in soy sauce"
+              },
+              "portion": {
+                "hr": "1 kom",
+                "en": "1 pcs"
+              },
+              "pairing": {
+                "hr": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac",
+                "en": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac"
+              },
+              "prices": [
+                {
+                  "amount": 3.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "glavna-jela",
+      "title": {
+        "hr": "Glavna jela",
+        "en": "Main courses"
+      },
+      "img": "jf_nachos",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "glavna-jela-black-angus-ribs",
+              "name": {
+                "hr": "Black Angus ribs",
+                "en": "Black Angus ribs"
+              },
+              "desc": {
+                "hr": "Black Angus 400 g, pečeni krumpir s kajmakom, coleslaw, cream cheese jalapeño",
+                "en": "Black Angus 400 g, baked potatoes with kajmak, coleslaw, cream cheese jalapeño"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Kentucky Mule",
+                "en": "Kentucky Mule"
+              },
+              "prices": [
+                {
+                  "amount": 33
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-galaxy-salata",
+              "name": {
+                "hr": "Galaxy salata",
+                "en": "Galaxy salad"
+              },
+              "desc": {
+                "hr": "Iceberg salata, ljubičasti i obični kupus, mrkva, rajčica, kozice u tempuri, teriyaki, sweet chilli, jelly umak",
+                "en": "Iceberg lettuce, purple and regular cabbage, carrots, tomatoes, tempura shrimp, teriyaki, sweet chilli, jelly sauce"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Masciarelli Gianni Trebbiano ili Kolarić Coletti Blanc Nature",
+                "en": "Masciarelli Gianni Trebbiano or Kolarić Coletti Blanc Nature"
+              },
+              "prices": [
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-beef-salata",
+              "name": {
+                "hr": "Beef salata",
+                "en": "Beef salad"
+              },
+              "desc": {
+                "hr": "Junetina 100g, iceberg salata, kukuruz, pržena tortilja, feta sir, rajčica",
+                "en": "Beef 100g, iceberg lettuce, corn, fried tortilla, feta cheese, tomato"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Masciarelli Gianni Trebbiano ili Mojito",
+                "en": "Masciarelli Gianni Trebbiano or Mojito"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-yakitori-hobotnica",
+              "name": {
+                "hr": "Yakitori hobotnica",
+                "en": "Yakitori octopus"
+              },
+              "desc": {
+                "hr": "Pržena hobotnica, riža, yakitori umak, poke umak, edamame, ukiseljeni đumbir, sezam, mladi luk",
+                "en": "Fried octopus, rice, yakitori sauce, poke sauce, edamame, pickled ginger, sesame, spring onion"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Apricot Paloma",
+                "en": "Apricot Paloma"
+              },
+              "prices": [
+                {
+                  "amount": 15
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-ceviche-od-brancina",
+              "name": {
+                "hr": "Ceviche od brancina",
+                "en": "Sea bass ceviche"
+              },
+              "desc": {
+                "hr": "Brancin, emulzija sokova agruma i maslinovog ulja, kumkvat, mango i menta",
+                "en": "Sea bass, citrus juice and olive oil emulsion, kumquat, mango and mint"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Moscow Mule",
+                "en": "Moscow Mule"
+              },
+              "prices": [
+                {
+                  "amount": 15
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-beef-nachos",
+              "name": {
+                "hr": "Beef nachos",
+                "en": "Beef nachos"
+              },
+              "desc": {
+                "hr": "Junetina 120g, topljeni sir, pržene tortilje, konkase rajčice, mladi luk",
+                "en": "Beef 120g, melted cheese, fried tortillas, diced tomatoes, spring onions"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Jellyrita Cocktail",
+                "en": "Jellyrita Cocktail"
+              },
+              "prices": [
+                {
+                  "amount": 11
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-cheese-nachos",
+              "name": {
+                "hr": "Cheese nachos",
+                "en": "Cheese nachos"
+              },
+              "desc": {
+                "hr": "Topljeni sir, pržene tortilje, konkase rajčice, jalapeño",
+                "en": "Melted cheese, fried tortillas, diced tomatoes, jalapeño"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Puhelek Sauvignon ili Tropical Mojito",
+                "en": "Puhelek Sauvignon or Tropical Mojito"
+              },
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-bao-buns-pork",
+              "name": {
+                "hr": "Bao buns pork",
+                "en": "Bao buns pork"
+              },
+              "desc": {
+                "hr": "Sporo pečena potrbušina, coleslaw, teriyaki majoneza, sezam, mladi luk, ulje vlasca, krumpirići",
+                "en": "Slow-roasted pork belly, coleslaw, teriyaki mayonnaise, sesame, spring onions, chive oil, fries"
+              },
+              "portion": {
+                "hr": "3 kom",
+                "en": "3 pcs"
+              },
+              "pairing": {
+                "hr": "Matsu El Picaro ili Jakovac Mystique Chardonnay",
+                "en": "Matsu El Picaro or Jakovac Mystique Chardonnay"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-bao-buns-shrimp",
+              "name": {
+                "hr": "Bao buns shrimp",
+                "en": "Bao buns shrimp"
+              },
+              "desc": {
+                "hr": "Kozice u tempuri, surimi tartare, spicy majoneza, matovilac, krastavci, sezam, mladi luk, ulje vlasca, krumpirići",
+                "en": "Shrimp in tempura, surimi tartare, spicy mayonnaise, matovilac, cucumbers, sesame, spring onions, chive oil, fries"
+              },
+              "portion": {
+                "hr": "3 kom",
+                "en": "3 pcs"
+              },
+              "pairing": {
+                "hr": "Poggio Al Lupo Vermentino",
+                "en": "Poggio Al Lupo Vermentino"
+              },
+              "prices": [
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-burrito-pork",
+              "name": {
+                "hr": "Burrito pork",
+                "en": "Burrito pork"
+              },
+              "desc": {
+                "hr": "Tortilja, trgana svinjetina 100g, topljeni sir, riža, iceberg salata, ukiseljeni krastavci, spicy majoneza, krumpirići",
+                "en": "Tortilla, pulled pork 100g, melted cheese, rice, iceberg lettuce, pickles, spicy mayonnaise, fries"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Jakovac Mystique Chardonnay ili Moscow Mule",
+                "en": "Jakovac Mystique Chardonnay or Moscow Mule"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-burrito-beef",
+              "name": {
+                "hr": "Burrito beef",
+                "en": "Burrito beef"
+              },
+              "desc": {
+                "hr": "Tortilja, junetina 100g, topljeni sir, riža, kukuruz, rajčica, spicy majoneza, krumpirići",
+                "en": "Tortilla, 100g beef, melted cheese, rice, corn, tomato, spicy mayonnaise, fries"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Jakovac Mystique Chardonnay ili Kentucky Mule",
+                "en": "Jakovac Mystique Chardonnay or Kentucky Mule"
+              },
+              "prices": [
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-turkey-wrap",
+              "name": {
+                "hr": "Turkey wrap",
+                "en": "Turkey wrap"
+              },
+              "desc": {
+                "hr": "Tortilja, puretina, topljeni sir, iceberg salata, rajčice, kukuruz, krastavci, tzatziki, krumpirići",
+                "en": "Tortilla, turkey, processed cheese, iceberg lettuce, tomatoes, corn, cucumbers, tzatziki, fries"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Aperol Spritz",
+                "en": "Aperol Spritz"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "glavna-jela-spicy-chicken-wings",
+              "name": {
+                "hr": "Spicy chicken wings",
+                "en": "Spicy chicken wings"
+              },
+              "desc": {
+                "hr": "Batat sa sirom",
+                "en": "Sweet potato with cheese"
+              },
+              "portion": {
+                "hr": "8 kom",
+                "en": "8 pcs"
+              },
+              "pairing": {
+                "hr": "Moscow Mule",
+                "en": "Moscow Mule"
+              },
+              "prices": [
+                {
+                  "amount": 17
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jelly-bowl",
+      "title": {
+        "hr": "Jelly Bowl",
+        "en": "Jelly Bowl"
+      },
+      "img": "jf_poke",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "jelly-bowl-turkey-bowl",
+              "name": {
+                "hr": "Turkey bowl",
+                "en": "Turkey bowl"
+              },
+              "desc": {
+                "hr": "Riža, trgana puretina, concasse rajčica, edamame, kukuruz, feta sir, kumkvat, guasacaca, limeta",
+                "en": "Rice, pulled turkey, concasse tomatoes, edamame, corn, feta cheese, kumquat, guasacaca, lime"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Bertoša Malvazija ili Jakovac Mystique Chardonnay",
+                "en": "Bertoša Malvazija or Jakovac Mystique Chardonnay"
+              },
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "jelly-bowl-poke-losos-bowl",
+              "name": {
+                "hr": "Poke losos bowl",
+                "en": "Poke salmon bowl"
+              },
+              "desc": {
+                "hr": "Riža, katsu losos, limeta, edamame, kimchi salata, krastavci, wakame, teriyaki majoneza",
+                "en": "Rice, katsu salmon, lime, edamame, kimchi salad, cucumbers, wakame, teriyaki mayonnaise"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Puhelek Sauvignon ili Kolarić Coletti",
+                "en": "Puhelek Sauvignon or Kolarić Coletti"
+              },
+              "prices": [
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "jelly-bowl-katsu-losos-bowl",
+              "name": {
+                "hr": "Katsu losos bowl",
+                "en": "Katsu salmon bowl"
+              },
+              "desc": {
+                "hr": "Riža, svježi losos mariniran u poke umaku, edamame, wakame, krastavci, avokado, mango, ukiseljeni đumbir, mladi luk i sezam",
+                "en": "Rice, fresh salmon marinated in poke sauce, edamame, wakame, cucumbers, avocado, mango, pickled ginger, spring onion and sesame"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Margarita ili Tom Collins",
+                "en": "Margarita or Tom Collins"
+              },
+              "prices": [
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-bowl-tuna-bowl",
+              "name": {
+                "hr": "Tuna bowl",
+                "en": "Tuna bowl"
+              },
+              "desc": {
+                "hr": "Riža, tuna, limeta, kimchi salata, wakame, edamame, rajčice, spicy majoneza",
+                "en": "Rice, tuna, lime, kimchi salad, wakame, edamame, tomatoes, spicy mayonnaise"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Marques De Riscal Verdejo",
+                "en": "Marques De Riscal Verdejo"
+              },
+              "prices": [
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-bowl-vege-bowl",
+              "name": {
+                "hr": "Vege bowl",
+                "en": "Vege bowl"
+              },
+              "desc": {
+                "hr": "Riža, kukuruz, krastavci, marinirani luk, mrkva, edamame, tzatziki, dimljeni tofu miso/đumbir umak",
+                "en": "Rice, corn, cucumbers, marinated onions, carrots, edamame, tzatziki, smoked tofu, miso/ginger sauce"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Jakovac Mystique Chardonnay",
+                "en": "Jakovac Mystique Chardonnay"
+              },
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plate",
+      "title": {
+        "hr": "Plate",
+        "en": "Platters"
+      },
+      "img": "jf_platter",
+      "pimg": null,
+      "note": {
+        "hr": "Extra zalogaji – isključivo uz svaku platu mogu se posebno naručiti komadno gyoze, kozice u tempuri, bunsi, tacosi.",
+        "en": "Extra bites – exclusively with each platter you can order individual bites of gyoza, prawns in tempura, buns, tacos."
+      },
+      "groups": [
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "plate-saturn",
+              "name": {
+                "hr": "Saturn",
+                "en": "Saturn"
+              },
+              "desc": {
+                "hr": "Buns shrimp 2 kom, kozice u tempuri 4 kom, spring rola piletina 2 kom, crispy losos 4 zalogaja, rainbow roll 8 zalogaja",
+                "en": "Buns shrimp 2 pcs, prawn tempura 4 pcs, spring roll chicken 2 pcs, crispy salmon 4 bites, rainbow roll 8 bites"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 39
+                }
+              ]
+            },
+            {
+              "id": "plate-jupiter",
+              "name": {
+                "hr": "Jupiter",
+                "en": "Jupiter"
+              },
+              "desc": {
+                "hr": "Kozice u tempuri 4 kom, spring rola piletina 2 kom, tacos puretina 2 kom, tacos beef 2 kom",
+                "en": "Prawns tempura 4 pcs, spring roll chicken 2 pcs, tacos turkey 2 pcs, tacos beef 2 pcs"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 27
+                }
+              ]
+            },
+            {
+              "id": "plate-neptun",
+              "name": {
+                "hr": "Neptun",
+                "en": "Neptun"
+              },
+              "desc": {
+                "hr": "Salmon fig & cheese roll 4 zalogaja, tuna olive roll 4 zalogaja, uramaki losos roll 4 zalogaja, rainbow roll 4 zalogaja, mango roll 4 zalogaja",
+                "en": "Salmon fig & cheese roll 4 bites, tuna olive roll 4 bites, uramaki salmon roll 4 bites, rainbow roll 4 bites, mango roll 4 bites"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 31
+                }
+              ]
+            },
+            {
+              "id": "plate-merkur",
+              "name": {
+                "hr": "Merkur",
+                "en": "Merkur"
+              },
+              "desc": {
+                "hr": "Karage roll 4 zalogaja, crispy losos roll 4 zalogaja, salmon fig & cheese roll 4 zalogaja, futomaki surimi roll 4 zalogaja",
+                "en": "Karage roll 4 bites, crispy salmon roll 4 bites, salmon fig & cheese roll 4 bites, futomaki surimi roll 4 bites"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 26
+                }
+              ]
+            },
+            {
+              "id": "plate-bbq",
+              "name": {
+                "hr": "BBQ",
+                "en": "BBQ"
+              },
+              "desc": {
+                "hr": "Black Angus ribs 400g, spicy chicken wings 8 kom, pečeni krumpir s kajmakom, cream cheese jalapeño 2 kom, coleslaw",
+                "en": "Black Angus ribs 400g, spicy chicken wings 8 pcs, baked potatoes with cream, cream cheese jalapeño 2 pcs, coleslaw"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 48
+                }
+              ]
+            },
+            {
+              "id": "plate-mars",
+              "name": {
+                "hr": "Mars",
+                "en": "Mars"
+              },
+              "desc": {
+                "hr": "Buns shrimp 2 kom, buns pork 2 kom, kozice u tempuri 4 kom, gyoza pork 4 kom",
+                "en": "Buns shrimp 2 pcs, buns pork 2 pcs, prawn tempura 4 pcs, gyoza pork 4 pcs"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 31
+                }
+              ]
+            },
+            {
+              "id": "plate-venera",
+              "name": {
+                "hr": "Venera",
+                "en": "Venera"
+              },
+              "desc": {
+                "hr": "Karage roll 4 zalogaja, uramaki age ebi roll 4 zalogaja, futomaki spring dragon roll 4 zalogaja, rainbow roll 4 zalogaja",
+                "en": "Karage roll 4 bites, uramaki age ebi roll 4 bites, futomaki spring dragon roll 4 bites, rainbow roll 4 bites"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 27
+                }
+              ]
+            },
+            {
+              "id": "plate-fritto-misto",
+              "name": {
+                "hr": "Fritto misto",
+                "en": "Fritto misto"
+              },
+              "desc": {
+                "hr": "Hobotnica, brancin, kozice u tempuri, paprike, mladi luk, poke umak",
+                "en": "Octopus, sea bass, prawns in tempura, peppers, spring onions, poke sauce"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 34
+                }
+              ]
+            },
+            {
+              "id": "plate-sushi-dream",
+              "name": {
+                "hr": "Sushi Dream",
+                "en": "Sushi Dream"
+              },
+              "desc": {
+                "hr": "Uramaki shrimp tartar (4 zalogaja), uramaki wakame (4 zalogaja), fried uramaki salmon (4 zalogaja), spicy tuna (4 zalogaja), futomaki surimi (4 zalogaja), crispy losos (4 zalogaja), tuna olive roll (4 zalogaja)",
+                "en": "Uramaki shrimp tartar (4 bites), uramaki wakame (4 bites), fried uramaki salmon (4 bites), spicy tuna (4 bites), futomaki surimi (4 bites), crispy salmon (4 bites), tuna olive roll (4 bites)"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 44
+                }
+              ]
+            },
+            {
+              "id": "plate-milky-way",
+              "name": {
+                "hr": "Milky Way",
+                "en": "Milky Way"
+              },
+              "desc": {
+                "hr": "Pržena hobotnica, prženi brancin, kozice u tempuri, tuna olive roll 4 kom, karage roll 4 kom, salmon fig&cheese roll 4 kom, mango roll 4 kom, tuna sushi taquitos 2 kom, aburi nigiri 4 kom, nigiri hobotnica 4 kom",
+                "en": "Fried octopus, fried sea bass, tempura shrimp, tuna olive roll 4 pcs, karage roll 4 pcs, salmon fig&cheese roll 4 pcs, mango roll 4 pcs, tuna sushi taquitos 2 pcs, aburi nigiri 4 pcs, octopus nigiri 4 pcs"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 84
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jelly-sushi",
+      "title": {
+        "hr": "Jelly Sushi",
+        "en": "Jelly Sushi"
+      },
+      "img": "jf_sushi",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": null,
+          "note": {
+            "hr": "4 ili 8 zalogaja",
+            "en": "4 or 8 bites"
+          },
+          "pairing": {
+            "hr": "Jakovac Graševina, Bertoša Malvazija",
+            "en": "Jakovac Graševina, Bertoša Malvazija"
+          },
+          "items": [
+            {
+              "id": "jelly-sushi-salmon-fig-and-cheese-roll",
+              "name": {
+                "hr": "Salmon fig & cheese roll",
+                "en": "Salmon fig & cheese roll"
+              },
+              "desc": {
+                "hr": "Losos, krem sir, komadići poširanih smokvi, krastavci, pesto, perle od limuna",
+                "en": "Salmon, cream cheese, pieces of poached figs, cucumbers, pesto, lemon pearls"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Puhelek Sauvignon, Jakovac Mystique Chardonnay",
+                "en": "Puhelek Sauvignon, Jakovac Mystique Chardonnay"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-mango-curry-ebi",
+              "name": {
+                "hr": "Mango curry ebi",
+                "en": "Mango curry ebi"
+              },
+              "desc": {
+                "hr": "Riža, kozice u tempuri, krastavci, tex mex sezam, prženi losos, mango curry umak",
+                "en": "Rice, prawns tempura, cucumber, sesame tex mex, fried salmon, mango curry sauce"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7.5
+                },
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-spicy-tuna",
+              "name": {
+                "hr": "Spicy tuna",
+                "en": "Spicy tuna"
+              },
+              "desc": {
+                "hr": "Tuna, riža, kimchi, sriracha, mladi luk, sezam, krastavac",
+                "en": "Tuna, rice, kimchi, sriracha, spring onion, sesame, cucumber"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7.5
+                },
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-futomaki-surimi",
+              "name": {
+                "hr": "Futomaki surimi",
+                "en": "Futomaki surimi"
+              },
+              "desc": {
+                "hr": "Surimi, riža, krastavac, teriyaki mayo",
+                "en": "Surimi, rice, cucumber, teriyaki mayo"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-futomaki-spring-dragon",
+              "name": {
+                "hr": "Futomaki spring dragon",
+                "en": "Futomaki spring dragon"
+              },
+              "desc": {
+                "hr": "Spicy tuna, kozice u tempuri, avokado, teriyaki mayo, perle od soje",
+                "en": "Spicy tuna, prawns in tempura, avocado, teriyaki mayo, soy beads"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Puhelek Sauvignon",
+                "en": "Puhelek Sauvignon"
+              },
+              "prices": [
+                {
+                  "amount": 7.5
+                },
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-rainbow-roll",
+              "name": {
+                "hr": "Rainbow roll",
+                "en": "Rainbow roll"
+              },
+              "desc": {
+                "hr": "Riža, losos, tuna, krem sir, krastavci, avokado, tobiko",
+                "en": "Rice, salmon, tuna, cream cheese, cucumber, avocado, tobiko"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7.5
+                },
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-crispy-losos",
+              "name": {
+                "hr": "Crispy losos",
+                "en": "Crispy salmon"
+              },
+              "desc": {
+                "hr": "Riža, surimi, losos, sweet chili, majoneza",
+                "en": "Rice, surimi, salmon, sweet chili, mayonnaise"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7.5
+                },
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-mango-roll",
+              "name": {
+                "hr": "Mango roll",
+                "en": "Mango roll"
+              },
+              "desc": {
+                "hr": "Riža, mango, kozice u tempuri, krem sir, mango curry umak",
+                "en": "Rice, mango, tempura shrimp, cream cheese, mango curry sauce"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Puhelek Sauvignon",
+                "en": "Puhelek Sauvignon"
+              },
+              "prices": [
+                {
+                  "amount": 7.5
+                },
+                {
+                  "amount": 14
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-karage-roll",
+              "name": {
+                "hr": "Karage roll",
+                "en": "Karage roll"
+              },
+              "desc": {
+                "hr": "Prženi losos, avokado, majoneza, miso/đumbir umak",
+                "en": "Fried salmon, avocado, mayonnaise, miso/ginger sauce"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Jellyrita, Bertoša Malvazija",
+                "en": "Jellyrita, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-tuna-olive-roll",
+              "name": {
+                "hr": "Tuna olive roll",
+                "en": "Tuna olive roll"
+              },
+              "desc": {
+                "hr": "Krem sir, paprika, tuna, dehidrirane crne masline, pesto",
+                "en": "Cream cheese, paprika, tuna, dehydrated black olives, pesto"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "jelly-sushi-tuna-sushi-taquitos",
+              "name": {
+                "hr": "Tuna sushi taquitos",
+                "en": "Tuna sushi taquitos"
+              },
+              "desc": {
+                "hr": "Tuna tartar, riža, alga, sezam, vlasac",
+                "en": "Tuna tartar, rice, seaweed, sesame, chives"
+              },
+              "portion": {
+                "hr": "2 kom",
+                "en": "2 pcs"
+              },
+              "pairing": {
+                "hr": "Jakovac Graševina, Bertoša Malvazija",
+                "en": "Jakovac Graševina, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sushi",
+      "title": {
+        "hr": "Sushi",
+        "en": "Sushi"
+      },
+      "img": "jf_nigiri",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": {
+            "hr": "Nigiri",
+            "en": "Nigiri"
+          },
+          "note": {
+            "hr": "1 zalogaj",
+            "en": "1 bite"
+          },
+          "pairing": {
+            "hr": "Jakovac Graševina, Bertoša Malvazija",
+            "en": "Jakovac Graševina, Bertoša Malvazija"
+          },
+          "items": [
+            {
+              "id": "sushi-nigiri-tuna",
+              "name": {
+                "hr": "Nigiri tuna",
+                "en": "Nigiri tuna"
+              },
+              "desc": {
+                "hr": "Tuna, hoisin umak, sezam, mladi luk, riža",
+                "en": "Tuna, hoisin sauce, sesame, spring onion, rice"
+              },
+              "portion": {
+                "hr": "1 zalogaj",
+                "en": "1 bite"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2.5
+                }
+              ]
+            },
+            {
+              "id": "sushi-nigiri-losos",
+              "name": {
+                "hr": "Nigiri losos",
+                "en": "Nigiri salmon"
+              },
+              "desc": {
+                "hr": "Losos, tobiko, mladi luk, riža",
+                "en": "Salmon, tobiko, spring onions, rice"
+              },
+              "portion": {
+                "hr": "1 zalogaj",
+                "en": "1 bite"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2.5
+                }
+              ]
+            },
+            {
+              "id": "sushi-aburi-nigiri",
+              "name": {
+                "hr": "Aburi nigiri",
+                "en": "Aburi nigiri"
+              },
+              "desc": {
+                "hr": "Brancin, miso/đumbir umak, vlasac, riža",
+                "en": "Sea bass, miso/ginger sauce, chives, rice"
+              },
+              "portion": {
+                "hr": "1 zalogaj",
+                "en": "1 bite"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2.5
+                }
+              ]
+            },
+            {
+              "id": "sushi-hobotnica-nigiri",
+              "name": {
+                "hr": "Hobotnica nigiri",
+                "en": "Octopus nigiri"
+              },
+              "desc": {
+                "hr": "Hobotnica, riža",
+                "en": "Octopus, rice"
+              },
+              "portion": {
+                "hr": "1 zalogaj",
+                "en": "1 bite"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "sushi-losos-sashimi",
+              "name": {
+                "hr": "Losos sashimi",
+                "en": "Salmon sashimi"
+              },
+              "desc": {
+                "hr": "Losos 100g",
+                "en": "Salmon 100g"
+              },
+              "portion": null,
+              "pairing": {
+                "hr": "Jakovac Chardonnay Mystique",
+                "en": "Jakovac Chardonnay Mystique"
+              },
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "sushi-gunkan-shrimp-tartare",
+              "name": {
+                "hr": "Gunkan shrimp tartare",
+                "en": "Gunkan shrimp tartare"
+              },
+              "desc": {
+                "hr": "Riža, alga, shrimp tartare",
+                "en": "Rice, seaweed, shrimp tartare"
+              },
+              "portion": {
+                "hr": "1 kom",
+                "en": "1 pcs"
+              },
+              "pairing": {
+                "hr": "Jakovac Graševina, Bertoša Malvazija",
+                "en": "Jakovac Graševina, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Uramaki",
+            "en": "Uramaki"
+          },
+          "note": {
+            "hr": "4 ili 8 zalogaja",
+            "en": "4 or 8 bites"
+          },
+          "pairing": null,
+          "items": [
+            {
+              "id": "sushi-uramaki-age-ebi",
+              "name": {
+                "hr": "Uramaki age ebi",
+                "en": "Uramaki age ebi"
+              },
+              "desc": {
+                "hr": "Riža, kozice u tempuri, krastavci, sezam, teriyaki",
+                "en": "Rice, prawn tempura, cucumber, sesame, teriyaki"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Jakovac Graševina, Bertoša Malvazija",
+                "en": "Jakovac Graševina, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "sushi-uramaki-losos",
+              "name": {
+                "hr": "Uramaki losos",
+                "en": "Uramaki salmon"
+              },
+              "desc": {
+                "hr": "Riža, kopar, losos, krem sir, krastavci, wasabi majoneza",
+                "en": "Rice, dill, salmon, cream cheese, cucumbers, wasabi mayonnaise"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Jakovac Graševina, Bertoša Malvazija",
+                "en": "Jakovac Graševina, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "sushi-fried-uramaki-losos",
+              "name": {
+                "hr": "Fried uramaki losos",
+                "en": "Fried uramaki salmon"
+              },
+              "desc": {
+                "hr": "Riža, krem sir, losos, avokado, tobiko, teriyaki",
+                "en": "Rice, cream cheese, salmon, avocado, tobiko, teriyaki"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Jakovac Graševina, Bertoša Malvazija",
+                "en": "Jakovac Graševina, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "sushi-uramaki-shrimp-tartar",
+              "name": {
+                "hr": "Uramaki shrimp tartar",
+                "en": "Uramaki shrimp tartar"
+              },
+              "desc": {
+                "hr": "Riža, surimi, kozice, sriracha, majoneza, tex mex sezam",
+                "en": "Rice, surimi, prawns, sriracha, mayonnaise, tex mex sesame"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Puhelek Sauvignon",
+                "en": "Puhelek Sauvignon"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "sushi-uramaki-wakame",
+              "name": {
+                "hr": "Uramaki wakame",
+                "en": "Uramaki wakame"
+              },
+              "desc": {
+                "hr": "Riža, krem sir, losos, mango, wakame",
+                "en": "Rice, cream cheese, salmon, mango, wakame"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Jakovac Graševina, Bertoša Malvazija",
+                "en": "Jakovac Graševina, Bertoša Malvazija"
+              },
+              "prices": [
+                {
+                  "amount": 7
+                },
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "sushi-uramaki-vege",
+              "name": {
+                "hr": "Uramaki vege",
+                "en": "Uramaki vege"
+              },
+              "desc": {
+                "hr": "Riža, sezam, krem sir, avokado, krastavci, paprika, đumbir",
+                "en": "Rice, sesame, cream cheese, avocado, cucumbers, paprika, ginger"
+              },
+              "portion": {
+                "hr": "4 ili 8 zalogaja",
+                "en": "4 or 8 bites"
+              },
+              "pairing": {
+                "hr": "Puhelek Sauvignon",
+                "en": "Puhelek Sauvignon"
+              },
+              "prices": [
+                {
+                  "amount": 5
+                },
+                {
+                  "amount": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prilozi",
+      "title": {
+        "hr": "Prilozi",
+        "en": "Extras"
+      },
+      "img": null,
+      "pimg": "jf_bowl",
+      "note": null,
+      "groups": [
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "prilozi-krumpirici",
+              "name": {
+                "hr": "Krumpirići",
+                "en": "Potato"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3
+                }
+              ]
+            },
+            {
+              "id": "prilozi-batat",
+              "name": {
+                "hr": "Batat",
+                "en": "Sweet potato"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4
+                }
+              ]
+            },
+            {
+              "id": "prilozi-krumpir-s-kajmakom",
+              "name": {
+                "hr": "Krumpir s kajmakom",
+                "en": "Potato with cream"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-batat-s-tartufatom",
+              "name": {
+                "hr": "Batat s tartufatom",
+                "en": "Sweet potato with truffle"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "prilozi-batat-sa-sirom",
+              "name": {
+                "hr": "Batat sa sirom",
+                "en": "Sweet potato with cheese"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-cream-cheese-jalapeno",
+              "name": {
+                "hr": "Cream cheese jalapeño",
+                "en": "Cream cheese jalapeño"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-spicy-majoneza",
+              "name": {
+                "hr": "Spicy majoneza",
+                "en": "Spicy mayonnaise"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-bbq-majoneza",
+              "name": {
+                "hr": "BBQ majoneza",
+                "en": "BBQ mayonnaise"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-teriyaki",
+              "name": {
+                "hr": "Teriyaki",
+                "en": "Teriyaki"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-ketchup-majoneza-bbq-umak",
+              "name": {
+                "hr": "Ketchup, majoneza, BBQ umak",
+                "en": "Ketchup, mayonnaise, BBQ sauce"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "id": "prilozi-sweet-chilly",
+              "name": {
+                "hr": "Sweet chilly",
+                "en": "Sweet chilly"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-tzatziki",
+              "name": {
+                "hr": "Tzatziki",
+                "en": "Tzatziki"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-teriyaki-mayoneza",
+              "name": {
+                "hr": "Teriyaki mayoneza",
+                "en": "Teriyaki mayonnaise"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-wasabi",
+              "name": {
+                "hr": "Wasabi",
+                "en": "Wasabi"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "prilozi-wasabi-majoneza",
+              "name": {
+                "hr": "Wasabi majoneza",
+                "en": "Wasabi mayonnaise"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-dumbir",
+              "name": {
+                "hr": "Đumbir",
+                "en": "Ginger"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "prilozi-edamame",
+              "name": {
+                "hr": "Edamame",
+                "en": "Edamame"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "prilozi-wakame",
+              "name": {
+                "hr": "Wakame",
+                "en": "Wakame"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "prilozi-sriracha",
+              "name": {
+                "hr": "Sriracha",
+                "en": "Sriracha"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1.5
+                }
+              ]
+            },
+            {
+              "id": "prilozi-coleslaw",
+              "name": {
+                "hr": "Coleslaw",
+                "en": "Coleslaw"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "prilozi-riza",
+              "name": {
+                "hr": "Riža",
+                "en": "Rice"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3
+                }
+              ]
+            },
+            {
+              "id": "prilozi-odlezana-soja",
+              "name": {
+                "hr": "Odležana soja",
+                "en": "Aged soy"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desert",
+      "title": {
+        "hr": "Desert",
+        "en": "Dessert"
+      },
+      "img": null,
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": null,
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "desert-gyoze-apple-sa-sladoledom",
+              "name": {
+                "hr": "Gyoze apple sa sladoledom",
+                "en": "Gyoze apple with ice cream"
+              },
+              "desc": {
+                "hr": "Sladoled bourbon vanilija",
+                "en": "Bourbon vanilla ice cream"
+              },
+              "portion": {
+                "hr": "5 kom",
+                "en": "5 pcs"
+              },
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8.5
+                }
+              ]
+            },
+            {
+              "id": "desert-cheesecake-tiramisu",
+              "name": {
+                "hr": "Cheesecake tiramisu",
+                "en": "Cheesecake tiramisu"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6
+                }
+              ]
+            },
+            {
+              "id": "desert-cheesecake-pistacija-malina",
+              "name": {
+                "hr": "Cheesecake pistacija malina",
+                "en": "Pistachio raspberry cheesecake"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5
+                }
+              ]
+            },
+            {
+              "id": "desert-mars",
+              "name": {
+                "hr": "Mars",
+                "en": "Mars"
+              },
+              "desc": {
+                "hr": "Mousse od tamne čokolade s pireom od malina na brownie podlozi",
+                "en": "Dark chocolate mousse with raspberry puree on a brownie base"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kokteli",
+      "title": {
+        "hr": "Kokteli",
+        "en": "Cocktails"
+      },
+      "img": "jf_mart2",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": {
+            "hr": "Bubbly",
+            "en": "Bubbly"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "kokteli-jelly-bubbles",
+              "name": {
+                "hr": "Jelly Bubbles",
+                "en": "Jelly Bubbles"
+              },
+              "desc": {
+                "hr": "Blueberry Pure, Fresh Blueberries, Sparkling Wine Top",
+                "en": "Blueberry Pure, Fresh Blueberries, Sparkling Wine Top"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-lady-s-favorite",
+              "name": {
+                "hr": "Lady's Favorite",
+                "en": "Lady's Favorite"
+              },
+              "desc": {
+                "hr": "Vermouth, Paragon Rueberry Cordial, Sparkling Wine Top",
+                "en": "Vermouth, Paragon Rueberry Cordial, Sparkling Wine Top"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-cherry-love",
+              "name": {
+                "hr": "Cherry Love",
+                "en": "Cherry Love"
+              },
+              "desc": {
+                "hr": "Maraschino, Paragon Timur Berry Cordial, Amarena Cherry, Sparkling Wine Top",
+                "en": "Maraschino, Paragon Timur Berry Cordial, Amarena Cherry, Sparkling Wine Top"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-pinky-dream",
+              "name": {
+                "hr": "Pinky Dream",
+                "en": "Pinky Dream"
+              },
+              "desc": {
+                "hr": "Raspberry Pure, Fresh Raspberries, Sparkling Wine Top",
+                "en": "Raspberry Pure, Fresh Raspberries, Sparkling Wine Top"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "All Time Favourites",
+            "en": "All Time Favourites"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "kokteli-jelly-candy",
+              "name": {
+                "hr": "Jelly Candy",
+                "en": "Jelly Candy"
+              },
+              "desc": {
+                "hr": "Vodka, Brusnica, Jagoda Pure, Bubblegum Sirup",
+                "en": "Vodka, Cranberry, Strawberry Puree, Bubblegum Syrup"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 11
+                }
+              ]
+            },
+            {
+              "id": "kokteli-jellyrita",
+              "name": {
+                "hr": "Jellyrita",
+                "en": "Jellyrita"
+              },
+              "desc": {
+                "hr": "Tequila, Sok Od Ananasa, Tonic",
+                "en": "Tequila, Pineapple Juice, Tonic"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-amaretto-caliente",
+              "name": {
+                "hr": "Amaretto Caliente",
+                "en": "Amaretto Caliente"
+              },
+              "desc": {
+                "hr": "Amaro Montenegro, Amaretto Gozio, Limeta, Sok Naranča, Red Spiced Berries Sirup",
+                "en": "Amaro Montenegro, Amaretto Gozio, Lime, Orange Juice, Red Spiced Berries Syrup"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-tropical-mojito",
+              "name": {
+                "hr": "Tropical Mojito",
+                "en": "Tropical Mojito"
+              },
+              "desc": {
+                "hr": "Rum, Med, Passion Fruit Pure, Limeta, Menta, Soda Top",
+                "en": "Rum, Honey, Passion Fruit Puree, Lime, Mint, Soda Top"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-daiquirinha",
+              "name": {
+                "hr": "Daiquirinha",
+                "en": "Daiquirinha"
+              },
+              "desc": {
+                "hr": "Rum, Limeta, Mango Pure",
+                "en": "Rum, Lime, Mango Puree"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Jelly Jam Sessions",
+            "en": "Jelly Jam Sessions"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "kokteli-mojito-sangria",
+              "name": {
+                "hr": "Mojito Sangria",
+                "en": "Mojito Sangria"
+              },
+              "desc": {
+                "hr": "Botran 12, Višnja Jam, Limeta, Crveno Vino, Soda",
+                "en": "Botran 12, Cherry Jam, Lime, Red Wine, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "kokteli-strawberry-on-the-beach",
+              "name": {
+                "hr": "Strawberry On The Beach",
+                "en": "Strawberry On The Beach"
+              },
+              "desc": {
+                "hr": "Old Pilot's Vodka, Jagoda Jam, Limun, Soda",
+                "en": "Old Pilot's Vodka, Strawberry Jam, Lemon, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "kokteli-cherry-old-fashioned",
+              "name": {
+                "hr": "Cherry Old Fashioned",
+                "en": "Cherry Old Fashioned"
+              },
+              "desc": {
+                "hr": "Evan Williams Bourbon, Višnja Jam, Angostura Bitter",
+                "en": "Evan Williams Bourbon, Cherry Jam, Angostura Bitters"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "kokteli-don-vito-cubano",
+              "name": {
+                "hr": "Don Vito Cubano",
+                "en": "Don Vito Cubano"
+              },
+              "desc": {
+                "hr": "Botran 12, Višnja Jam, Limeta, Prosecco",
+                "en": "Botran 12, Cherry Jam, Lime, Prosecco"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-apricot-paloma",
+              "name": {
+                "hr": "Apricot Paloma",
+                "en": "Apricot Paloma"
+              },
+              "desc": {
+                "hr": "Lunazul Reposado, Marelica Jam, Grapefruit Soda, Limeta",
+                "en": "Lunazul Reposado, Apricot Jam, Grapefruit Soda, Lime"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 12
+                }
+              ]
+            },
+            {
+              "id": "kokteli-rosehip-garden-ing",
+              "name": {
+                "hr": "Rosehip Garden-Ing",
+                "en": "Rosehip Garden-Ing"
+              },
+              "desc": {
+                "hr": "Croatian Rose Gin, Šipak Jam, Limun, Soda",
+                "en": "Croatian Rose Gin, Rosehip Jam, Lemon, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Cocktails",
+            "en": "Cocktails"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "kokteli-manhattan",
+              "name": {
+                "hr": "Manhattan",
+                "en": "Manhattan"
+              },
+              "desc": {
+                "hr": "Bourbon, Martini Rosso",
+                "en": "Bourbon, Martini Rosso"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-godfather",
+              "name": {
+                "hr": "Godfather",
+                "en": "Godfather"
+              },
+              "desc": {
+                "hr": "Amaretto Gozio, Johnnie Walker Black",
+                "en": "Amaretto Gozio, Johnnie Walker Black"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-old-fashioned",
+              "name": {
+                "hr": "Old Fashioned",
+                "en": "Old Fashioned"
+              },
+              "desc": {
+                "hr": "Bourbon, Sugar Syrup, Bitters",
+                "en": "Bourbon, Sugar Syrup, Bitters"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-whiskey-sour",
+              "name": {
+                "hr": "Whiskey Sour",
+                "en": "Whiskey Sour"
+              },
+              "desc": {
+                "hr": "Bourbon, Lemon, Sugar Syrup",
+                "en": "Bourbon, Lemon, Sugar Syrup"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-martini-dry",
+              "name": {
+                "hr": "Martini Dry",
+                "en": "Martini Dry"
+              },
+              "desc": {
+                "hr": "Gin, Martini Dry",
+                "en": "Gin, Martini Dry"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-espresso-martini",
+              "name": {
+                "hr": "Espresso Martini",
+                "en": "Espresso Martini"
+              },
+              "desc": {
+                "hr": "Vodka, Miodula Espresso, Sugar Syrup, Espresso",
+                "en": "Vodka, Miodula Espresso, Sugar Syrup, Espresso"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-gimlet",
+              "name": {
+                "hr": "Gimlet",
+                "en": "Gimlet"
+              },
+              "desc": {
+                "hr": "Vodka, Lime",
+                "en": "Vodka, Lime"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-moscow-mule",
+              "name": {
+                "hr": "Moscow Mule",
+                "en": "Moscow Mule"
+              },
+              "desc": {
+                "hr": "Vodka, Lime, Ginger Beer",
+                "en": "Vodka, Lime, Ginger Beer"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "kokteli-sidecar",
+              "name": {
+                "hr": "Sidecar",
+                "en": "Sidecar"
+              },
+              "desc": {
+                "hr": "Hennessy VS, Triple Sec, Lemon",
+                "en": "Hennessy VS, Triple Sec, Lemon"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-hennessy-spritz",
+              "name": {
+                "hr": "Hennessy Spritz",
+                "en": "Hennessy Spritz"
+              },
+              "desc": {
+                "hr": "Hennessy VS, Elderflower Syrup, Prosecco, Soda, Lemon",
+                "en": "Hennessy VS, Elderflower Syrup, Prosecco, Soda, Lemon"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 13
+                }
+              ]
+            },
+            {
+              "id": "kokteli-amaretto-sour",
+              "name": {
+                "hr": "Amaretto Sour",
+                "en": "Amaretto Sour"
+              },
+              "desc": {
+                "hr": "Amaretto Gozio, Orange And Lemon Juice",
+                "en": "Amaretto Gozio, Orange And Lemon Juice"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-mojito",
+              "name": {
+                "hr": "Mojito",
+                "en": "Mojito"
+              },
+              "desc": {
+                "hr": "Rum, Lime, Mint, Sugar Syrup, Soda",
+                "en": "Rum, Lime, Mint, Sugar Syrup, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-margarita",
+              "name": {
+                "hr": "Margarita",
+                "en": "Margarita"
+              },
+              "desc": {
+                "hr": "Tequila, Triple Sec, Lime, Sugar Syrup",
+                "en": "Tequila, Triple Sec, Lime, Sugar Syrup"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9
+                }
+              ]
+            },
+            {
+              "id": "kokteli-kentucky-mule",
+              "name": {
+                "hr": "Kentucky Mule",
+                "en": "Kentucky Mule"
+              },
+              "desc": {
+                "hr": "Bourbon, Lime, Ginger Beer",
+                "en": "Bourbon, Lime, Ginger Beer"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 10
+                }
+              ]
+            },
+            {
+              "id": "kokteli-daiquiri",
+              "name": {
+                "hr": "Daiquiri",
+                "en": "Daiquiri"
+              },
+              "desc": {
+                "hr": "Rum, Lime, Sugar Syrup",
+                "en": "Rum, Lime, Sugar Syrup"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-ernest-hemingway",
+              "name": {
+                "hr": "Ernest Hemingway",
+                "en": "Ernest Hemingway"
+              },
+              "desc": {
+                "hr": "Rum, Maraschino, Yuzu, Lime",
+                "en": "Rum, Maraschino, Yuzu, Lime"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-skinny-beach",
+              "name": {
+                "hr": "Skinny Beach",
+                "en": "Skinny Beach"
+              },
+              "desc": {
+                "hr": "Vodka, Lime, Soda",
+                "en": "Vodka, Lime, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-pelin-mule",
+              "name": {
+                "hr": "Pelin Mule",
+                "en": "Pelin Mule"
+              },
+              "desc": {
+                "hr": "Pelinova, Lime, Ginger Beer",
+                "en": "Pelinova, Lime, Ginger Beer"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-paloma",
+              "name": {
+                "hr": "Paloma",
+                "en": "Paloma"
+              },
+              "desc": {
+                "hr": "Tequila, Tonic, Lime, Orange Juice",
+                "en": "Tequila, Tonic, Lime, Orange Juice"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 11
+                }
+              ]
+            },
+            {
+              "id": "kokteli-tom-collins",
+              "name": {
+                "hr": "Tom Collins",
+                "en": "Tom Collins"
+              },
+              "desc": {
+                "hr": "Gin, Lemon, Sugar Syrup, Soda",
+                "en": "Gin, Lemon, Sugar Syrup, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Aperitivo",
+            "en": "Aperitivo"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "kokteli-aperol-spritz",
+              "name": {
+                "hr": "Aperol Spritz",
+                "en": "Aperol Spritz"
+              },
+              "desc": {
+                "hr": "Aperol, Prosecco, Soda",
+                "en": "Aperol, Prosecco, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-americano",
+              "name": {
+                "hr": "Americano",
+                "en": "Americano"
+              },
+              "desc": {
+                "hr": "Campari, Vermouth, Soda",
+                "en": "Campari, Vermouth, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-negroni",
+              "name": {
+                "hr": "Negroni",
+                "en": "Negroni"
+              },
+              "desc": {
+                "hr": "Campari, Gin, Martini Rosso",
+                "en": "Campari, Gin, Martini Rosso"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-hugo",
+              "name": {
+                "hr": "Hugo",
+                "en": "Hugo"
+              },
+              "desc": {
+                "hr": "Prosecco, Elderflower Syrup, Lime, Soda",
+                "en": "Prosecco, Elderflower Syrup, Lime, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-kir-royal",
+              "name": {
+                "hr": "Kir Royal",
+                "en": "Kir Royal"
+              },
+              "desc": {
+                "hr": "Prosecco, Blackberry Liqueur",
+                "en": "Prosecco, Blackberry Liqueur"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8
+                }
+              ]
+            },
+            {
+              "id": "kokteli-mimosa",
+              "name": {
+                "hr": "Mimosa",
+                "en": "Mimosa"
+              },
+              "desc": {
+                "hr": "Prosecco, Orange Juice",
+                "en": "Prosecco, Orange Juice"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-lavender-spritz",
+              "name": {
+                "hr": "Lavender Spritz",
+                "en": "Lavender Spritz"
+              },
+              "desc": {
+                "hr": "Prosecco, Lavender Liqueur, Lime, Agave Syrup, Soda",
+                "en": "Prosecco, Lavender Liqueur, Lime, Agave Syrup, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Mocktails (bez alkohola)",
+            "en": "Mocktails (alcohol free)"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "kokteli-lavender-delight",
+              "name": {
+                "hr": "Lavender Delight",
+                "en": "Lavender Delight"
+              },
+              "desc": {
+                "hr": "Lavender Syrup, Lemon, Soda, Ginger Beer",
+                "en": "Lavender Syrup, Lemon, Soda, Ginger Beer"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-is-this-tom",
+              "name": {
+                "hr": "Is This Tom",
+                "en": "Is This Tom"
+              },
+              "desc": {
+                "hr": "Simple Syrup, Lemon, Soda",
+                "en": "Simple Syrup, Lemon, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            },
+            {
+              "id": "kokteli-tropical-punch",
+              "name": {
+                "hr": "Tropical Punch",
+                "en": "Tropical Punch"
+              },
+              "desc": {
+                "hr": "Passionfruit, Orange Juice, Lemongrass Syrup, Soda",
+                "en": "Passionfruit, Orange Juice, Lemongrass Syrup, Soda"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pica",
+      "title": {
+        "hr": "Pića",
+        "en": "Drinks"
+      },
+      "img": "jf_oldf",
+      "pimg": null,
+      "note": null,
+      "groups": [
+        {
+          "title": {
+            "hr": "Bijela vina",
+            "en": "White wine"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-jakovac-grasevina",
+              "name": {
+                "hr": "Jakovac Graševina",
+                "en": "Jakovac Graševina"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 30,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-bertosa-malvazija",
+              "name": {
+                "hr": "Bertoša Malvazija",
+                "en": "Bertoša Malvazija"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 30,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-cantina-terlano-pinot-grigio",
+              "name": {
+                "hr": "Cantina Terlano Pinot Grigio",
+                "en": "Cantina Terlano Pinot Grigio"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 45,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-sette-ponti-vermentino",
+              "name": {
+                "hr": "Sette Ponti Vermentino",
+                "en": "Sette Ponti Vermentino"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-m-molitor-pinot-blanc-haus-klosterberg",
+              "name": {
+                "hr": "M. Molitor Pinot Blanc Haus Klosterberg",
+                "en": "M. Molitor Pinot Blanc Haus Klosterberg"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-masciarelli-gianni-trebbiano",
+              "name": {
+                "hr": "Masciarelli Gianni Trebbiano",
+                "en": "Masciarelli Gianni Trebbiano"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 35,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-marques-de-riscal-verdejo",
+              "name": {
+                "hr": "Marques De Riscal Verdejo",
+                "en": "Marques De Riscal Verdejo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 30,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-festigia-malvazija",
+              "name": {
+                "hr": "Festigia Malvazija",
+                "en": "Festigia Malvazija"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 35,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-puhelek-sauvignon",
+              "name": {
+                "hr": "Puhelek Sauvignon",
+                "en": "Puhelek Sauvignon"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 38,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-jakovac-chardonnay-mystique",
+              "name": {
+                "hr": "Jakovac Chardonnay Mystique",
+                "en": "Jakovac Chardonnay Mystique"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-chambre-d-amour",
+              "name": {
+                "hr": "Chambre d'Amour",
+                "en": "Chambre d'Amour"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Crvena vina",
+            "en": "Red wine"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-tunella-pinot-nero",
+              "name": {
+                "hr": "Tunella Pinot Nero",
+                "en": "Tunella Pinot Nero"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 50,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-korlat-syrah",
+              "name": {
+                "hr": "Korlat Syrah",
+                "en": "Korlat Syrah"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-korlat-merlot",
+              "name": {
+                "hr": "Korlat Merlot",
+                "en": "Korlat Merlot"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-matsu-el-picaro",
+              "name": {
+                "hr": "Matsu El Picaro",
+                "en": "Matsu El Picaro"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 35,
+                  "size": "0,75 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Rosé",
+            "en": "Rosé wine"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-la-vie-en-rose",
+              "name": {
+                "hr": "La Vie En Rosé",
+                "en": "La Vie En Rosé"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6.5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-jakovac-rose",
+              "name": {
+                "hr": "Jakovac Rosé",
+                "en": "Jakovac Rosé"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 35,
+                  "size": "0,75 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Šampanjci",
+            "en": "Champagne"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-lanson-green-label-bio-organic",
+              "name": {
+                "hr": "Lanson Green Label Bio – Organic",
+                "en": "Lanson Green Label Bio – Organic"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 170,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-lanson-le-rose-creation",
+              "name": {
+                "hr": "Lanson Le Rose Creation",
+                "en": "Lanson Le Rose Creation"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 150,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-lanson-le-black-creation",
+              "name": {
+                "hr": "Lanson Le Black Creation",
+                "en": "Lanson Le Black Creation"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 16,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 100,
+                  "size": "0,75 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Pjenušava vina",
+            "en": "Sparkling wine"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-la-dolce-italia-prosecco",
+              "name": {
+                "hr": "La Dolce Italia Prosecco",
+                "en": "La Dolce Italia Prosecco"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 30,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-kolaric-coletti-blanc-nature",
+              "name": {
+                "hr": "Kolarić Coletti Blanc Nature",
+                "en": "Kolarić Coletti Blanc Nature"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,1 l"
+                },
+                {
+                  "amount": 40,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-bertosa-rose-pjenusac",
+              "name": {
+                "hr": "Bertoša Rose Pjenušac",
+                "en": "Bertoša Rose Pjenušac"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 55,
+                  "size": "0,75 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-meneghetti-classic",
+              "name": {
+                "hr": "Meneghetti Classic",
+                "en": "Meneghetti Classic"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 65,
+                  "size": "0,75 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Likeri",
+            "en": "Liqueurs"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-jagermeister",
+              "name": {
+                "hr": "Jägermeister",
+                "en": "Jägermeister"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-campari",
+              "name": {
+                "hr": "Campari",
+                "en": "Campari"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-aperol",
+              "name": {
+                "hr": "Aperol",
+                "en": "Aperol"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-fernet-branca",
+              "name": {
+                "hr": "Fernet Branca",
+                "en": "Fernet Branca"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-pelinkovac-antique",
+              "name": {
+                "hr": "Pelinkovac Antique",
+                "en": "Pelinkovac Antique"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-amaro-montenegro",
+              "name": {
+                "hr": "Amaro Montenegro",
+                "en": "Amaro Montenegro"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-drambuie",
+              "name": {
+                "hr": "Drambuie",
+                "en": "Drambuie"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-maraschino",
+              "name": {
+                "hr": "Maraschino",
+                "en": "Maraschino"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-amaretto-gozio",
+              "name": {
+                "hr": "Amaretto Gozio",
+                "en": "Amaretto Gozio"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-cachaca",
+              "name": {
+                "hr": "Cachaca",
+                "en": "Cachaca"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-absinthe-black-green-red",
+              "name": {
+                "hr": "Absinthe – Black, Green, Red",
+                "en": "Absinthe – Black, Green, Red"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-miodula-espresso",
+              "name": {
+                "hr": "Miodula Espresso",
+                "en": "Miodula Espresso"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-pelinova",
+              "name": {
+                "hr": "Pelinova",
+                "en": "Pelinova"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2.5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-mozart-liker-cokolada",
+              "name": {
+                "hr": "Mozart Liker Čokolada",
+                "en": "Mozart Liker Čokolada"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-martini-rosso",
+              "name": {
+                "hr": "Martini Rosso",
+                "en": "Martini Rosso"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,05 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-martini-extra-dry",
+              "name": {
+                "hr": "Martini Extra Dry",
+                "en": "Martini Extra Dry"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,05 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Rakije",
+            "en": "Schnapps"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-stara-sokolova-5g",
+              "name": {
+                "hr": "Stara Sokolova 5g.",
+                "en": "Stara Sokolova 5g."
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-pircher-williams",
+              "name": {
+                "hr": "Pircher Williams",
+                "en": "Pircher Williams"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-sake",
+              "name": {
+                "hr": "Sake",
+                "en": "Sake"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-incanto-rakije",
+              "name": {
+                "hr": "Incanto Rakije",
+                "en": "Incanto Rakije"
+              },
+              "desc": {
+                "hr": "Marelica, Dunja, Medica, Višnja, Borovnica, Teranino",
+                "en": "Apricot, Quince, Honey, Cherry, Blueberry, Teranino"
+              },
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Vodka",
+            "en": "Vodka"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-grey-goose",
+              "name": {
+                "hr": "Grey Goose",
+                "en": "Grey Goose"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-beluga",
+              "name": {
+                "hr": "Beluga",
+                "en": "Beluga"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-pravda",
+              "name": {
+                "hr": "Pravda",
+                "en": "Pravda"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-old-pilot-s-vodka",
+              "name": {
+                "hr": "Old Pilot's Vodka",
+                "en": "Old Pilot's Vodka"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Gin",
+            "en": "Gin"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-hendricks",
+              "name": {
+                "hr": "Hendricks",
+                "en": "Hendricks"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-gin-mare",
+              "name": {
+                "hr": "Gin Mare",
+                "en": "Gin Mare"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-mombasa",
+              "name": {
+                "hr": "Mombasa",
+                "en": "Mombasa"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-roku-japanese-gin",
+              "name": {
+                "hr": "Roku Japanese Gin",
+                "en": "Roku Japanese Gin"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-cubical-kiss",
+              "name": {
+                "hr": "Cubical Kiss",
+                "en": "Cubical Kiss"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-croatian-rose",
+              "name": {
+                "hr": "Croatian Rose",
+                "en": "Croatian Rose"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-old-pilot-s-gin",
+              "name": {
+                "hr": "Old Pilot's Gin",
+                "en": "Old Pilot's Gin"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-old-pilot-s-barrel-aged-gin",
+              "name": {
+                "hr": "Old Pilot's Barrel Aged Gin",
+                "en": "Old Pilot's Barrel Aged Gin"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Rum",
+            "en": "Rum"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-dos-maderas-5-5-yo",
+              "name": {
+                "hr": "Dos Maderas 5+5 YO",
+                "en": "Dos Maderas 5+5 YO"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-ron-zacapa-xo",
+              "name": {
+                "hr": "Ron Zacapa Xo",
+                "en": "Ron Zacapa Xo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 14,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-ron-zacapa-23-yo",
+              "name": {
+                "hr": "Ron Zacapa 23 Yo",
+                "en": "Ron Zacapa 23 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-botran-12-yo",
+              "name": {
+                "hr": "Botran 12 Yo",
+                "en": "Botran 12 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-diplomatico-reserva-exclusiva",
+              "name": {
+                "hr": "Diplomatico Reserva Exclusiva",
+                "en": "Diplomatico Reserva Exclusiva"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-dos-maderas-5-3-yo",
+              "name": {
+                "hr": "Dos Maderas 5+3 Yo",
+                "en": "Dos Maderas 5+3 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-botran-cobre",
+              "name": {
+                "hr": "Botran Cobre",
+                "en": "Botran Cobre"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-dos-maderas-atlantic",
+              "name": {
+                "hr": "Dos Maderas Atlantic",
+                "en": "Dos Maderas Atlantic"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Whiskey",
+            "en": "Whiskey"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-johnnie-walker-black-label",
+              "name": {
+                "hr": "Johnnie Walker Black Label",
+                "en": "Johnnie Walker Black Label"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-gentleman-jack",
+              "name": {
+                "hr": "Gentleman Jack",
+                "en": "Gentleman Jack"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-jameson-black-barrel",
+              "name": {
+                "hr": "Jameson Black Barrel",
+                "en": "Jameson Black Barrel"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-johnnie-walker-gold-label-reserve",
+              "name": {
+                "hr": "Johnnie Walker Gold Label Reserve",
+                "en": "Johnnie Walker Gold Label Reserve"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-nikka-from-the-barrel",
+              "name": {
+                "hr": "Nikka From The Barrel",
+                "en": "Nikka From The Barrel"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-akashi-japanese-blended-whisky",
+              "name": {
+                "hr": "Akashi Japanese Blended Whisky",
+                "en": "Akashi Japanese Blended Whisky"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-togouchi-premium",
+              "name": {
+                "hr": "Togouchi Premium",
+                "en": "Togouchi Premium"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-ardbeg-10-yo",
+              "name": {
+                "hr": "Ardbeg 10 Yo",
+                "en": "Ardbeg 10 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-ole-smoky-harley-davidson",
+              "name": {
+                "hr": "Ole Smoky Harley Davidson",
+                "en": "Ole Smoky Harley Davidson"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-lagavulin-16-yo",
+              "name": {
+                "hr": "Lagavulin 16 Yo",
+                "en": "Lagavulin 16 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-the-macallan-15yo-double-cask",
+              "name": {
+                "hr": "The Macallan 15yo Double Cask",
+                "en": "The Macallan 15yo Double Cask"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-jack-daniel-s-single-barrel",
+              "name": {
+                "hr": "Jack Daniel's Single Barrel",
+                "en": "Jack Daniel's Single Barrel"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-talisker-10-yo",
+              "name": {
+                "hr": "Talisker 10 Yo",
+                "en": "Talisker 10 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-laphroaig-10-yo",
+              "name": {
+                "hr": "Laphroaig 10 Yo",
+                "en": "Laphroaig 10 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-chivas-12-yo",
+              "name": {
+                "hr": "Chivas 12 YO",
+                "en": "Chivas 12 YO"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-ardbeg-an-oa",
+              "name": {
+                "hr": "Ardbeg An Oa",
+                "en": "Ardbeg An Oa"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-ardbeg-corryvrecken",
+              "name": {
+                "hr": "Ardbeg Corryvrecken",
+                "en": "Ardbeg Corryvrecken"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 11,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-glenkinchie-10-yo",
+              "name": {
+                "hr": "Glenkinchie 10 Yo",
+                "en": "Glenkinchie 10 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-glenmorangie-12-yo",
+              "name": {
+                "hr": "Glenmorangie 12 Yo",
+                "en": "Glenmorangie 12 Yo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-nebo-four-grain-whiskey",
+              "name": {
+                "hr": "Nebo Four Grain Whiskey",
+                "en": "Nebo Four Grain Whiskey"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 12,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-nebo-single-malt",
+              "name": {
+                "hr": "Nebo Single Malt",
+                "en": "Nebo Single Malt"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 13,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-nebo-peated-single-malt",
+              "name": {
+                "hr": "Nebo Peated Single Malt",
+                "en": "Nebo Peated Single Malt"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 14,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-dead-rabbit",
+              "name": {
+                "hr": "Dead Rabbit",
+                "en": "Dead Rabbit"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-four-roses",
+              "name": {
+                "hr": "Four Roses",
+                "en": "Four Roses"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-evan-williams-bourbon",
+              "name": {
+                "hr": "Evan Williams Bourbon",
+                "en": "Evan Williams Bourbon"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Tequila",
+            "en": "Tequila"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-padre-azul-blanco",
+              "name": {
+                "hr": "Padre Azul Blanco",
+                "en": "Padre Azul Blanco"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 8,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-padre-azul-reposado",
+              "name": {
+                "hr": "Padre Azul Reposado",
+                "en": "Padre Azul Reposado"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 9,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-padre-azul-anejo",
+              "name": {
+                "hr": "Padre Azul Anejo",
+                "en": "Padre Azul Anejo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 12,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-lunazul-reposado",
+              "name": {
+                "hr": "Lunazul Reposado",
+                "en": "Lunazul Reposado"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 6,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-xiaman-mezcal",
+              "name": {
+                "hr": "Xiaman Mezcal",
+                "en": "Xiaman Mezcal"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 12,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-kah-blanco",
+              "name": {
+                "hr": "Kah Blanco",
+                "en": "Kah Blanco"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 7,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Cognac / Brandy",
+            "en": "Cognac / Brandy"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-hennessy-vs",
+              "name": {
+                "hr": "Hennessy Vs",
+                "en": "Hennessy Vs"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 5,
+                  "size": "0,03 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-hennessy-xo",
+              "name": {
+                "hr": "Hennessy Xo",
+                "en": "Hennessy Xo"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 13,
+                  "size": "0,03 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Topli napitci",
+            "en": "Hot drinks"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-kava",
+              "name": {
+                "hr": "Kava",
+                "en": "Coffee"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "pica-caj",
+              "name": {
+                "hr": "Čaj",
+                "en": "Tea"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 2
+                }
+              ]
+            },
+            {
+              "id": "pica-mlijeko",
+              "name": {
+                "hr": "Mlijeko",
+                "en": "Milk"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Voda",
+            "en": "Water"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-romerquelle-limunska-trava",
+              "name": {
+                "hr": "Romerquelle limunska trava",
+                "en": "Romerquelle lemongrass"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-radenska-mineralna",
+              "name": {
+                "hr": "Radenska mineralna",
+                "en": "Radenska mineral water"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "1,00 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-radenska-mineralna-2",
+              "name": {
+                "hr": "Radenska mineralna",
+                "en": "Radenska mineral water"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-radenska-obicna-voda",
+              "name": {
+                "hr": "Radenska obična voda",
+                "en": "Radenska still water"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "1,00 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-studena-0-25",
+              "name": {
+                "hr": "Studena 0,25",
+                "en": "Studena 0,25"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,25 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Pivo",
+            "en": "Beer"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-grimbergen-double-ambree",
+              "name": {
+                "hr": "Grimbergen Double-Ambree",
+                "en": "Grimbergen Double-Ambree"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-grimbergen-blonde",
+              "name": {
+                "hr": "Grimbergen Blonde",
+                "en": "Grimbergen Blonde"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-grimbergen-blanche",
+              "name": {
+                "hr": "Grimbergen Blanche",
+                "en": "Grimbergen Blanche"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-carlsberg",
+              "name": {
+                "hr": "Carlsberg",
+                "en": "Carlsberg"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,35 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-somersby",
+              "name": {
+                "hr": "Somersby",
+                "en": "Somersby"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-pan-lager",
+              "name": {
+                "hr": "Pan Lager",
+                "en": "Pan Lager"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-kronenbourg-1664-blanc",
+              "name": {
+                "hr": "Kronenbourg 1664 Blanc",
+                "en": "Kronenbourg 1664 Blanc"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-budweiser",
+              "name": {
+                "hr": "Budweiser",
+                "en": "Budweiser"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-garden-pale-ale",
+              "name": {
+                "hr": "Garden Pale Ale",
+                "en": "Garden Pale Ale"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,33 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-garden-pilsner",
+              "name": {
+                "hr": "Garden Pilsner",
+                "en": "Garden Pilsner"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,33 l"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "hr": "Bezalkoholna pića",
+            "en": "Soft drinks"
+          },
+          "note": null,
+          "pairing": null,
+          "items": [
+            {
+              "id": "pica-red-bull",
+              "name": {
+                "hr": "Red Bull",
+                "en": "Red Bull"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-coca-cola",
+              "name": {
+                "hr": "Coca-Cola",
+                "en": "Coca-Cola"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-coca-cola-zero",
+              "name": {
+                "hr": "Coca Cola Zero",
+                "en": "Coca Cola Zero"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-fanta-0-25",
+              "name": {
+                "hr": "Fanta 0,25",
+                "en": "Fanta 0,25"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-sprite",
+              "name": {
+                "hr": "Sprite",
+                "en": "Sprite"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-cedevita-limun-naranca",
+              "name": {
+                "hr": "Cedevita (limun/naranča)",
+                "en": "Cedevita (lemon/orange)"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-fuzetea-breskva",
+              "name": {
+                "hr": "Fuzetea breskva",
+                "en": "Fuzetea peach"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-cappy-0-2",
+              "name": {
+                "hr": "Cappy 0,2",
+                "en": "Cappy 0,2"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4,
+                  "size": "0,20 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-j-gasco-tonic",
+              "name": {
+                "hr": "J. Gasco Tonic",
+                "en": "J. Gasco Tonic"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-franklin-ginger-beer",
+              "name": {
+                "hr": "Franklin Ginger Beer",
+                "en": "Franklin Ginger Beer"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-limunada",
+              "name": {
+                "hr": "Limunada",
+                "en": "Lemonade"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 3.5,
+                  "size": "0,25 l"
+                }
+              ]
+            },
+            {
+              "id": "pica-fruity-limunada-jagoda-malina-ili-borovnica",
+              "name": {
+                "hr": "Fruity Limunada (jagoda, malina ili borovnica)",
+                "en": "Fruity Lemonade (strawberry, raspberry or blueberry)"
+              },
+              "desc": null,
+              "portion": null,
+              "pairing": null,
+              "prices": [
+                {
+                  "amount": 4.5,
+                  "size": "0,25 l"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
