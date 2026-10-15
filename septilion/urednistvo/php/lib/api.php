@@ -23,7 +23,7 @@ final class Urednistvo
     private Odrzavanje $odrzavanje;
     private bool $produkcija;
 
-    /** @param array{podaci:string, konfiguracija:string, sucelje:string, javno:string, lokalno:bool, githubApi:string} $p */
+    /** @param array{podaci:string, konfiguracija:string, sucelje:string, javno:string, lokalno:bool, githubApi:string, osvjeziMs?:int} $p */
     public function __construct(private array $p)
     {
         $this->produkcija = !$p['lokalno'];
@@ -33,7 +33,7 @@ final class Urednistvo
         $this->sesije = new Sesije($p['podaci'] . '/sesije', $this->produkcija);
         $this->slike = new Slike($p['podaci'], $this->konf);
         $this->spremiste = new Spremiste($p['podaci'], $this->konf, fn ($k) => $this->slike->postoji($k));
-        $this->objava = new Objava($p['podaci'], $this->slike, $p['githubApi']);
+        $this->objava = new Objava($p['podaci'], $this->slike, $p['githubApi'], new Instalacija($p['podaci'], $p['javno']), $p['osvjeziMs'] ?? 60_000);
         $this->ogranicenja = new Ogranicenja($p['podaci'], ['ip' => ['prozorMs' => 15 * 60_000, 'najvise' => 20], 'korisnik' => ['prozorMs' => 15 * 60_000, 'najvise' => 5]]);
         $this->postavljanje = new Postavljanje($p['podaci'], $this->konf->origin);
         $this->odrzavanje = new Odrzavanje($p['javno']);
@@ -318,6 +318,11 @@ final class Urednistvo
                 return;
             }
 
+            // cPanel Cron Job (svakih 5 min): postavi novu izgradnju s GitHuba (promjene koda, zatvoren preglednik); bez prijave
+            case 'GET /osvjezi': {
+                $this->json(200, $this->objava->osvjezi());
+                return;
+            }
             case 'GET /objava': {
                 $this->prijavljen(false);
                 $this->json(200, [...$this->objava->stanje(), 'odrzavanje' => $this->odrzavanje->ukljuceno()]);

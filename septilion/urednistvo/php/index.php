@@ -6,18 +6,18 @@ declare(strict_types=1);
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
-$nedostaje = array_values(array_filter(['mbstring', 'gd', 'json'], fn ($e) => !extension_loaded($e)));
+$nedostaje = array_values(array_filter(['mbstring', 'gd', 'json', 'zip'], fn ($e) => !extension_loaded($e)));
 if (!extension_loaded('curl') && !ini_get('allow_url_fopen')) $nedostaje[] = 'curl';
 if (PHP_VERSION_ID < 80100 || $nedostaje || !function_exists('imagewebp')) {
     http_response_code(500);
     header('Content-Type: text/plain; charset=utf-8');
-    echo "Uredništvo treba PHP 8.1 ili noviji s proširenjima mbstring, gd (s WebP), json i curl.\n"
+    echo "Uredništvo treba PHP 8.1 ili noviji s proširenjima mbstring, gd (s WebP), json, curl i zip.\n"
         . 'Sada: PHP ' . PHP_VERSION . ($nedostaje ? ', nedostaje: ' . implode(', ', $nedostaje) : '') . (function_exists('imagewebp') ? '' : ', gd bez WebP-a')
-        . "\ncPanel -> Select PHP Version (ili MultiPHP Manager) -> PHP 8.3 i uključi proširenja.";
+        . "\ncPanel -> Select PHP Version (ili MultiPHP Manager) -> PHP 8.3 ili 8.4, pa Extensions.";
     exit;
 }
 
-foreach (['osnova', 'sigurnost', 'korisnici', 'sesije', 'ogranicenja', 'postavljanje', 'sadrzaj', 'spremiste', 'slike', 'objava', 'odrzavanje', 'api'] as $f) require __DIR__ . "/lib/$f.php";
+foreach (['osnova', 'sigurnost', 'korisnici', 'sesije', 'ogranicenja', 'postavljanje', 'sadrzaj', 'spremiste', 'slike', 'instalacija', 'objava', 'odrzavanje', 'api'] as $f) require __DIR__ . "/lib/$f.php";
 
 $env = static fn (string $ime): ?string => ($v = getenv($ime)) === false || $v === '' ? null : $v;
 (new Urednistvo([
@@ -29,4 +29,6 @@ $env = static fn (string $ime): ?string => ($v = getenv($ime)) === false || $v =
     // lokalno = samo testovi na ovom računalu (http, localhost); na hostingu se nikad ne postavlja
     'lokalno' => $env('UREDNISTVO_LOKALNO') === '1',
     'githubApi' => $env('UREDNISTVO_GITHUB_API') ?? 'https://api.github.com',
+    // najmanji razmak (ms) između provjera GitHuba iz /api/osvjezi (Cron Job); testovi 0
+    'osvjeziMs' => (int) ($env('UREDNISTVO_OSVJEZI_MS') ?? 60_000),
 ]))->obradi();

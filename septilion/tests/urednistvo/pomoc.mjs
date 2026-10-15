@@ -12,6 +12,7 @@ import { pokreni } from '../../urednistvo/posluzitelj.mjs';
 import { ROOT } from '../../urednistvo/lib/postavke.mjs';
 import { totpKod, trenutniKorak, sha256 } from '../../urednistvo/lib/sigurnost.mjs';
 import { pripremi } from '../../urednistvo/php/pripremi.mjs';
+import { zipMape } from '../../scripts/zip.mjs';
 
 export const POSLUZITELJ = process.env.UREDNISTVO_POSLUZITELJ === 'php' ? 'php' : 'node';
 export const PHP = process.env.PHP_BINARY || 'php';
@@ -62,23 +63,44 @@ async function nodePosluzitelj(env) {
   return srv;
 }
 
-/** lažni GitHub: git podaci (blobovi, stabla, commiti, grane), repository_dispatch i workflow runs */
+/**
+ * lažni GitHub: git podaci (blobovi, stabla, commiti, grane), repository_dispatch, workflow runs i artefakti.
+ * Kao pravi: paket se preuzima preko preusmjerenja na "spremište" koje odbija zahtjev s tokenom.
+ */
 function lazniGitHub({ token, naObjavu }) {
-  const blobovi = new Map(), stabla = new Map(), commiti = new Map(), grane = new Map(), runovi = [];
+  const blobovi = new Map(), stabla = new Map(), commiti = new Map(), grane = new Map(), runovi = [], artefakti = new Map();
   let gradnja = Promise.resolve();
   const id = (x) => crypto.createHash('sha1').update(JSON.stringify(x) + crypto.randomBytes(4).toString('hex')).digest('hex');
   const zahtjevi = [];
+  const stat = { preuzimanja: 0 };
+  /** novi run (najnoviji prvi, kao GitHub); artefakt = Buffer (zip) ili null (objava preskočena) */
+  function noviRun({ event = 'push', naslov, sha = id(Math.random()), repo = 'test/septilion', grana = 'main', gotov = true, artefakt = null } = {}) {
+    const run = {
+      id: runovi.length + 1, run_number: runovi.length + 1, event, head_branch: grana, head_sha: sha, path: '.github/workflows/objava.yml',
+      head_repository: { full_name: repo }, display_title: naslov ?? `Objava koda ${sha}`, created_at: new Date().toISOString(),
+      status: gotov ? 'completed' : 'in_progress', conclusion: gotov ? 'success' : null, updated_at: null, html_url: 'https://github.example/run',
+    };
+    runovi.unshift(run);
+    if (artefakt) artefakti.set(run.id, artefakt);
+    return run;
+  }
   const server = http.createServer(async (req, res) => {
     const dijelovi = []; for await (const d of req) dijelovi.push(d);
     const tijelo = dijelovi.length ? JSON.parse(Buffer.concat(dijelovi).toString('utf8')) : null;
     const u = new URL(req.url, 'http://x');
     zahtjevi.push(`${req.method} ${u.pathname}`);
-    const odg = (status, j) => { res.writeHead(status, { 'content-type': 'application/json', 'github-authentication-token-expiration': '2027-10-15 12:00:00 UTC' }); res.end(j === undefined ? '' : JSON.stringify(j)); };
+    const odg = (status, j, dodatno = {}) => { res.writeHead(status, { 'content-type': 'application/json', 'github-authentication-token-expiration': '2027-10-15 12:00:00 UTC', ...dodatno }); res.end(j === undefined ? '' : JSON.stringify(j)); };
+    let r;
+    // spremište artefakata (druga adresa): bez tokena, kao Azure blob s potpisanom adresom
+    if ((r = /^\/spremiste\/(\d+)$/.exec(u.pathname))) {
+      if (req.headers.authorization) return odg(400, { message: 'Token se ne šalje spremištu' });
+      stat.preuzimanja++;
+      res.writeHead(200, { 'content-type': 'application/zip' }); res.end(artefakti.get(Number(r[1]))); return;
+    }
     if (req.headers.authorization !== `Bearer ${token}`) return odg(401, { message: 'Bad credentials' });
     const m = /^\/repos\/[^/]+\/[^/]+(.*)$/.exec(u.pathname);
     if (!m) return odg(404, { message: 'Not Found' });
     const p = m[1];
-    let r;
     if (req.method === 'GET' && p === '') return odg(200, { full_name: 'test/septilion' });
     if (req.method === 'GET' && (r = /^\/git\/ref\/heads\/(.+)$/.exec(p))) return grane.has(r[1]) ? odg(200, { object: { sha: grane.get(r[1]) } }) : odg(404, { message: 'Not Found' });
     if (req.method === 'GET' && (r = /^\/git\/commits\/(\w+)$/.exec(p))) return odg(200, { sha: r[1], tree: { sha: commiti.get(r[1]).tree } });
@@ -94,19 +116,30 @@ function lazniGitHub({ token, naObjavu }) {
     if (req.method === 'POST' && p === '/git/refs') { grane.set(tijelo.ref.replace('refs/heads/', ''), tijelo.sha); return odg(201, {}); }
     if (req.method === 'POST' && p === '/dispatches') {
       const sha = tijelo.client_payload.sha;
-      const run = { id: runovi.length + 1, display_title: `Objava ${sha}`, status: 'in_progress', conclusion: null, updated_at: null, html_url: 'https://github.example/run' };
-      runovi.unshift(run);
-      // kao objava.yml: datoteke iz commita -> izgradnja stranice; run je gotov kad je gradnja gotova
+      const run = noviRun({ event: 'repository_dispatch', naslov: `Objava ${sha}`, gotov: false });
+      // kao objava.yml: datoteke iz commita -> izgradnja stranice -> artefakt "hosting"; run je gotov kad je paket spreman
       const datoteke = new Map([...stabla.get(commiti.get(sha).tree)].map(([put, b]) => [put, blobovi.get(b)]));
-      gradnja = gradnja.then(() => naObjavu(datoteke)).then(() => { Object.assign(run, { status: 'completed', conclusion: 'success', updated_at: new Date().toISOString() }); },
-        () => { Object.assign(run, { status: 'completed', conclusion: 'failure', updated_at: new Date().toISOString() }); });
+      gradnja = gradnja.then(() => naObjavu(datoteke)).then((paket) => {
+        artefakti.set(run.id, paket);
+        Object.assign(run, { status: 'completed', conclusion: 'success', updated_at: new Date().toISOString() });
+      }, () => { Object.assign(run, { status: 'completed', conclusion: 'failure', updated_at: new Date().toISOString() }); });
       return odg(204);
     }
-    if (req.method === 'GET' && p === '/actions/runs') return odg(200, { total_count: runovi.length, workflow_runs: runovi });
+    if (req.method === 'GET' && p === '/actions/runs') {
+      const q = u.searchParams;
+      const popis = runovi.filter((x) => (!q.get('event') || x.event === q.get('event')) && (!q.get('branch') || x.head_branch === q.get('branch'))
+        && (!q.get('status') || x.conclusion === q.get('status') || x.status === q.get('status')));
+      return odg(200, { total_count: popis.length, workflow_runs: popis });
+    }
+    if (req.method === 'GET' && (r = /^\/actions\/runs\/(\d+)\/artifacts$/.exec(p))) {
+      const a = artefakti.has(Number(r[1])) ? [{ id: Number(r[1]), name: 'hosting', expired: false, archive_download_url: `http://${req.headers.host}/repos/test/septilion/actions/artifacts/${r[1]}/zip` }] : [];
+      return odg(200, { total_count: a.length, artifacts: a });
+    }
+    if (req.method === 'GET' && (r = /^\/actions\/artifacts\/(\d+)\/zip$/.exec(p))) return odg(302, undefined, { location: `http://${req.headers.host}/spremiste/${r[1]}` });
     odg(404, { message: `Nepoznato: ${req.method} ${p}` });
   });
   return {
-    server, grane, commiti, runovi, zahtjevi,
+    server, grane, commiti, runovi, zahtjevi, stat, noviRun,
     datoteka: (put, grana = 'sadrzaj') => { const c = commiti.get(grane.get(grana)); const b = c && stabla.get(c.tree).get(put); return b ? blobovi.get(b) : null; },
     gotovo: () => gradnja,
   };
@@ -125,7 +158,7 @@ async function phpPosluzitelj(env) {
       for (const [put, b] of datoteke) { fs.mkdirSync(path.dirname(path.join(p, put)), { recursive: true }); fs.writeFileSync(path.join(p, put), b); }
       const nova = path.join(dir, `stranica-${br}`);
       await izgradi(nova, path.join(p, 'podaci'));
-      fs.cpSync(nova, stranica, { recursive: true, force: true });
+      return zipMape(nova).podaci; // artefakt "hosting": uredništvo ga samo preuzme i postavi u stranica/ (public_html)
     },
   });
   await new Promise((r) => github.server.listen(0, '127.0.0.1', r));
@@ -137,6 +170,7 @@ async function phpPosluzitelj(env) {
   const procesEnv = {
     ...process.env, UREDNISTVO_PODACI: podaci, UREDNISTVO_KONFIGURACIJA: konf, UREDNISTVO_SUCELJE: path.join(ROOT, 'urednistvo/sucelje'),
     UREDNISTVO_STRANICA: stranica, UREDNISTVO_JAVNO: stranica, UREDNISTVO_GITHUB_API: `http://127.0.0.1:${github.server.address().port}`,
+    UREDNISTVO_OSVJEZI_MS: '0',
     ...(env.produkcija ? {} : { UREDNISTVO_LOKALNO: '1' }),
   };
   let proces;
@@ -152,10 +186,12 @@ async function phpPosluzitelj(env) {
   return {
     vrsta: 'php', url, dir, podaci, zapisi, github,
     stranica: async (put) => (await fetch(url + put)).text(),
-    /** php -S radi jedan zahtjev za drugim: kad odgovori, slanje na GitHub iz prošlog zahtjeva je gotovo; zatim gradnja */
+    /** php -S radi jedan zahtjev za drugim: kad odgovori, slanje na GitHub iz prošlog zahtjeva je gotovo; zatim gradnja,
+     *  pa postavljanje paketa kao cPanel Cron Job (/api/osvjezi) */
     async objavljeno() {
       await fetch(`${url}/urednistvo/api/stanje`);
       await github.gotovo();
+      await fetch(`${url}/urednistvo/api/osvjezi`);
       const j = JSON.parse(github.datoteka('podaci/jelovnik.json')?.toString('utf8') ?? 'null');
       return { stanje: github.runovi[0]?.conclusion === 'failure' ? 'greska' : 'spremno', verzija: j?.verzija ?? null };
     },

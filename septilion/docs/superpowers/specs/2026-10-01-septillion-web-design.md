@@ -19,7 +19,7 @@ Pravila: `GUIDE.md` + `SKILL-*.md`. Gdje se GUIDE i SKILL-DESIGN razilaze, vrije
 | Kaseta (02.10.) | Slika gore (~65 % visine) sa "Strana A", dolje kotačić · naziv jela · kotačić; ostali tekst s kasete uklonjen | naručitelj |
 | Orbita (02.10.) | Orbita i jelovnik u jednom bloku stalne visine na svakom uređaju; planeti veći i lijevo; fotka i naslov kategorije u istom redu iznad popisa; popis se skrola iznutra; klik mijenja samo sadržaj | naručitelj |
 | Uredništvo (13.10.) | **Vlastiti mali CMS** na `/urednistvo` (ne `/admin`), bez vanjskih računa i servisa: radi lokalno odmah (`npm start`), na server se samo prenese projekt. Tomislav uređuje, dodaje i briše jela (naziv, opis, cijena, fotografija), najbolje sigurnosne prakse. (Prvi plan 12.10. bio je Sanity — odbačen jer traži račun i vanjski servis; rad arhiviran u `private/arhiva/sanity-2026-10-13/`.) | naručitelj |
-| Hosting i uredništvo (15.10.) | Hosting je infonet.hr cPanel, paket Standard (Apache + PHP, 512 MB, bez Node.js-a i SSH-a), domena `septillion.com.hr`. Stranica ostaje statična (gradi je GitHub Actions, prijenos FTPS-om); uredništvo na hostingu radi u **PHP-u** (isto sučelje i API), **bez baze** (jelovnik = JSON, fotografije = datoteke). Uvijek na `/urednistvo`; QR se skenira jednom, prijava lozinkom + kodom. Odbačeno: Managed VPS (od 58,56 €/mj), VPS drugdje (novi račun, održavanje). | naručitelj |
+| Hosting i uredništvo (15.10.) | Hosting je infonet.hr cPanel, paket Standard (Apache + PHP, 512 MB, bez Node.js-a i SSH-a), domena `septillion.com.hr`. Stranica ostaje statična (gradi je GitHub Actions; 15.10. navečer: infonet pušta FTP samo s ručno dopuštenih IP adresa, pa hosting sam preuzima gotov paket — artefakt — istim GitHub tokenom, bez FTP-a; Cron Job svakih 5 min za promjene koda); uredništvo na hostingu radi u **PHP-u** (isto sučelje i API), **bez baze** (jelovnik = JSON, fotografije = datoteke). Uvijek na `/urednistvo`; QR se skenira jednom, prijava lozinkom + kodom. Odbačeno: Managed VPS (od 58,56 €/mj), VPS drugdje (novi račun, održavanje). | naručitelj |
 | Kursor (12.10.) | Cijeli ulaz je klikabilan (klik bilo gdje na strani vodi u lokal), pa pokazuje ruku | naručitelj |
 | Spraylist (12.10.) | Desktop: lijevi stupac (naslov + popis) spušten i poravnat s desnim (uvod + kaseta): isti gornji i donji rub; mobitel i tablet nepromijenjeni | naručitelj |
 
@@ -48,7 +48,7 @@ Pravila: `GUIDE.md` + `SKILL-*.md`. Gdje se GUIDE i SKILL-DESIGN razilaze, vrije
   `/home/<korisnik>/septillion-podaci/`, izvan `public_html`.
 - Objava s hostinga: jelovnik + nove fotografije u jedan commit na granu `sadrzaj` (GitHub Git Data API; ujedno
   sigurnosna kopija s poviješću), zatim `repository_dispatch` -> `.github/workflows/objava.yml` (kod s `main`):
-  `npm run build` -> `npm run paket` -> FTPS u `public_html` (redom: nove datoteke, uredništvo, HTML). Lokalno:
+  `npm run build` -> `npm run paket` -> artefakt `hosting`; uredništvo ga preuzme (bez tokena na adresi spremišta) i postavi u `public_html` (redom: nove datoteke, uredništvo, HTML, .htaccess; `lib/instalacija.php`), a `/urednistvo/api/osvjezi` (cPanel Cron Job) postavlja izgradnje koda s `main`. Lokalno:
   `astro build` u `izdanja/<vrijeme>/`. Izgradnja i poslužitelj koriste ista pravila provjere (`src/data/sadrzaj.mjs`,
   PHP: `lib/sadrzaj.php`); neuspjela objava ostavlja zadnju ispravnu stranicu.
   Fotografije iz uredništva se optimiziraju kao lokalne (AVIF/WebP). Bez `jelovnik.json` build koristi lokalne podatke;

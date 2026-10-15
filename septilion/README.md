@@ -50,7 +50,7 @@ urednistvo/php/       pozadina za hosting (Apache + PHP 8.1+): index.php, lib/, 
 urednistvo/*.mjs, lib/  pozadina za lokalni rad (Node, npm start) i naredbe (cli.mjs)
 scripts/              build-fonts, paket-hosting, menu/convert (+ corrections), pdf/compress-menu
 tests/                smoke.mjs (npm test), urednistvo/ (node:test + Playwright, obje pozadine)
-../.github/          u KORIJENU repozitorija (mapa iznad ove): workflows/objava.yml (provjere + objava FTPS-om), dependabot.yml
+../.github/          u KORIJENU repozitorija (mapa iznad ove): workflows/objava.yml (provjere + paket za hosting), dependabot.yml
 podaci/, izdanja/     NE idu u git: lokalni podaci uredništva i izgrađene verzije (npm start)
 private/              NE ide u git: fontovi pod licencom, originalne fotografije
 ```
@@ -75,7 +75,7 @@ Isto sučelje i isti API, dvije pozadine — bez baze (jelovnik je jedna JSON da
 | --- | --- | --- |
 | pozadina | Node (`urednistvo/posluzitelj.mjs`) | PHP (`urednistvo/php/`) |
 | podaci | `podaci/` u projektu | `/home/<korisnik>/septillion-podaci/` (izvan `public_html`) |
-| objava nakon spremanja | `astro build` na računalu, ~5 s | jelovnik + nove fotografije -> GitHub (grana `sadrzaj`) -> GitHub Actions izgradi stranicu i prenese je FTPS-om, 1–2 min |
+| objava nakon spremanja | `astro build` na računalu, ~5 s | jelovnik + nove fotografije -> GitHub (grana `sadrzaj`) -> GitHub Actions izgradi paket, uredništvo ga preuzme i postavi, 1–2 min |
 
 ```
 Tomislav -> /urednistvo -> Spremi i objavi
@@ -98,33 +98,38 @@ aplikaciji Google/Microsoft Authenticator, rezervni kodovi). Poslije se prijavlj
 
 ### Na hosting (infonet cPanel, jednom)
 
-Hosting (paket Standard, poslužitelj `cp29.infonet.hr`) ima Apache i PHP, nema Node.js — zato stranicu gradi GitHub
-Actions, a uredništvo na hostingu radi u PHP-u. Pravila iz `.htaccess` i uredništvo provjereni su u Apacheu 2.4 s PHP-om.
+Hosting (paket Standard, poslužitelj `cp29.infonet.hr`) ima Apache i PHP, nema Node.js, a FTP pušta samo s ručno
+dopuštenih IP adresa (cPanel → *FTP Allow*). Zato GitHub Actions gradi stranicu i spremi je kao paket (artefakt
+`hosting`), a uredništvo na hostingu taj paket samo preuzme istim GitHub tokenom i postavi u `public_html`
+(`urednistvo/php/lib/instalacija.php`; ništa ne briše, iste datoteke ne prepisuje, prihvaća samo izgradnje s `main`).
+FTP se ne koristi. Pravila iz `.htaccess` i uredništvo provjereni su u Apacheu 2.4 s PHP-om 8.3 i 8.4.
 
-1. **PHP** — cPanel → *Select PHP Version* (ili *MultiPHP Manager*): PHP **8.3 ili 8.4** (oba provjerena testovima) za septillion.com.hr, uključena
-   proširenja `mbstring`, `gd`, `curl` (i `exif`, za okretanje fotografija s mobitela).
-2. **FTP račun samo za objavu** — cPanel → *FTP Accounts*: npr. `objava`, *Directory* = `public_html`, jaka lozinka.
-   Objava se spaja na **`cp29.infonet.hr`**, port 21, FTPS: certifikat FTP poslužitelja glasi na `*.infonet.hr`, pa
-   `ftp.septillion.com.hr` ne bi prošao provjeru. Ako je u cPanelu → *FTP Allow* uključeno ograničenje po IP adresama,
-   GitHub se ne može spojiti — ograničenje mora biti isključeno (ili objava ručno, korak 4).
-3. **GitHub** — kod na `main` (zadana grana) repozitorija `DjakaIT/septilion`. Settings → Environments → novi
-   `produkcija`:
-   - tajne: `FTP_HOST` = `cp29.infonet.hr`, `FTP_KORISNIK` (npr. `objava@septillion.com.hr`), `FTP_LOZINKA`;
-     po želji `FONTOVI_ZIP_B64` (licencirani TT Lakes Neue: `base64 -w0 fontovi.zip`)
-   - varijabla **repozitorija** (Settings → Secrets and variables → Actions → *Variables*, ne u environmentu, jer je
-     čita uvjet posla prije ulaska u environment): `OBJAVA_UKLJUCENA` = `da` (i `FTP_MAPA` samo ako korijen FTP
-     računa nije `public_html`)
-4. **Prva objava** — Actions → *Objava* → *Run workflow* (ili push na `main`). Bez GitHuba se može i ručno:
-   `npm run build && npm run paket`, pa `hosting.zip` u cPanel → File Manager → `public_html` → Upload → Extract.
-5. **Prvi račun** — otvori `https://septillion.com.hr/urednistvo`. Traži *kod za postavljanje*: cPanel → File Manager →
+```
+Spremi i objavi -> GitHub (grana sadrzaj) -> Actions izgradi paket -> uredništvo ga postavi (1–2 min)
+push na main     -> Actions provjere + paket -> cPanel Cron Job (/urednistvo/api/osvjezi, svakih 5 min) ga postavi
+```
+
+1. **PHP** — cPanel → *Select PHP Version*: PHP **8.3 ili 8.4**, *Extensions*: `gd`, `mbstring`, `curl`, `zip`, `exif`,
+   `fileinfo` (uredništvo samo javi ako nešto nedostaje).
+2. **GitHub** — kod na `main` repozitorija `DjakaIT/septilion`. Settings → Secrets and variables → Actions →
+   *Variables* → varijabla **repozitorija** `OBJAVA_UKLJUCENA` = `da` (ne u environmentu: čita je uvjet posla).
+   Environment `produkcija` treba samo za `FONTOVI_ZIP_B64` (licencirani TT Lakes Neue, `base64 -w0 fontovi.zip`).
+3. **Prva objava (jednom ručno)** — uredništva na hostingu još nema, pa prvi paket ide rukom: GitHub → *Actions* →
+   zadnja zelena „Objava koda …” → dolje *Artifacts* → **hosting** (preuzme se `hosting.zip`). cPanel → *File Manager*
+   → `public_html` → *Upload* → `hosting.zip` → desni klik → *Extract* → obriši `hosting.zip`.
+4. **Prvi račun** — otvori `https://septillion.com.hr/urednistvo`. Traži *kod za postavljanje*: cPanel → File Manager →
    `septillion-podaci/PRVO-POSTAVLJANJE.txt` (mapa je u početnoj mapi, pokraj `public_html`; stvori se pri prvom
    otvaranju). Kod je stalan dok se ne iskoristi. Zatim korisničko ime, lozinka, QR kod, rezervni kodovi. Taj
    račun je administrator.
-6. **Veza s GitHubom** — u uredništvu: izbornik ☰ → *Objava stranice*: repozitorij `DjakaIT/septilion`, grana
+5. **Veza s GitHubom** — u uredništvu: izbornik ☰ → *Objava stranice*: repozitorij `DjakaIT/septilion`, grana
    `sadrzaj`, token. Token: GitHub → Settings → Developer settings → *Fine-grained tokens* → *Generate*:
-   *Repository access* samo `DjakaIT/septilion`; *Permissions*: **Contents: Read and write**, **Actions: Read-only**;
-   najdulji rok. *Spremi i provjeri vezu* odmah provjeri token. Dijalog pokazuje do kada token vrijedi —
-   prije isteka napravi novi i upiši ga ovdje.
+   *Repository access* samo `DjakaIT/septilion`; *Permissions*: **Contents: Read and write**, **Actions: Read-only**
+   (Actions treba i za preuzimanje paketa); najdulji rok. *Spremi i provjeri vezu* odmah provjeri token. Dijalog
+   pokazuje do kada token vrijedi — prije isteka napravi novi i upiši ga ovdje.
+6. **Cron Job** — cPanel → *Cron Jobs* → *Common Settings*: *Once Per Five Minutes* → *Command*:
+   `curl -s https://septillion.com.hr/urednistvo/api/osvjezi > /dev/null` → *Add New Cron Job*. Postavlja promjene
+   koda i spremanja kojima je preglednik zatvoren prije kraja objave. (Ako u *Cron Email* stigne greška da nema
+   `curl`, ista naredba s `wget -q -O /dev/null https://septillion.com.hr/urednistvo/api/osvjezi`.)
 7. **Tomislav** — izbornik ☰ → *Korisnici* → `tomislav` → *Napravi pozivnicu*, poveznicu pošalji osobno. Dalje
    sam, po [vodiču](docs/urednistvo-vodic.md).
 
@@ -134,11 +139,11 @@ i dalje vidiš pravu stranicu. Bez uredništva: cPanel → File Manager → `pub
 (prazna datoteka; za skrivene datoteke Settings → *Show Hidden Files*) — brisanjem se isključuje. Objava tu
 datoteku ne dira. Lokalno (`npm start`) je oznaka `podaci/odrzavanje.json`.
 
-**Nadogradnja koda:** push na `main` → provjere → objava. Podaci uredništva na hostingu se nikad ne diraju.
+**Nadogradnja koda:** push na `main` → provjere → paket → Cron Job ga postavi (najviše 5 min). Podaci uredništva na hostingu se nikad ne diraju.
 **Sigurnosne kopije:** infonet radi dnevne/tjedne/mjesečne kopije hostinga (i `septillion-podaci/`); uz to je svaka
 spremljena verzija jelovnika s fotografijama i na GitHubu (grana `sadrzaj`).
 **Izgubljen pristup administratora** (mobitel i rezervni kodovi): File Manager → obriši
-`septillion-podaci/korisnici.json` → ponovno korak 5 i 7. Jelovnik i fotografije ostaju.
+`septillion-podaci/korisnici.json` → ponovno korak 4 i 7. Jelovnik i fotografije ostaju.
 
 ### Korisnici
 
@@ -174,7 +179,7 @@ npm run urednistvo:obrisi -- tomislav                 # brisanje (odmah gubi pri
 - **Zaglavlja:** stranica: CSP s hashom inline skripte, HSTS, nosniff, frame-ancestors (`.htaccess`); uredništvo:
   vlastiti strogi CSP (`default-src 'none'`, bez inline koda), `noindex`, `no-store`, COOP/CORP, `no-referrer`.
 - **Hosting:** podaci izvan `public_html`; u `public_html/urednistvo` sve ide kroz `index.php` (lib/ i konfiguracija
-  nisu dostupni izravno); FTP račun objave vidi samo `public_html`; GitHub token samo za jedan repozitorij, s
+  nisu dostupni izravno); nema FTP-a: hosting sam preuzima paket (samo izgradnje s `main`, provjerena imena datoteka); GitHub token samo za jedan repozitorij, s
   najmanjim pravima, sprema se samo na hostingu; akcije na GitHubu prikvačene na SHA, Dependabot tjedno.
 - **Ovisnosti:** stranica `astro`, `@astrojs/sitemap`, `sharp`, `subset-font`; PHP uredništvo samo ugrađene funkcije.
 

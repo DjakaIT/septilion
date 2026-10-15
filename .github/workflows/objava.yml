@@ -1,15 +1,17 @@
-# Provjere i objava na hosting (infonet cPanel: Apache + PHP, prijenos FTPS-om).
+# Provjere i izgradnja stranice za hosting (infonet cPanel: Apache + PHP).
 # Projekt je u podmapi septilion/ (korijen repozitorija je mapa iznad), pa sve naredbe rade u njoj.
 #  - push na main (kod): provjere (testovi, i za PHP uredništvo) -> objava
 #  - repository_dispatch "sadrzaj" (uredništvo je spremilo jelovnik na granu sadrzaj): odmah objava
 #  - ručno: Actions -> Objava -> Run workflow
-# Objava: kod s grane main + jelovnik i fotografije s grane sadrzaj -> npm run build -> npm run paket -> FTPS u public_html.
+# Objava: kod s grane main + jelovnik i fotografije s grane sadrzaj -> npm run build -> npm run paket -> artefakt "hosting".
+# Uredništvo na hostingu (urednistvo/php/lib/instalacija.php) preuzima zadnji uspješni artefakt i postavlja ga u public_html:
+# odmah nakon spremanja, a promjene koda preko cPanel Cron Joba (svakih 5 min /urednistvo/api/osvjezi).
 # Podaci uredništva su na hostingu izvan public_html i objava ih nikad ne dira (ništa se ne briše na hostingu).
 #
 # Postavke:
 #   varijable repozitorija (Settings -> Secrets and variables -> Actions -> Variables; uvjet posla ne vidi varijable environmenta):
-#              OBJAVA_UKLJUCENA = da, FTP_MAPA (zadano "/", tj. korijen FTP računa = public_html)
-#   tajne environmenta produkcija (Settings -> Environments -> produkcija):     FTP_HOST (cp29.infonet.hr — certifikat FTPS-a glasi na *.infonet.hr), FTP_KORISNIK, FTP_LOZINKA, FONTOVI_ZIP_B64 (nije obavezno: licencirani TT Lakes Neue, zip u base64)
+#              OBJAVA_UKLJUCENA = da
+#   tajna environmenta produkcija (nije obavezna): FONTOVI_ZIP_B64 (licencirani TT Lakes Neue, zip u base64)
 name: Objava
 run-name: ${{ github.event_name == 'repository_dispatch' && format('Objava {0}', github.event.client_payload.sha) || format('Objava koda {0}', github.sha) }}
 
@@ -50,7 +52,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: PHP za testove uredništva (hosting)
         run: |
-          php -v && php -m | grep -qi '^gd$' && php -r 'exit(gd_info()["WebP Support"] ? 0 : 1);'
+          php -v && php -m | grep -qi '^gd$' && php -m | grep -qi '^zip$' && php -r 'exit(gd_info()["WebP Support"] ? 0 : 1);'
       - run: npm run check
       - run: npm run build
       - run: npm test
@@ -99,17 +101,12 @@ jobs:
         env:
           NODE_ENV: production
       - run: npm run paket
-      - name: Prijenos na hosting (FTPS)
-        env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          FTP_KORISNIK: ${{ secrets.FTP_KORISNIK }}
-          FTP_LOZINKA: ${{ secrets.FTP_LOZINKA }}
-          FTP_MAPA: ${{ vars.FTP_MAPA || '/' }}
-        run: |
-          sudo apt-get install -y -qq lftp > /dev/null
-          # redom: datoteke s hashom i slike (samo nove), uredništvo, pa HTML i .htaccess — stranica nikad ne pokazuje na datoteku koje još nema
-          lftp -c "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate yes; set net:max-retries 3; set net:timeout 30;
-            open -u \"$FTP_KORISNIK\",\"$FTP_LOZINKA\" \"$FTP_HOST\";
-            mirror -R --parallel=4 --no-perms --ignore-time -x '^urednistvo/' -X '*.html' -X '*.xml' -X '*.txt' -X '.htaccess' hosting/ \"$FTP_MAPA\";
-            mirror -R --parallel=4 --no-perms hosting/urednistvo/ \"${FTP_MAPA%/}/urednistvo/\";
-            mirror -R --parallel=4 --no-perms -x '^urednistvo/' -I '*.html' -I '*.xml' -I '*.txt' -I '.htaccess' hosting/ \"$FTP_MAPA\""
+      # Hosting (infonet) pušta FTP samo s ručno dopuštenih IP adresa, pa se ništa ne šalje odavde: paket ostaje kao
+      # artefakt "hosting", a uredništvo na hostingu ga samo preuzme (istim GitHub tokenom) i postavi u public_html.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: hosting
+          path: septilion/hosting/
+          include-hidden-files: true # .htaccess
+          if-no-files-found: error
+          retention-days: 30

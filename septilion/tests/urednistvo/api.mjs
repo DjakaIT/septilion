@@ -10,6 +10,7 @@ import { posluzitelj, klijent, kod, postaviPrvog, datotekaSesije, POSLUZITELJ, i
 import { pokreni } from '../../urednistvo/posluzitelj.mjs';
 import { ROOT } from '../../urednistvo/lib/postavke.mjs';
 import { provjeri } from '../../src/data/sadrzaj.mjs';
+import { zip } from '../../scripts/zip.mjs';
 
 sharp.cache(false); // sharp inače drži datoteke otvorenima (Windows ih tada ne može obrisati)
 const API = '/urednistvo/api';
@@ -320,6 +321,44 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     assert.equal(r.status, 429, 'najkasnije nakon 5 krivih lozinki'); assert.ok(krivih <= 5);
     r = await k.z('POST', `${API}/prijava`, { ime: 'tomislav', lozinka: t.lozinka });
     assert.equal(r.status, 429); assert.ok(Number(r.h.get('retry-after')) > 0);
+  });
+
+  test('postavljanje s GitHuba (php): paket bez tokena sa spremišta; novi kod preko /osvjezi (Cron Job); PR, izgradnja bez paketa i "../" se ne postavljaju', { skip: !PHP && 'lokalno se stranica gradi na računalu' }, async () => {
+    const gh = srv.github, stranica = path.join(srv.dir, 'stranica');
+    const osvjezi = async () => (await (await fetch(`${srv.url}/urednistvo/api/osvjezi`)).json()).stanje;
+    const paket = (datoteke) => zip(Object.entries(datoteke).map(([ime, sadrzaj]) => ({ ime, podaci: Buffer.from(sadrzaj) })));
+    await srv.objavljeno();
+    assert.equal(await osvjezi(), 'aktualno');
+    assert.ok(gh.stat.preuzimanja >= 1, 'paketi su preuzeti sa spremišta bez tokena (lažni GitHub odbija token)');
+    const html = fs.readFileSync(path.join(stranica, 'index.html'), 'utf8');
+    const prije = fs.statSync(path.join(stranica, 'pasta-rhymes.html')).mtimeMs;
+
+    // push na main (novi kod): Cron Job ga postavi; iste datoteke se ne prepisuju
+    gh.noviRun({ event: 'push', artefakt: paket({ 'index.html': html.replace('</body>', '<!-- novi-kod --></body>'), 'pasta-rhymes.html': fs.readFileSync(path.join(stranica, 'pasta-rhymes.html')), '_astro/novo.css': 'a{}', '.htaccess': fs.readFileSync(path.join(stranica, '.htaccess')) }) });
+    assert.equal(await osvjezi(), 'postavljeno');
+    assert.ok((await srv.stranica('/')).includes('novi-kod'));
+    assert.equal(fs.readFileSync(path.join(stranica, '_astro/novo.css'), 'utf8'), 'a{}');
+    assert.equal(fs.statSync(path.join(stranica, 'pasta-rhymes.html')).mtimeMs, prije, 'nepromijenjena datoteka se ne prepisuje');
+    assert.equal(await osvjezi(), 'aktualno');
+
+    // pull request (i iz tuđeg repozitorija) se nikad ne postavlja; uspješna izgradnja bez paketa se preskače
+    gh.noviRun({ event: 'pull_request', grana: 'zlo', repo: 'zlo/septilion', artefakt: paket({ 'index.html': 'HAKIRANO' }) });
+    gh.noviRun({ event: 'push', repo: 'zlo/septilion', artefakt: paket({ 'index.html': 'HAKIRANO' }) });
+    gh.noviRun({ event: 'push', artefakt: null });
+    assert.equal(await osvjezi(), 'aktualno');
+    assert.ok(!(await srv.stranica('/')).includes('HAKIRANO'));
+
+    // paket s "../" se odbija cijeli: ništa izvan public_html, stranica ostaje
+    gh.noviRun({ event: 'push', artefakt: paket({ 'index.html': 'LOSE', '../izvan.txt': 'x' }) });
+    assert.equal(await osvjezi(), 'greska');
+    assert.ok(!fs.existsSync(path.join(srv.dir, 'izvan.txt')));
+    assert.ok((await srv.stranica('/')).includes('novi-kod'));
+    assert.ok(!fs.existsSync(path.join(srv.podaci, 'instalacija')) && !fs.existsSync(path.join(srv.podaci, 'instalacija.zip')), 'privremene datoteke obrisane');
+
+    // ispravna novija izgradnja popravlja stanje
+    gh.noviRun({ event: 'workflow_dispatch', artefakt: paket({ 'index.html': html }) });
+    assert.equal(await osvjezi(), 'postavljeno');
+    assert.ok(!(await srv.stranica('/')).includes('novi-kod'));
   });
 
   test('objava (php): postavke samo administratoru, token se ne vraća, kriv token se odbija; bez postavki stanje "nije postavljeno"', { skip: !PHP && 'lokalno se stranica gradi na računalu' }, async () => {

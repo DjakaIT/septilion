@@ -23,6 +23,17 @@ const securityHeaders = {
   },
 };
 
+/** @font-face čija datoteka nije u public/ (TT Lakes Neue bez fontova: GitHub Actions, produkcija s trial fontovima)
+ *  izbacuje se iz fonts.css — inače svaka stranica traži nepostojeće datoteke (404), a font je ionako sistemski. */
+const fontoviBezDatoteka = {
+  name: 'septillion-fontovi-bez-datoteka',
+  enforce: /** @type {const} */ ('pre'),
+  transform(/** @type {string} */ kod, /** @type {string} */ id) {
+    if (!id.split('?')[0].endsWith('/src/styles/fonts.css')) return null;
+    return kod.replace(/@font-face\{[^}]*url\((\/fonts\/[^)]+)\)[^}]*\}\n?/g, (pravilo, url) => (fs.existsSync(path.join('public', url)) ? pravilo : ''));
+  },
+};
+
 /** Samo `npm run dev` (4321): uredništvo živi na poslužitelju (`npm start`, 3000), pa umjesto 404 stranice objasni gdje je. */
 const urednistvoUDevu = {
   name: 'septillion-urednistvo-dev',
@@ -72,6 +83,7 @@ export default defineConfig({
     service: { entrypoint: 'astro/assets/services/sharp' },
   },
   vite: {
+    plugins: [fontoviBezDatoteka],
     build: { assetsInlineLimit: 0 },
     // @podaci = podaci uredništva (jelovnik.json, učitane fotografije); testovi koriste svoju mapu
     resolve: { alias: { '@podaci': path.resolve(process.env.UREDNISTVO_PODACI || 'podaci') } },
