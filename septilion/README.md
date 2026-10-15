@@ -134,8 +134,8 @@ push na main     -> Actions provjere + paket -> cPanel Cron Job (/urednistvo/api
    sam, po [vodiču](docs/urednistvo-vodic.md).
 
 **Održavanje** (posjetitelji vide „Uskoro se vraćamo” s adresama, statusom 503; uredništvo radi normalno):
-izbornik ☰ → *Održavanje stranice* → *Uključi* / *Isključi* (samo administrator). Na uređaju na kojem ga uključiš
-i dalje vidiš pravu stranicu. Bez uredništva: cPanel → File Manager → `public_html` → *+ File* `.odrzavanje`
+izbornik ☰ → *Održavanje stranice* → *Uključi* / *Isključi* (samo administrator). I administrator vidi poruku; pravu
+stranicu na svom uređaju otvori gumbom *Pokaži mi stranicu* u istom dijalogu. Bez uredništva: cPanel → File Manager → `public_html` → *+ File* `.odrzavanje`
 (prazna datoteka; za skrivene datoteke Settings → *Show Hidden Files*) — brisanjem se isključuje. Objava tu
 datoteku ne dira. Lokalno (`npm start`) je oznaka `podaci/odrzavanje.json`.
 

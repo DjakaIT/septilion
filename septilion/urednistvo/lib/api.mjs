@@ -281,8 +281,8 @@ export function api({ p, korisnici, sesije, spremiste, slike, objava, postavljan
       if (typeof ukljuceno !== 'boolean') throw new Greska(422, 'Neispravan zahtjev.');
       const prije = odrzavanje.ukljuceno();
       const st = odrzavanje.postavi(ukljuceno, k.ime);
-      // ovaj preglednik i dalje vidi stranicu (osim ako administrator želi vidjeti poruku kao posjetitelj)
-      const vidi = ukljuceno && pregled !== false;
+      // i administrator vidi poruku kao posjetitelji; pravu stranicu samo ako to izričito odabere ("Pokaži mi stranicu")
+      const vidi = ukljuceno && pregled === true;
       res.appendHeader('Set-Cookie', kolacicPregleda(vidi, p.produkcija));
       if (prije !== ukljuceno) spremiste.dnevnik({ ime: k.ime, ip: ip(req), radnja: ukljuceno ? 'održavanje uključeno' : 'održavanje isključeno' });
       json(res, 200, { ...st, pregled: vidi });

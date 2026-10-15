@@ -34,7 +34,10 @@ final class Urednistvo
         $this->slike = new Slike($p['podaci'], $this->konf);
         $this->spremiste = new Spremiste($p['podaci'], $this->konf, fn ($k) => $this->slike->postoji($k));
         $this->objava = new Objava($p['podaci'], $this->slike, $p['githubApi'], new Instalacija($p['podaci'], $p['javno']), $p['osvjeziMs'] ?? 60_000);
-        $this->ogranicenja = new Ogranicenja($p['podaci'], ['ip' => ['prozorMs' => 15 * 60_000, 'najvise' => 20], 'korisnik' => ['prozorMs' => 15 * 60_000, 'najvise' => 5]]);
+        // 'ukupno': krive prijave sa svih adresa zajedno — napad s puno IP adresa ne može zagušiti hosting (svaka provjera
+        // lozinke namjerno troši ~20 MB i desetke ms); kad se prijeđe, prijava se odbija bez provjere lozinke do 15 min
+        $this->ogranicenja = new Ogranicenja($p['podaci'], ['ip' => ['prozorMs' => 15 * 60_000, 'najvise' => 20], 'korisnik' => ['prozorMs' => 15 * 60_000, 'najvise' => 5],
+            'ukupno' => ['prozorMs' => 15 * 60_000, 'najvise' => 200]]);
         $this->postavljanje = new Postavljanje($p['podaci'], $this->konf->origin);
         $this->odrzavanje = new Odrzavanje($p['javno']);
     }
@@ -239,12 +242,12 @@ final class Urednistvo
             case 'POST /prijava': {
                 $b = $this->jsonTijelo(4096);
                 $n = mb_substr(normaliziraj_ime($b['ime'] ?? ''), 0, 64);
-                $this->zakljucano([['ip', self::ip()], ['korisnik', $n]]);
+                $this->zakljucano([['ip', self::ip()], ['korisnik', $n], ['ukupno', 'sve']]);
                 $k = $this->korisnici->pronadji($n);
                 $lozinka = mb_substr(is_string($b['lozinka'] ?? null) ? $b['lozinka'] : '', 0, 200);
                 $ok = provjeri_lozinku($lozinka, $k['lozinka'] ?? lazni_zapis()) && !empty($k['lozinka']);
                 if (!$ok) {
-                    $this->ogranicenja->zabiljezi('ip', self::ip()); $this->ogranicenja->zabiljezi('korisnik', $n);
+                    $this->ogranicenja->zabiljezi('ip', self::ip()); $this->ogranicenja->zabiljezi('korisnik', $n); $this->ogranicenja->zabiljezi('ukupno', 'sve');
                     $this->dnevnik($n, 'neuspjela prijava');
                     throw new Greska(401, KRIVA_PRIJAVA);
                 }
@@ -362,8 +365,8 @@ final class Urednistvo
                 if (!is_bool($b['ukljuceno'] ?? null)) throw new Greska(422, 'Neispravan zahtjev.');
                 $prije = $this->odrzavanje->ukljuceno();
                 $st = $this->odrzavanje->postavi($b['ukljuceno'], $k['ime']);
-                // ovaj preglednik i dalje vidi stranicu (osim ako administrator želi vidjeti poruku kao posjetitelj)
-                $vidi = $b['ukljuceno'] && ($b['pregled'] ?? true) !== false;
+                // i administrator vidi poruku kao posjetitelji; pravu stranicu samo ako to izričito odabere ("Pokaži mi stranicu")
+                $vidi = $b['ukljuceno'] && ($b['pregled'] ?? false) === true;
                 Odrzavanje::kolacic($vidi, $this->produkcija);
                 if ($prije !== $b['ukljuceno']) $this->dnevnik($k['ime'], $b['ukljuceno'] ? 'održavanje uključeno' : 'održavanje isključeno');
                 $this->json(200, [...$st, 'pregled' => $vidi]);

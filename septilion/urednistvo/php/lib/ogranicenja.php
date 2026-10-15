@@ -3,6 +3,8 @@
 // pa se brojači čuvaju u podaci/ogranicenja.json (pod bravom).
 declare(strict_types=1);
 
+const NAJVISE_ZAPISA = 2000;
+
 final class Ogranicenja
 {
     private string $datoteka;
@@ -37,6 +39,11 @@ final class Ogranicenja
                 if (!$sve[$k]) unset($sve[$k]);
             }
             $sve["$vrsta:$kljuc"] = [...$this->svjezi($sve, $vrsta, $kljuc, $t), $t];
+            // napad s puno adresa ili izmišljenih imena: datoteka ostaje mala (čuvaju se najnoviji zapisi)
+            if (count($sve) > NAJVISE_ZAPISA) {
+                uasort($sve, fn ($a, $b) => max($b) <=> max($a));
+                $sve = array_slice($sve, 0, NAJVISE_ZAPISA, true);
+            }
             pisi_json($this->datoteka, $sve);
         });
     }

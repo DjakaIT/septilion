@@ -252,7 +252,12 @@ describe(`sučelje uredništva (${POSLUZITELJ})`, { skip: preskoci }, () => {
     await v.getByText('Ulica Pavla Hatza 5, Zagreb').waitFor();
     assert.equal(await v.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0);
     await v.screenshot({ path: path.join(OUT, '8-odrzavanje-posjetitelj.png'), fullPage: true });
+    // i administrator po zadanom vidi poruku; pravu stranicu tek na "Pokaži mi stranicu"
     const admin = await ctx.newPage();
+    assert.equal((await admin.goto(`${srv.url}/pasta-rhymes`)).status(), 503, 'administrator vidi poruku kao posjetitelji');
+    await oznaka.click();
+    await page.locator('dialog[open]').getByRole('button', { name: 'Pokaži mi stranicu' }).click();
+    await page.getByText('Na ovom uređaju opet vidiš stranicu').waitFor();
     assert.equal((await admin.goto(`${srv.url}/pasta-rhymes`)).status(), 200, 'administrator vidi stranicu');
     await admin.close();
 

@@ -50,7 +50,10 @@ final class Spremiste
     public function dnevnik(array $zapis): void
     {
         if (!is_dir($this->dir)) @mkdir($this->dir, 0700, true);
-        file_put_contents($this->dir . '/dnevnik.log', u_json(['vrijeme' => iso_vrijeme(), ...$zapis]) . "\n", FILE_APPEND | LOCK_EX);
+        $f = $this->dir . '/dnevnik.log';
+        // ne raste bez granice (npr. tisuće neuspjelih prijava): iznad 1 MB postaje dnevnik.1.log, a prethodni se briše
+        if (@filesize($f) > 1024 * 1024) @rename($f, $this->dir . '/dnevnik.1.log');
+        file_put_contents($f, u_json(['vrijeme' => iso_vrijeme(), ...$zapis]) . "\n", FILE_APPEND | LOCK_EX);
     }
 
     private function snimiVerziju(array $s, string $opis): void

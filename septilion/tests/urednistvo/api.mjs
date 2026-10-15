@@ -249,9 +249,8 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
 
     const r = await t.k.z('POST', `${API}/odrzavanje`, { ukljuceno: true });
     assert.equal(r.status, 200);
-    assert.equal(r.j.ukljuceno, true); assert.equal(r.j.ime, 'tomislav'); assert.ok(Date.parse(r.j.od)); assert.equal(r.j.pregled, true);
-    assert.equal(t.k.ostali.get('septillion_pregled'), '1', 'administratorov preglednik dobije kolačić pregleda');
-    assert.match(r.setCookie, /^septillion_pregled=1; Path=\/; HttpOnly; SameSite=Lax; Max-Age=\d+$/);
+    assert.equal(r.j.ukljuceno, true); assert.equal(r.j.ime, 'tomislav'); assert.ok(Date.parse(r.j.od)); assert.equal(r.j.pregled, false);
+    assert.ok(!t.k.ostali.has('septillion_pregled'), 'po zadanom i administrator vidi poruku (nema kolačića pregleda)');
     assert.ok(fs.existsSync(oznaka));
     assert.equal((await t.k.z('GET', `${API}/objava`)).j.odrzavanje, true, 'status u zaglavlju uredništva');
 
@@ -263,11 +262,15 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     assert.equal((await posjeti('/septillion-icon.svg')).status, 200, 'datoteke rade');
     assert.equal((await posjeti('/urednistvo')).status, 200, 'uredništvo radi');
     assert.ok(!(await (await posjeti('/.odrzavanje')).text()).includes('tomislav'), 'oznaka nije javna');
-    assert.equal((await posjeti('/pasta-rhymes', 'septillion_pregled=1')).status, 200, 'administrator vidi stranicu');
 
-    // bez pregleda: administrator vidi isto što i posjetitelji
+    // "Pokaži mi stranicu": samo taj preglednik dobije kolačić pregleda i vidi stranicu; "Pokaži mi poruku" ga briše
+    const sa = await t.k.z('POST', `${API}/odrzavanje`, { ukljuceno: true, pregled: true });
+    assert.equal(sa.j.pregled, true); assert.equal(sa.j.od, r.j.od, 'ponovno uključivanje ne mijenja početak');
+    assert.equal(t.k.ostali.get('septillion_pregled'), '1');
+    assert.match(sa.setCookie, /^septillion_pregled=1; Path=\/; HttpOnly; SameSite=Lax; Max-Age=\d+$/);
+    assert.equal((await posjeti('/pasta-rhymes', 'septillion_pregled=1')).status, 200, 'administrator vidi stranicu');
     const bez = await t.k.z('POST', `${API}/odrzavanje`, { ukljuceno: true, pregled: false });
-    assert.equal(bez.j.pregled, false); assert.equal(bez.j.od, r.j.od, 'ponovno uključivanje ne mijenja početak');
+    assert.equal(bez.j.pregled, false);
     assert.ok(!t.k.ostali.has('septillion_pregled'));
 
     const off = await t.k.z('POST', `${API}/odrzavanje`, { ukljuceno: false });

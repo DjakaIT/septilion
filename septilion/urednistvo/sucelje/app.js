@@ -836,7 +836,7 @@ async function dijalogOdrzavanja() {
       zatvori)
     : dijalog(h('h2', {}, 'Održavanje stranice'),
       h('p', {}, 'Dok je održavanje uključeno, posjetitelji umjesto stranice vide poruku „Uskoro se vraćamo” s adresama, Woltom i telefonom. Tražilice dobiju znak da je to privremeno.'),
-      h('p', {}, 'Uredništvo radi normalno i spremanja se i dalje objavljuju — svima se pokažu kad isključiš održavanje. Ti na ovom uređaju i dalje vidiš pravu stranicu.'),
+      h('p', {}, 'Uredništvo radi normalno i spremanja se i dalje objavljuju — svima se pokažu kad isključiš održavanje. I ti ćeš vidjeti poruku; pravu stranicu na ovom uređaju možeš otvoriti gumbom „Pokaži mi stranicu”.'),
       h('div', { class: 'dva' }, zatvori,
         h('button', { class: 'gumb glavni', type: 'button', onclick: () => postavi({ ukljuceno: true }, 'Održavanje je uključeno — posjetitelji vide poruku „Uskoro se vraćamo”.') }, 'Uključi održavanje')));
 }
