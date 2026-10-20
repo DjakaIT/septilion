@@ -139,7 +139,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <h2 id="ck-h" class="serif">{j.ckTitle[0]}<br /><em>{j.ckTitle[1]}</em></h2>
           <div class="ck-caps" aria-live="polite">
             {j.cocktails.map((c, i) => (
-              <div class="ck-cap" data-i={i}><p class="ck-no">{pad(i + 1)} / {pad(j.cocktails.length)}</p><h3 class="serif">{c.h}</h3><p class="ck-line">{c.p}</p></div>
+              <div class="ck-cap" data-i={i}><p class="ck-no">{pad(i + 1)} / {pad(j.cocktails.length)}</p><h3 class="serif">{c.h}</h3></div>
             ))}
           </div>
         </div>

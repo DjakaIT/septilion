@@ -22,9 +22,10 @@ const tapes = await Promise.all(SIDE_A.map((x) => srcset(x.img!, [480, 900], 'we
 const first = SIDE_A[0];
 
 // galerija: 9 kadrova kao u prototipu
-const gal = [
-  { k: 'pr_hero', b: p.gallery[0].b, s: p.gallery[0].s },
-  { k: 'pr_phone', b: p.gallery[1].b, s: p.gallery[1].s },
+const gal: { k: string; alt?: string; b?: string; s?: string }[] = [
+  // prva dva kadra bez natpisa (samo opis za tražilice i čitače zaslona)
+  { k: 'pr_hero', alt: p.heroAlt },
+  { k: 'pr_phone', alt: p.phoneAlt },
   ...SIDE_A.filter((x) => x.gallery !== false).map((x) => ({ k: x.img!, b: nameOf(x, lang), s: price(x.price, lang) })),
 ];
 const galFull = await Promise.all(gal.map((g) => single(g.k, 1600, 'webp')));
@@ -164,7 +165,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     </div>
     <div class="gtrack" id="gtrack" tabindex="0" aria-label={p.galleryAria}>
       {gal.map((g, i) => (
-        <figure class="gcard"><button class="gopen" type="button" data-i={i} data-full={galFull[i]} aria-label={`${t.openPhoto}: ${g.b}`}><Pic k={g.k} alt={g.b} widths={i === 0 ? [320, 520, 820, 1200] : [320, 480, 660]} sizes={i === 0 ? '(max-width: 760px) 56vw, 33vw' : '(max-width: 760px) 56vw, 21vw'} /></button><figcaption><b>{g.b}</b><span>{g.s}</span></figcaption></figure>
+        <figure class="gcard"><button class="gopen" type="button" data-i={i} data-full={galFull[i]} aria-label={`${t.openPhoto}: ${g.alt ?? g.b ?? ''}`}><Pic k={g.k} alt={g.alt ?? g.b ?? ''} widths={i === 0 ? [320, 520, 820, 1200] : [320, 480, 660]} sizes={i === 0 ? '(max-width: 760px) 56vw, 33vw' : '(max-width: 760px) 56vw, 21vw'} /></button>{g.b && <figcaption><b>{g.b}</b><span>{g.s}</span></figcaption>}</figure>
       ))}
     </div>
     <div class="pr-wrap"><div class="gbar"><i id="g-bar"></i></div><p class="ghint">{p.galleryHint}</p></div>

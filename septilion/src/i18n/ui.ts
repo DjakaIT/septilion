@@ -63,14 +63,14 @@ const hr = {
     galleryAria: "Galerija, listaj vodoravno",
     galleryHint:
       "Povuci ili listaj strelicama. Klikni na fotku za veći prikaz.",
-    gallery: [],
+    phoneAlt: "Ruke mobitelom fotografiraju tanjur paste na crvenom stolu",
     musicSub: "Ploču biraš ti",
     musicLead:
       "Funky animacija, ali real-deal dobivaš uživo kad pustiš sočan beat uz dobru paštu. Budi OG.",
     crate: "Odaberi ploču",
     play: "Spusti iglu",
     stop: "Podigni iglu",
-    idle: "Ploča miruje",
+    idle: "",
     playing: "Svira — {name}",
     switching: "Mijenjam ploču…",
     side33: "Strana A · 33⅓",
@@ -118,32 +118,26 @@ const hr = {
     cocktails: [
       {
         h: "Houston, imamo koktel.",
-        p: "Gravitacija radi svoj posao, barmen svoj. Ti samo drži čašu.",
         alt: "Barmen toči koktel iz shakera u čašu koju gošća drži",
       },
       {
         h: "#oraspolozise",
-        p: "Nije samo hashtag. Crveni koktel, grančica mente i smijeh koji dođe sam od sebe.",
         alt: "Gošća se smije dok barmen dodaje ukras u crveni koktel",
       },
       {
-        h: "Mjesečeva površina.",
-        p: "Pjena gusta kao prašina na Mjesecu i tri zrna kave za sreću. Za one kojima noć tek počinje.",
-        alt: "Koktel s gustom pjenom i tri zrna kave, izbliza",
+        h: "Espresso Martini za nastavak noći.",
+        alt: "Espresso Martini s gustom pjenom i tri zrna kave, izbliza",
       },
       {
-        h: "Ledeni planet.",
-        p: "Jedna velika kocka leda i kora naranče preko ruba. Ovaj se ne pije u žurbi.",
-        alt: "Koktel s velikom kockom leda i korom naranče",
+        h: "Old Fashioned, polako i s guštom.",
+        alt: "Old Fashioned s velikom kockom leda i korom naranče",
       },
       {
-        h: "Supernova u čaši.",
-        p: "Žut, hladan i pun leda. Nestaje brže od zvijezde padalice.",
+        h: "Jelly Jam Sessions: kokteli s džemom od marelice i višnje.",
         alt: "Barmen poslužuje žuti koktel pun leda",
       },
       {
         h: "Zadnja orbita.",
-        p: "Svjetla se gase, šank ostaje. Martićeva 71, još jedan krug?",
         alt: "Koktel s pjenom na drvenom šanku u polumraku",
       },
     ],
@@ -236,17 +230,14 @@ const en: typeof hr = {
     cfootA: ["Fresh homemade pasta", "Ulica Pavla Hatza 5, Zagreb"],
     galleryAria: "Gallery, scroll sideways",
     galleryHint: "Drag or use the arrows. Tap a photo to see it bigger.",
-    gallery: [
-      { b: "The whole side A", s: "All eight pastas, one table. Full album." },
-      { b: "Grab ya phone.", s: "Photo first, fork second" },
-    ],
+    phoneAlt: "Hands taking a phone photo of a plate of pasta on a red table",
     musicSub: "You pick the record",
     musicLead:
       "A funky animation, but the real deal happens live, when you drop a juicy beat over good pasta. Be OG.",
     crate: "Pick a record",
     play: "Drop the needle",
     stop: "Lift the needle",
-    idle: "Record is still",
+    idle: "",
     playing: "Playing — {name}",
     switching: "Changing the record…",
     side33: "Side A · 33⅓",
@@ -295,32 +286,26 @@ const en: typeof hr = {
     cocktails: [
       {
         h: "Houston, we have a cocktail.",
-        p: "Gravity does its job. The bartender does the rest. You just hold the glass.",
         alt: "A bartender pours a cocktail from the shaker into a glass a guest is holding",
       },
       {
         h: "#oraspolozise",
-        p: "More than a hashtag. A red cocktail, a sprig of mint and laughter that shows up on its own.",
         alt: "A guest laughs as the bartender garnishes a red cocktail",
       },
       {
-        h: "Lunar surface.",
-        p: "Foam as thick as moon dust and three coffee beans for luck. For those whose night is just starting.",
-        alt: "Close-up of a cocktail with thick foam and three coffee beans",
+        h: "An Espresso Martini to keep the night going.",
+        alt: "Close-up of an Espresso Martini with thick foam and three coffee beans",
       },
       {
-        h: "Ice planet.",
-        p: "One big ice cube and orange peel over the rim. Not one to drink in a hurry.",
-        alt: "A cocktail with one large ice cube and orange peel",
+        h: "Old Fashioned, slow and proper.",
+        alt: "An Old Fashioned with one large ice cube and orange peel",
       },
       {
-        h: "Supernova in a glass.",
-        p: "Yellow, cold and full of ice. Gone faster than a shooting star.",
+        h: "Jelly Jam Sessions: cocktails with apricot and cherry jam.",
         alt: "A bartender serves a yellow cocktail full of ice",
       },
       {
         h: "Last orbit.",
-        p: "The lights go down, the bar stays. Martićeva 71, one more round?",
         alt: "A foamy cocktail on a wooden bar in low light",
       },
     ],
