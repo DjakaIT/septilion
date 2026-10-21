@@ -210,4 +210,5 @@ hero.classList.remove('in'); requestAnimationFrame(() => hero.classList.add('in'
 stks.forEach((s, i) => { s.classList.remove('slap'); void s.offsetWidth; s.style.animationDelay = 0.35 + i * 0.14 + 's'; s.classList.add('slap'); });
 if (!RM) job('mq', marquee); // smanjeno kretanje: traka miruje
 job('vinyl', vinyl); // ploča se vrti samo kad je korisnik pusti
-uzivo(); // nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje
+// nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje; otvorena kaseta se ponovno iscrta
+uzivo().then((novo) => { if (novo && cur >= 0) filler(cur)(); });

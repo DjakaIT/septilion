@@ -14,16 +14,17 @@ const prviTekst = (el: Element | null, t: string) => {
   if (n) n.textContent = t; else el.prepend(t);
 };
 
-export async function uzivo() {
+/** @returns je li stranica dobila novije podatke (npr. otvorena kaseta se tada ponovno iscrta) */
+export async function uzivo(): Promise<boolean> {
   const root = document.querySelector<HTMLElement>('[data-jelovnik]');
-  if (!root) return;
+  if (!root) return false;
   let s: { verzija: number; jela: Jelo[] };
   try {
     const r = await fetch('/jelovnik-uzivo.json', { cache: 'no-store' });
-    if (!r.ok) return;
+    if (!r.ok) return false;
     s = await r.json();
-  } catch { return; }
-  if (!(s?.verzija > (Number(root.dataset.jelovnik) || 0)) || !Array.isArray(s.jela)) return;
+  } catch { return false; }
+  if (!(s?.verzija > (Number(root.dataset.jelovnik) || 0)) || !Array.isArray(s.jela)) return false;
   const lang = document.documentElement.lang === 'en' ? 'en' : 'hr';
   const L = (v: T) => (lang === 'en' ? v.en || v.hr : v.hr);
   const cijena = (v: number) => price(v, lang);
@@ -49,4 +50,5 @@ export async function uzivo() {
       postavi(el.querySelector('.t b'), cijena(x.cijena));
     }
   }
+  return true;
 }

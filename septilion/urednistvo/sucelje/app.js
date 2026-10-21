@@ -662,7 +662,7 @@ async function spremi() {
     S.jelovnik.sadrzaj.kategorije[S.odabrana] = r.kategorija;
     S.radna = kopija(r.kategorija); S.prljavo = false; S.sirovo = {}; S.greske = {};
     crtajUrednik();
-    obavijest('Spremljeno. Stranica se osvježava…');
+    obavijest('Spremljeno. Cijene i opisi su odmah na stranici (osvježi je), a nova jela i fotografije za 1–2 minute.', { trajanje: 8000 });
     pratiObjavu(true);
   } catch (err) {
     if (err.status === 409) { obavijest('Netko je u međuvremenu spremio promjene. Osvježi stranicu (tvoje promjene treba ponoviti).', { vrsta: 'greska', trajanje: 15000, akcija: { tekst: 'Osvježi', fn: () => location.reload() } }); }

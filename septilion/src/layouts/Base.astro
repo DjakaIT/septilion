@@ -5,7 +5,7 @@ import '../styles/fonts.css';
 import '../styles/prototype.css';
 import '../styles/additions.css';
 import Topbar from '../components/Topbar.astro';
-import { SITE_URL, WOLT } from '../site.config.mjs';
+import { SITE_URL, WOLT, RESERVE_JELLY } from '../site.config.mjs';
 import { ui, href, type Lang, type Route } from '../i18n/ui';
 import { single } from '../lib/images';
 import { csp, BOOT_JS } from '../lib/csp.mjs';
@@ -67,7 +67,9 @@ const preloadi = ['/fonts/tt-lakes-neue/tt-lakes-neue-400.woff2', ...preload].fi
 </main>
 {route !== 'gate' && (
   <nav class="orderbar" id="orderbar" aria-label={t.quickActions}>
-    <a class="ob-main" id="ob-main" href={WOLT[route]}>{t.orderWolt}</a>
+    {route === 'jellyfish-in-space'
+      ? <a class="ob-main" id="ob-main" href={RESERVE_JELLY} target="_blank" rel="noopener">{t.reserveTable}</a>
+      : <a class="ob-main" id="ob-main" href={WOLT[route]}>{t.orderWolt}</a>}
     <a class="ob-sec" href={menuAnchor} id="ob-menu">{t.menu}</a>
   </nav>
 )}

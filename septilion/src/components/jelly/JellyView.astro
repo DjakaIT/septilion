@@ -2,7 +2,7 @@
 import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
 import { ui, href, plural, fill, type Lang } from '../../i18n/ui';
-import { WOLT, PHONE_JELLY } from '../../site.config.mjs';
+import { WOLT, PHONE_JELLY, RESERVE_JELLY } from '../../site.config.mjs';
 import { JELLY_MENU, itemCount, VERZIJA_JELOVNIKA, type MenuItem } from '../../data/jelly-menu';
 import { FAQ_JELLY } from '../../data/faq';
 import { price, sizeLabel } from '../../lib/format';
@@ -34,8 +34,8 @@ const COCK = [
   { k: 'jf_moon', bg: 'ckb_2', pos: '50% 45%' }, { k: 'jf_oldf', bg: 'ckb_3', pos: '50% 45%' },
   { k: 'jf_hand', bg: 'ckb_4', pos: '55% 50%' }, { k: 'jf_mart_wood', bg: 'ckb_5', pos: '50% 60%' },
 ];
-// galerija (prototip, 12 kadrova)
-const GAL = ['jf_platter', 'jf_mart2', 'jf_tiradito', 'jf_poke', 'jf_tacos', 'jf_juice', 'jf_tartare', 'jf_nigiri', 'jf_astro', 'jf_nachos', 'jf_sushi', 'jf_bowl2'];
+// galerija: najprodavanija (Wolt "Popular") i istaknuta jela, 12 kadrova; natpisi su nazivi s jelovnika (ui.ts gallery)
+const GAL = ['jf_bao_pork', 'jf_rainbow_roll', 'jf_katsu_bowl', 'jf_saturn', 'jf_bao_shrimp', 'jf_fried_uramaki', 'jf_galaxy', 'jf_sushi_dream', 'jf_spring_roll', 'jf_poke_losos', 'jf_mars', 'jf_tuna_bowl'];
 const galFull = await Promise.all(GAL.map((k) => single(k, 1600, 'webp')));
 const chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>';
 const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>';
@@ -48,7 +48,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
       <h1 id="jf-h" class="serif">Somewhere out there, there is a jellyfish floating in space.</h1>
       <p class="sub">{j.sub}</p>
       <div class="cta">
-        <a class="jf-btn solid" href={wolt}>{t.orderWolt}</a>
+        <a class="jf-btn solid" href={RESERVE_JELLY} target="_blank" rel="noopener">{t.reserveTable}</a>
         <a class="jf-btn line" href="#orbita" data-smooth>{j.menuCta}</a>
       </div>
     </div>

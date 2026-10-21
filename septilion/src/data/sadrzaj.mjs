@@ -183,6 +183,9 @@ export function uPasta(s) {
   return { SIDE_A, SALADS: jela(k('salate')).map(osnovno), SIDES: jela(k('prilozi')).map(osnovno) };
 }
 
+/** slika planeta u orbiti dok urednik ne postavi fotografiju kategorije ili planeta (src/assets/img) */
+const ZADANI_PLANETI = { desert: 'jf_desert' };
+
 /** Jellyfish in Space: kategorije sa skupinama (src/data/jelly-menu.ts) */
 export function uJelly(s) {
   return LOKALI.find((l) => l.id === 'jellyfish-in-space').kategorije.map((kat) => {
@@ -198,7 +201,7 @@ export function uJelly(s) {
         prices: [price(x.cijena, x.kolicina), ...(x.cijena2 !== null ? [price(x.cijena2, x.kolicina2)] : [])],
       });
     }
-    return { id: kat.kljuc, title: L(k.naslov), img: k.slika, pimg: k.planet, note: Lnull(k.napomena), groups: groups.filter((g) => g.items.length) };
+    return { id: kat.kljuc, title: L(k.naslov), img: k.slika, pimg: k.planet ?? ZADANI_PLANETI[kat.kljuc] ?? null, note: Lnull(k.napomena), groups: groups.filter((g) => g.items.length) };
   });
 }
 

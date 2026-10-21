@@ -1,6 +1,6 @@
 // Strukturirani podaci (schema.org JSON-LD) — grade se iz istih podataka koje stranica prikazuje,
 // nikad ručno dvaput. Bez sidrenih cijena (zakon ukinut, GUIDE.md).
-import { SITE_URL, WOLT, RESERVE_PASTA, INSTAGRAM_PASTA, FACEBOOK_JELLY, PHONE_JELLY } from '../site.config.mjs';
+import { SITE_URL, WOLT, RESERVE_PASTA, RESERVE_JELLY, INSTAGRAM_PASTA, FACEBOOK_JELLY, PHONE_JELLY } from '../site.config.mjs';
 import type { Lang } from '../i18n/ui';
 import { href } from '../i18n/ui';
 import { SIDE_A, SALADS, SIDES, pastaPrices, nameOf } from '../data/pasta';
@@ -53,7 +53,7 @@ function jellyRestaurant(lang: Lang) {
     '@type': ['Restaurant', 'BarOrPub'], '@id': id('jellyfish-in-space'), name: 'Jellyfish in Space',
     url: abs(href('jellyfish-in-space', lang)), parentOrganization: { '@id': ORG_ID },
     slogan: 'Somewhere out there, there is a jellyfish floating in space.',
-    servesCuisine: ['Street food', 'Sushi', 'Cocktails'], telephone: PHONE_JELLY.e164, address: ADDR_JELLY,
+    servesCuisine: ['Street food', 'Sushi', 'Cocktails'], telephone: PHONE_JELLY.e164, address: ADDR_JELLY, acceptsReservations: RESERVE_JELLY,
     sameAs: [FACEBOOK_JELLY], priceRange: range(all, lang),
     hasMenu: {
       '@type': 'Menu', inLanguage: lang,

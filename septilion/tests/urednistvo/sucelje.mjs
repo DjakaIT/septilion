@@ -88,7 +88,7 @@ describe(`sučelje uredništva (${POSLUZITELJ})`, { skip: preskoci }, () => {
     assert.ok(await page.locator('.stavka').first().getByText('22,90 €').isVisible(), 'sažetak se odmah osvježi');
     await page.screenshot({ path: path.join(OUT, '2-urednik.png') });
     await page.getByRole('button', { name: 'Spremi i objavi' }).click();
-    await page.getByText('Spremljeno. Stranica se osvježava').waitFor();
+    await page.getByText('Spremljeno. Cijene i opisi su odmah na stranici').waitFor();
     await pricekajObjavu();
     assert.ok((await srv.stranica('/pasta-rhymes')).includes('22,90 €'));
   });
@@ -99,7 +99,7 @@ describe(`sučelje uredništva (${POSLUZITELJ})`, { skip: preskoci }, () => {
     await page.locator('.stavka.otvorena').getByLabel('Cijena', { exact: true }).fill('4,35');
     await srv.ponovnoPokreni();
     await page.getByRole('button', { name: 'Spremi i objavi' }).click();
-    await page.getByText('Spremljeno. Stranica se osvježava').last().waitFor();
+    await page.getByText('Spremljeno. Cijene i opisi su odmah na stranici').last().waitFor();
     assert.equal(await page.getByLabel('Lozinka').count(), 0, 'nije tražio ponovnu prijavu');
     await pricekajObjavu();
     assert.ok((await srv.stranica('/pasta-rhymes')).includes('4,35 €'));
