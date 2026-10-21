@@ -201,3 +201,19 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
 
 /* recenzija "4 od 5" nosi aria-label na role=img */
 .jcard .stars{display:inline-block}
+
+/* ---------- Google recenzije (core/recenzije.ts, podaci iz /recenzije.json) ---------- */
+.g-txt { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; overflow: hidden; }
+.g-by { margin-top: 10px; }
+.g-st { letter-spacing: 0.14em; margin-right: 4px; }
+.g-au { color: inherit; text-underline-offset: 3px; }
+.g-nav { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.g-nav[hidden] { display: none; }
+.g-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font-size: 18px; line-height: 1; }
+.g-n { min-width: 3.5em; text-align: center; font-variant-numeric: tabular-nums; }
+.rev-g .g-rec { flex: 1 1 320px; }
+.rev-g .g-txt { font: 400 15px/1.55 "Plex Mono"; color: rgba(20, 18, 16, 0.86); }
+.rev-g .g-by, .rev-g .g-n { font: 500 13px "Plex Mono"; }
+.jcard .g-txt { margin-top: 16px; font-family: "Instrument Serif"; font-style: italic; font-size: clamp(20px, 1.8vw, 26px); line-height: 1.25; -webkit-line-clamp: 7; }
+.jcard .g-by, .jcard .g-n { font-size: 14px; color: var(--jf-dim); }
+.jcard .g-au { display: inline; margin-top: 0; color: var(--jf-fg, #fff); }

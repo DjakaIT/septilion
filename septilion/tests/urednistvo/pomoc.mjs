@@ -145,6 +145,39 @@ function lazniGitHub({ token, naObjavu }) {
   };
 }
 
+export const GOOGLE_KLJUC = `AIza${'K'.repeat(35)}`;
+/** lažni Google Places API (New): pretraga lokala i detalji s recenzijama (hr/en) */
+function lazniGoogle() {
+  const stat = { zahtjevi: 0 };
+  const rec = (name, rating, hr, en) => ({ name, rating, text: { text: hr }, _en: en, relativePublishTimeDescription: 'prije 2 tjedna', authorAttribution: { displayName: `Gost ${name}`, uri: 'https://www.google.com/maps/contrib/1' } });
+  const RECENZIJE = [
+    rec('r1', 5, 'Najbolja pašta u gradu, svježa i puna okusa, vraćamo se sigurno!', 'Best pasta in town, fresh and full of flavour, we will be back!'),
+    rec('r2', 4, 'Dobra pašta, malo predugo čekanje, ali svakako vrijedi doći.', 'Good pasta.'),
+    rec('r3', 5, 'Super!', 'Great!'),
+    rec('r4', 5, 'Odlična atmosfera, gramofon i ljubazno osoblje. Preporuka svima koji vole dobru hranu.', 'Great atmosphere.'),
+    rec('r5', 1, 'Loše iskustvo, hladna hrana i dugo čekanje na stol, ne preporučujem.', 'Bad.'),
+  ];
+  const server = http.createServer(async (req, res) => {
+    const d = []; for await (const x of req) d.push(x);
+    stat.zahtjevi++;
+    const u = new URL(req.url, 'http://x');
+    const odg = (s, j) => { res.writeHead(s, { 'content-type': 'application/json' }); res.end(JSON.stringify(j)); };
+    if (req.headers['x-goog-api-key'] !== GOOGLE_KLJUC) return odg(400, { error: { message: 'API key not valid. Please pass a valid API key.' } });
+    if (req.method === 'POST' && u.pathname === '/places:searchText') {
+      const q = JSON.parse(Buffer.concat(d).toString('utf8')).textQuery;
+      return odg(200, { places: [/Pasta/.test(q) ? { id: 'P1', displayName: { text: 'Pasta Rhymes' }, formattedAddress: 'Ul. Pavla Hatza 5, Zagreb' } : { id: 'J1', displayName: { text: 'Jellyfish in Space' }, formattedAddress: 'Martićeva ul. 71, Zagreb' }] });
+    }
+    const m = /^\/places\/(\w+)$/.exec(u.pathname);
+    if (req.method === 'GET' && m) {
+      const en = u.searchParams.get('languageCode') === 'en';
+      return odg(200, { rating: m[1] === 'P1' ? 4.66 : 4.8, userRatingCount: 312, googleMapsUri: 'https://maps.google.com/?cid=1',
+        reviews: RECENZIJE.map(({ _en, ...r }) => (en ? { ...r, text: { text: _en }, relativePublishTimeDescription: '2 weeks ago' } : r)) });
+    }
+    odg(404, { error: { message: 'nepoznato' } });
+  });
+  return { server, stat };
+}
+
 async function phpPosluzitelj(env) {
   const dir = novaMapa();
   const podaci = path.join(dir, 'podaci'), konf = path.join(dir, 'konf'), stranica = path.join(dir, 'stranica');
@@ -162,6 +195,8 @@ async function phpPosluzitelj(env) {
     },
   });
   await new Promise((r) => github.server.listen(0, '127.0.0.1', r));
+  const google = lazniGoogle();
+  await new Promise((r) => google.server.listen(0, '127.0.0.1', r));
   // postavke objave kao da ih je administrator upisao (izbornik -> Objava stranice); test ih može i obrisati
   fs.mkdirSync(podaci, { recursive: true });
   if (env.bezObjave !== true) fs.writeFileSync(path.join(podaci, 'objava-postavke.json'), JSON.stringify({ repo: 'test/septilion', grana: 'sadrzaj', token: GITHUB_TOKEN }));
@@ -171,6 +206,7 @@ async function phpPosluzitelj(env) {
     ...process.env, UREDNISTVO_PODACI: podaci, UREDNISTVO_KONFIGURACIJA: konf, UREDNISTVO_SUCELJE: path.join(ROOT, 'urednistvo/sucelje'),
     UREDNISTVO_STRANICA: stranica, UREDNISTVO_JAVNO: stranica, UREDNISTVO_GITHUB_API: `http://127.0.0.1:${github.server.address().port}`,
     UREDNISTVO_OSVJEZI_MS: '0',
+    UREDNISTVO_GOOGLE_API: `http://127.0.0.1:${google.server.address().port}`,
     ...(env.produkcija ? {} : { UREDNISTVO_LOKALNO: '1' }),
   };
   let proces;
@@ -184,7 +220,7 @@ async function phpPosluzitelj(env) {
   await pokreniPhp();
   const url = `http://127.0.0.1:${port}`;
   return {
-    vrsta: 'php', url, dir, podaci, zapisi, github,
+    vrsta: 'php', url, dir, podaci, zapisi, github, google,
     stranica: async (put) => (await fetch(url + put)).text(),
     /** php -S radi jedan zahtjev za drugim: kad odgovori, slanje na GitHub iz prošlog zahtjeva je gotovo; zatim gradnja,
      *  pa postavljanje paketa kao cPanel Cron Job (/api/osvjezi) */
@@ -196,7 +232,7 @@ async function phpPosluzitelj(env) {
       return { stanje: github.runovi[0]?.conclusion === 'failure' ? 'greska' : 'spremno', verzija: j?.verzija ?? null };
     },
     async ponovnoPokreni() { await ugasi(); await cekaj(300); await pokreniPhp(); },
-    async zatvori() { await this.objavljeno(); await ugasi(); await new Promise((r) => github.server.close(r)); obrisi(dir); },
+    async zatvori() { await this.objavljeno(); await ugasi(); await new Promise((r) => github.server.close(r)); await new Promise((r) => google.server.close(r)); obrisi(dir); },
   };
 }
 

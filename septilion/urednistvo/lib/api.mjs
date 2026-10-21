@@ -288,6 +288,12 @@ export function api({ p, korisnici, sesije, spremiste, slike, objava, postavljan
       json(res, 200, { ...st, pregled: vidi });
     },
 
+    // Google recenzije povlači samo hosting (PHP); lokalno ih nema
+    'GET /recenzije': async (req, res) => {
+      prijavljen(req, { csrf: false, admin: true });
+      json(res, 200, { lokalno: true });
+    },
+
     'GET /povijest': async (req, res) => {
       prijavljen(req, { csrf: false });
       json(res, 200, spremiste.povijest());

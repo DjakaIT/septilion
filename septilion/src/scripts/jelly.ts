@@ -6,6 +6,7 @@ import { initChrome } from './core/chrome';
 import { Swarm } from './swarm';
 import { coverflow } from './jelly/coverflow';
 import { uzivo } from './core/uzivo';
+import { recenzije } from './core/recenzije';
 
 initNav();
 initChrome('jellyfish-in-space');
@@ -234,3 +235,4 @@ job('orbit', (t, dt) => { if (orbitOn) orbitStep(t, dt); });
 job('gal', gal.step);
 if (!RM) job('cock', cock);
 uzivo(); // nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje
+recenzije(); // Google recenzije (5★ s tekstom) iz /recenzije.json

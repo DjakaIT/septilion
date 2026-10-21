@@ -7,6 +7,7 @@ import { tracksHtml } from '../lib/tracks';
 import { Beat, recs, state as beatState } from './pasta/beat';
 import { lightbox } from './pasta/lightbox';
 import { uzivo } from './core/uzivo';
+import { recenzije } from './core/recenzije';
 
 initNav();
 initChrome('pasta-rhymes');
@@ -212,3 +213,4 @@ if (!RM) job('mq', marquee); // smanjeno kretanje: traka miruje
 job('vinyl', vinyl); // ploča se vrti samo kad je korisnik pusti
 // nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje; otvorena kaseta se ponovno iscrta
 uzivo().then((novo) => { if (novo && cur >= 0) filler(cur)(); });
+recenzije(); // Google recenzije (5★ s tekstom) iz /recenzije.json

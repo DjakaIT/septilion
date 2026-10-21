@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import sharp from 'sharp';
-import { posluzitelj, klijent, kod, postaviPrvog, datotekaSesije, POSLUZITELJ, imaPhp, PHP_ORIGIN, GITHUB_TOKEN } from './pomoc.mjs';
+import { posluzitelj, klijent, kod, postaviPrvog, datotekaSesije, POSLUZITELJ, imaPhp, PHP_ORIGIN, GITHUB_TOKEN, GOOGLE_KLJUC } from './pomoc.mjs';
 import { pokreni } from '../../urednistvo/posluzitelj.mjs';
 import { ROOT } from '../../urednistvo/lib/postavke.mjs';
 import { provjeri } from '../../src/data/sadrzaj.mjs';
@@ -372,6 +372,37 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     gh.noviRun({ event: 'workflow_dispatch', artefakt: paket({ 'index.html': html }) });
     assert.equal(await osvjezi(), 'postavljeno');
     assert.ok(!(await srv.stranica('/')).includes('novi-kod'));
+  });
+
+  test('Google recenzije (php): ključ samo na poslužitelju; na stranicu idu samo 5★ s tekstom (hr/en); osvježavanje jednom dnevno', { skip: !PHP && 'recenzije povlači samo hosting' }, async () => {
+    assert.deepEqual((await t.k.z('GET', `${API}/recenzije`)).j, { kljucPostavljen: false, lokali: { pasta: null, jelly: null }, azurirano: null, greska: null });
+    assert.equal((await t.k.z('POST', `${API}/recenzije`, { kljuc: 'kratko' })).status, 422);
+    const kriv = await t.k.z('POST', `${API}/recenzije`, { kljuc: `AIza${'X'.repeat(35)}` });
+    assert.equal(kriv.status, 502); assert.match(kriv.j.greska, /ključ ne vrijedi/);
+    assert.equal((await t.k.z('POST', `${API}/recenzije`, { kljuc: GOOGLE_KLJUC }, { bezCsrf: true })).status, 403);
+    const ok = await t.k.z('POST', `${API}/recenzije`, { kljuc: GOOGLE_KLJUC });
+    assert.equal(ok.status, 200, JSON.stringify(ok.j));
+    assert.equal(ok.j.kljucPostavljen, true); assert.equal(ok.j.lokali.pasta.naziv, 'Pasta Rhymes'); assert.equal(ok.j.lokali.jelly.prikazano, 2);
+    assert.ok(!JSON.stringify(ok.j).includes(GOOGLE_KLJUC), 'ključ se ne vraća');
+    const javno = path.join(srv.dir, 'stranica', 'recenzije.json');
+    const r = JSON.parse(fs.readFileSync(javno, 'utf8'));
+    assert.ok(!fs.readFileSync(javno, 'utf8').includes(GOOGLE_KLJUC));
+    assert.equal(r.pasta.ocjena, 4.7); assert.equal(r.pasta.broj, 312);
+    assert.deepEqual(r.pasta.recenzije.map((x) => x.autor), ['Gost r1', 'Gost r4'], 'samo 5★ s dovoljno teksta');
+    assert.equal(r.pasta.recenzije[0].tekst.en, 'Best pasta in town, fresh and full of flavour, we will be back!');
+    assert.equal(r.pasta.recenzije[0].kad.en, '2 weeks ago');
+    const st = await (await fetch(`${srv.url}/recenzije.json`)).json();
+    assert.equal(st.jelly.ocjena, 4.8, 'stranica ih poslužuje');
+    // Cron Job: unutar 24 h ne pita Google ponovno, nakon 24 h da
+    const prije = srv.google.stat.zahtjevi;
+    await (await fetch(`${srv.url}/urednistvo/api/osvjezi`)).arrayBuffer();
+    await (await fetch(`${srv.url}/urednistvo/api/stanje`)).arrayBuffer();
+    assert.equal(srv.google.stat.zahtjevi, prije);
+    const sd = path.join(srv.podaci, 'recenzije-stanje.json');
+    fs.writeFileSync(sd, JSON.stringify({ ...JSON.parse(fs.readFileSync(sd, 'utf8')), zadnjiPokusaj: Date.now() - 25 * 3600_000 }));
+    await (await fetch(`${srv.url}/urednistvo/api/osvjezi`)).arrayBuffer();
+    await (await fetch(`${srv.url}/urednistvo/api/stanje`)).arrayBuffer();
+    assert.ok(srv.google.stat.zahtjevi > prije, 'nakon 24 h osvježava');
   });
 
   test('objava (php): postavke samo administratoru, token se ne vraća, kriv token se odbija; bez postavki stanje "nije postavljeno"', { skip: !PHP && 'lokalno se stranica gradi na računalu' }, async () => {

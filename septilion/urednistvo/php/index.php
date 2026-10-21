@@ -17,7 +17,7 @@ if (PHP_VERSION_ID < 80100 || $nedostaje || !function_exists('imagewebp')) {
     exit;
 }
 
-foreach (['osnova', 'sigurnost', 'korisnici', 'sesije', 'ogranicenja', 'postavljanje', 'sadrzaj', 'spremiste', 'slike', 'instalacija', 'objava', 'odrzavanje', 'api'] as $f) require __DIR__ . "/lib/$f.php";
+foreach (['osnova', 'sigurnost', 'korisnici', 'sesije', 'ogranicenja', 'postavljanje', 'sadrzaj', 'spremiste', 'slike', 'instalacija', 'objava', 'odrzavanje', 'recenzije', 'api'] as $f) require __DIR__ . "/lib/$f.php";
 
 $env = static fn (string $ime): ?string => ($v = getenv($ime)) === false || $v === '' ? null : $v;
 (new Urednistvo([
@@ -29,6 +29,7 @@ $env = static fn (string $ime): ?string => ($v = getenv($ime)) === false || $v =
     // lokalno = samo testovi na ovom računalu (http, localhost); na hostingu se nikad ne postavlja
     'lokalno' => $env('UREDNISTVO_LOKALNO') === '1',
     'githubApi' => $env('UREDNISTVO_GITHUB_API') ?? 'https://api.github.com',
+    'googleApi' => $env('UREDNISTVO_GOOGLE_API') ?? 'https://places.googleapis.com/v1',
     // najmanji razmak (ms) između provjera GitHuba iz /api/osvjezi (Cron Job); testovi 0
     'osvjeziMs' => (int) ($env('UREDNISTVO_OSVJEZI_MS') ?? 60_000),
 ]))->obradi();

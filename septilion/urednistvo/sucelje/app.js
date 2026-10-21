@@ -32,6 +32,7 @@ const IKONE = {
   povijest: 'M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 3', kljuc: 'M15 7a4 4 0 1 1-3.9 5H3v3h3v3h3v-3h2.1A4 4 0 0 1 15 7z', odjava: 'M15 4h4v16h-4M10 16l4-4-4-4M14 12H4',
   korisnici: 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6M22 19v-1a4 4 0 0 0-3-3.9M16 4.1a3 3 0 0 1 0 5.8',
   objava: 'M12 3v12M7 8l5-5 5 5M4 15v4h16v-4',
+  zvijezda: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z',
   odrzavanje: 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z',
 };
 function ikona(ime) {
@@ -328,6 +329,7 @@ function crtajVrh() {
     S.uloga === 'admin' ? stavka('korisnici', 'Korisnici', dijalogKorisnika) : null,
     S.uloga === 'admin' ? stavka('objava', 'Objava stranice', dijalogObjave) : null,
     S.uloga === 'admin' ? stavka('odrzavanje', 'Održavanje stranice', dijalogOdrzavanja) : null,
+    S.uloga === 'admin' ? stavka('zvijezda', 'Google recenzije', dijalogRecenzija) : null,
     stavka('kljuc', 'Promijeni lozinku', dijalogLozinke),
     stavka('odjava', 'Odjava', odjava));
   const gumb = h('button', { class: 'gumb ikona tih', type: 'button', 'aria-label': 'Izbornik', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': 'izbornik', onclick: () => {
@@ -839,6 +841,41 @@ async function dijalogOdrzavanja() {
       h('p', {}, 'Uredništvo radi normalno i spremanja se i dalje objavljuju — svima se pokažu kad isključiš održavanje. I ti ćeš vidjeti poruku; pravu stranicu na ovom uređaju možeš otvoriti gumbom „Pokaži mi stranicu”.'),
       h('div', { class: 'dva' }, zatvori,
         h('button', { class: 'gumb glavni', type: 'button', onclick: () => postavi({ ukljuceno: true }, 'Održavanje je uključeno — posjetitelji vide poruku „Uskoro se vraćamo”.') }, 'Uključi održavanje')));
+}
+
+// Google recenzije: hosting ih jednom dnevno povuče (samo 5★ s tekstom) i stranica ih prikaže
+async function dijalogRecenzija() {
+  let o;
+  try { o = await api('GET', '/recenzije'); } catch (err) { if (err.status !== 401) obavijest(err.message, { vrsta: 'greska' }); return; }
+  const zatvori = h('button', { class: 'gumb', type: 'button', onclick: () => d.close() }, 'Zatvori');
+  if (o.lokalno) {
+    const d = dijalog(h('h2', {}, 'Google recenzije'), h('p', {}, 'Google recenzije povlači uredništvo na hostingu (septillion.com.hr/urednistvo). Lokalno ih nema.'), zatvori);
+    return;
+  }
+  const NAZIVI = { pasta: 'Pasta Rhymes', jelly: 'Jellyfish in Space' };
+  const ocjena = (v) => (typeof v === 'number' ? v.toFixed(1).replace('.', ',') : '—');
+  const popis = h('ul', { class: 'povijest' }, Object.entries(o.lokali ?? {}).map(([l, x]) => h('li', {},
+    h('div', {}, h('strong', {}, NAZIVI[l] ?? l),
+      h('span', {}, x ? `${x.naziv} · ${x.adresa} · ocjena ${ocjena(x.ocjena)} (${x.broj ?? 0}) · na stranici ${x.prikazano} ${mnozina(x.prikazano, ['recenzija', 'recenzije', 'recenzija'])} s 5★` : 'još nije povezano')))));
+  const greska = h('p', { class: 'poruka greska', role: 'alert', hidden: true });
+  const forma = h('form', { class: 'dijalog-forma', novalidate: true, onsubmit: async (e) => {
+    e.preventDefault(); porukaGreske(greska, '');
+    const g = $('button[type=submit]', forma); g.disabled = true; g.textContent = 'Povlačim recenzije…';
+    try { await api('POST', '/recenzije', { kljuc: forma.kljuc.value }); d.close(); obavijest('Google recenzije su povučene i već su na stranici.'); dijalogRecenzija(); }
+    catch (err) { porukaGreske(greska, err.message); g.disabled = false; g.textContent = 'Spremi i povuci recenzije'; }
+  } },
+  h('label', { class: 'polje' }, h('span', {}, 'Google API ključ (Places API, New)'), h('input', { name: 'kljuc', type: 'password', autocomplete: 'off', placeholder: o.kljucPostavljen ? 'postavljen — upiši samo za zamjenu' : 'AIza…' }),
+    h('small', {}, 'Sprema se samo na poslužitelju. Recenzije se osvježavaju same jednom dnevno.')),
+  greska, h('button', { class: 'gumb glavni', type: 'submit' }, 'Spremi i povuci recenzije'));
+  const osvjezi = o.kljucPostavljen ? h('button', { class: 'gumb', type: 'button', onclick: async (e) => {
+    const g = e.currentTarget; g.disabled = true;
+    try { await api('POST', '/recenzije/osvjezi', {}); d.close(); obavijest('Recenzije su osvježene.'); dijalogRecenzija(); } catch (err) { obavijest(err.message, { vrsta: 'greska' }); g.disabled = false; }
+  } }, 'Osvježi sada') : null;
+  const d = dijalog(h('h2', {}, 'Google recenzije'),
+    h('p', {}, 'Na stranici se prikazuju samo recenzije s 5 zvjezdica i tekstom (Google ih daje najviše 5 po lokalu), uz ukupnu ocjenu.'),
+    o.greska ? h('p', { class: 'poruka greska' }, `Zadnje osvježavanje nije uspjelo: ${o.greska}`) : null,
+    o.azurirano ? h('p', { class: 'poruka info' }, `Zadnje osvježeno ${vrijeme(o.azurirano)}.`) : null,
+    popis, forma, h('div', { class: 'dva' }, osvjezi ?? h('span'), zatvori));
 }
 
 function dijalogLozinke() {

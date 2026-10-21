@@ -208,8 +208,9 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <figure class="rq rv"><blockquote>{r.q}</blockquote><figcaption><b>{r.b}</b><span>{r.s}</span></figcaption></figure>
         ))}
       </div>
-      <div class="rev-g rv">
-        <p class="gl"><b>{t.googleReviews}</b><span class="gscore">—,—</span></p>
+      <div class="rev-g rv" data-google="pasta">
+        <p class="gl"><b>{t.googleReviews}</b><span class="gscore g-ocjena">—,—</span></p>
+        <div class="gt g-rec" hidden><blockquote class="g-txt"></blockquote><p class="g-by"><span class="g-st" aria-hidden="true">★★★★★</span> <a class="g-au" target="_blank" rel="noopener"></a> <span class="g-kad"></span></p><p class="g-nav"><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n"></span><button class="g-next" type="button" aria-label={t.next}>→</button></p></div>
         <a class="pr-btn solid" href="https://www.google.com/maps/search/?api=1&query=Pasta+Rhymes+Ulica+Pavla+Hatza+5+Zagreb" target="_blank" rel="noopener">{t.leaveReview}</a>
       </div>
     </div>

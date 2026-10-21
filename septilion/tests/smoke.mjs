@@ -13,7 +13,7 @@ async function mk(opts = {}) {
   const page = await ctx.newPage(); const errs = [];
   page.on('pageerror', (e) => errs.push(e.message));
   // /jelovnik-uzivo.json piše tek uredništvo na hostingu: ovdje ga nema (404) i to je u redu
-  page.on('console', (m) => { if (m.type() === 'error' && !String(m.location()?.url).includes('jelovnik-uzivo')) errs.push(m.text()); });
+  page.on('console', (m) => { if (m.type() === 'error' && !/jelovnik-uzivo|recenzije.json/.test(String(m.location()?.url))) errs.push(m.text()); });
   return { ctx, page, errs };
 }
 

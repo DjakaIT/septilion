@@ -21,6 +21,7 @@ final class Urednistvo
     private Ogranicenja $ogranicenja;
     private Postavljanje $postavljanje;
     private Odrzavanje $odrzavanje;
+    private Recenzije $recenzije;
     private bool $produkcija;
 
     /** @param array{podaci:string, konfiguracija:string, sucelje:string, javno:string, lokalno:bool, githubApi:string, osvjeziMs?:int} $p */
@@ -40,6 +41,7 @@ final class Urednistvo
             'ukupno' => ['prozorMs' => 15 * 60_000, 'najvise' => 200]]);
         $this->postavljanje = new Postavljanje($p['podaci'], $this->konf->origin);
         $this->odrzavanje = new Odrzavanje($p['javno']);
+        $this->recenzije = new Recenzije($p['podaci'], $p['javno'], $p['googleApi'] ?? 'https://places.googleapis.com/v1');
     }
 
     // ---------------- zahtjev i odgovor ----------------
@@ -325,6 +327,27 @@ final class Urednistvo
             // cPanel Cron Job (svakih 5 min): postavi novu izgradnju s GitHuba (promjene koda, zatvoren preglednik); bez prijave
             case 'GET /osvjezi': {
                 $this->json(200, $this->objava->osvjezi());
+                $this->nakonOdgovora(fn () => $this->recenzije->osvjezi()); // Google recenzije: jednom dnevno
+                return;
+            }
+
+            // ----- Google recenzije (samo administrator) -----
+            case 'GET /recenzije': {
+                $this->prijavljen(false, true);
+                $this->json(200, $this->recenzije->stanje());
+                return;
+            }
+            case 'POST /recenzije': {
+                [, $k] = $this->prijavljen(true, true);
+                $st = $this->recenzije->spremiKljuc($this->jsonTijelo(1024)['kljuc'] ?? null);
+                $this->dnevnik($k['ime'], 'Google recenzije: ključ postavljen');
+                $this->json(200, $st);
+                return;
+            }
+            case 'POST /recenzije/osvjezi': {
+                $this->prijavljen(true, true);
+                $this->recenzije->osvjezi(true);
+                $this->json(200, $this->recenzije->stanje());
                 return;
             }
             case 'GET /objava': {
