@@ -158,6 +158,9 @@ final class Objava
                     'skipped' => [...$s, 'stanje' => 'greska', 'poruka' => 'Objava je isključena na GitHubu (varijabla OBJAVA_UKLJUCENA).'],
                     default => [...$s, 'stanje' => 'greska', 'poruka' => 'Izgradnja stranice nije uspjela: ' . ($run['html_url'] ?? '')],
                 };
+            } elseif ($this->instalacija->artefakt($gh, $run)) {
+                // paket je gotov (zadnji korak posla), a GitHub run zna još minutama držati "u tijeku": postavi odmah
+                $s = $this->postaviIzgradnju($gh, $run, $s);
             }
         } catch (Greska $e) {
             $s['poruka'] = $e->getMessage(); // prolazna greška veze: provjerava se ponovno
