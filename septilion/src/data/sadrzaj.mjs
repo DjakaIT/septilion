@@ -175,7 +175,7 @@ const jela = (k) => k.stavke.filter((s) => s.tip === 'jelo');
 /** Pasta Rhymes: SIDE_A / SALADS / SIDES (src/data/pasta.ts) */
 export function uPasta(s) {
   const k = (kljuc) => s.kategorije[kljucKategorije('pasta-rhymes', kljuc)];
-  const osnovno = (x) => ({ name: x.naziv.hr, nameEn: x.naziv.en || x.naziv.hr, desc: x.opis.hr ? L(x.opis) : { hr: '', en: '' }, price: x.cijena });
+  const osnovno = (x) => ({ id: x.id, name: x.naziv.hr, nameEn: x.naziv.en || x.naziv.hr, desc: x.opis.hr ? L(x.opis) : { hr: '', en: '' }, price: x.cijena });
   const SIDE_A = jela(k('strana-a')).map((x) => {
     const color = /^#[0-9a-f]{6}$/i.test(x.boja ?? '') ? x.boja : '#FE0000';
     return { ...osnovno(x), img: x.slika, color, ink: tinta(color), gallery: x.galerija };

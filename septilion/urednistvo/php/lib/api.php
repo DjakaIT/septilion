@@ -307,6 +307,7 @@ final class Urednistvo
                 $kljuc = is_string($b['kljuc'] ?? null) ? $b['kljuc'] : '';
                 $verzija = is_int($b['verzija'] ?? null) ? $b['verzija'] : -1;
                 $s = $this->spremiste->spremiKategoriju($kljuc, $b['kategorija'] ?? null, $verzija, $k['ime']);
+                $this->uzivo($s);
                 $this->json(200, ['verzija' => $s['verzija'], 'kategorija' => $s['kategorije'][$kljuc]]);
                 $this->nakonOdgovora(fn () => $this->objava->zatrazi($s, $this->opis($kljuc)));
                 return;
@@ -382,6 +383,7 @@ final class Urednistvo
                 [, $k] = $this->prijavljen(true);
                 $b = $this->jsonTijelo(1024);
                 $s = $this->spremiste->vrati($b['verzija'] ?? null, $b['trenutna'] ?? null, $k['ime']);
+                $this->uzivo($s);
                 $this->json(200, ['verzija' => $s['verzija']]);
                 $this->nakonOdgovora(fn () => $this->objava->zatrazi($s, 'vraćena verzija ' . $b['verzija']));
                 return;
@@ -451,6 +453,26 @@ final class Urednistvo
     {
         return $this->produkcija ? $this->konf->origin : 'http://' . self::zaglavlje('Host');
     }
+    /**
+     * Promjene odmah, bez čekanja izgradnje: public_html/jelovnik-uzivo.json (samo nazivi, opisi i cijene jela) —
+     * stranica ga pročita i zamijeni ih odmah (src/scripts/core/uzivo.ts); izgradnja ih poslije ugradi i za Google.
+     */
+    private function uzivo(array $s): void
+    {
+        try {
+            $kat = [];
+            foreach ($s['kategorije'] as $kk => $k) {
+                foreach ($k['stavke'] as $x) {
+                    if (($x['tip'] ?? '') !== 'jelo') continue;
+                    $kat[] = ['id' => $x['id'], 'naziv' => $x['naziv'], 'opis' => $x['opis'], 'cijena' => $x['cijena'], 'cijena2' => $x['cijena2'] ?? null];
+                }
+            }
+            pisi_atomarno($this->p['javno'] . '/jelovnik-uzivo.json', u_json(['verzija' => $s['verzija'], 'jela' => $kat]), 0644);
+        } catch (Throwable $e) {
+            error_log('[uredništvo] jelovnik-uzivo: ' . $e->getMessage()); // spremanje je uspjelo; stranica čeka izgradnju
+        }
+    }
+
     /** odgovor ide pregledniku odmah, a slanje na GitHub radi se poslije (traje nekoliko sekundi) */
     private function nakonOdgovora(callable $fn): void
     {

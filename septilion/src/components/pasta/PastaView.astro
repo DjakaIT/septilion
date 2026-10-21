@@ -4,7 +4,7 @@ import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
 import { ui, href, type Lang } from '../../i18n/ui';
 import { WOLT, RESERVE_PASTA, INSTAGRAM_PASTA } from '../../site.config.mjs';
-import { SIDE_A, SALADS, SIDES, nameOf } from '../../data/pasta';
+import { SIDE_A, SALADS, SIDES, nameOf, VERZIJA_JELOVNIKA } from '../../data/pasta';
 import { FAQ_PASTA } from '../../data/faq';
 import { price } from '../../lib/format';
 import { srcset, single } from '../../lib/images';
@@ -65,7 +65,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     </>))}
   </div></div>
 
-  <section class="pr-menu" id="spraylist" aria-labelledby="sl-h">
+  <section class="pr-menu" id="spraylist" aria-labelledby="sl-h" data-jelovnik={VERZIJA_JELOVNIKA}>
     <div class="pr-wrap">
       <!-- desktop: lijevi stupac naslov + popis, desni uvod + kaseta; stupci dijele gornji i donji rub.
            mobitel/tablet: .sl-l/.sl-r su display:contents, redoslijed naslov, uvod, popis (additions.css) -->
@@ -75,7 +75,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <ol class="spines" id="spines" aria-label={p.sideA}>
             {SIDE_A.map((x, i) => (
               <li class="sp" style={`--c:${x.color};--t:${x.ink}`}><button class="spine" type="button" aria-expanded="false" aria-controls="deck"
-                data-i={i} data-n={nameOf(x, lang)} data-d={x.desc[lang]} data-now={price(x.price, lang)} data-src={tapes[i].src} data-srcset={tapes[i].srcset}>
+                data-i={i} data-id={x.id} data-n={nameOf(x, lang)} data-d={x.desc[lang]} data-now={price(x.price, lang)} data-src={tapes[i].src} data-srcset={tapes[i].srcset}>
                 <span class="no">{pad(i + 1)}</span><span class="nm">{nameOf(x, lang)}</span>
                 <span class="pr"><b>{price(x.price, lang)}</b></span></button></li>
             ))}
@@ -125,7 +125,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
               <div class="chead"><h3 id="cd1">{p.salads}</h3><span>B1–B4</span></div>
               <ol class="tl">
                 {SALADS.map((x, i) => (
-                  <li><span class="i">B{i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
+                  <li data-id={x.id}><span class="i">B{i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
                 ))}
               </ol>
               <div class="cfoot"><p>{p.cfootA[0]}<br />{p.cfootA[1]}</p><span class="code" aria-hidden="true"><i></i></span></div>
@@ -140,7 +140,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
               <div class="chead"><h3 id="cd2">{p.sides}</h3><span>B5</span></div>
               <ol class="tl">
                 {SIDES.map((x, i) => (
-                  <li><span class="i">B{SALADS.length + i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
+                  <li data-id={x.id}><span class="i">B{SALADS.length + i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
                 ))}
               </ol>
               <a class="bonus" href={wolt}>{p.bonusTrack}</a>

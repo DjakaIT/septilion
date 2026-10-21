@@ -33,6 +33,8 @@ export type MenuGroup = z.infer<typeof Group>;
 export type MenuCategory = z.infer<typeof Category>;
 
 const izUrednistva = ucitajZaBuild();
+/** verzija jelovnika iz uredništva s kojom je stranica izgrađena (novije cijene i tekstove stranica preuzme odmah: core/uzivo.ts) */
+export const VERZIJA_JELOVNIKA: number = izUrednistva?.verzija ?? 0;
 export const JELLY_MENU = Menu.parse(izUrednistva ? { categories: uJelly(izUrednistva) } : raw).categories;
 export const itemCount = (c: MenuCategory) => c.groups.reduce((n, g) => n + g.items.length, 0);
 /** cijene plata za opis stranice; ako kategorije Plate nema, sve cijene hrane */

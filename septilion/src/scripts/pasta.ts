@@ -6,6 +6,7 @@ import { initChrome } from './core/chrome';
 import { tracksHtml } from '../lib/tracks';
 import { Beat, recs, state as beatState } from './pasta/beat';
 import { lightbox } from './pasta/lightbox';
+import { uzivo } from './core/uzivo';
 
 initNav();
 initChrome('pasta-rhymes');
@@ -209,3 +210,4 @@ hero.classList.remove('in'); requestAnimationFrame(() => hero.classList.add('in'
 stks.forEach((s, i) => { s.classList.remove('slap'); void s.offsetWidth; s.style.animationDelay = 0.35 + i * 0.14 + 's'; s.classList.add('slap'); });
 if (!RM) job('mq', marquee); // smanjeno kretanje: traka miruje
 job('vinyl', vinyl); // ploča se vrti samo kad je korisnik pusti
+uzivo(); // nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje

@@ -3,7 +3,7 @@ import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
 import { ui, href, plural, fill, type Lang } from '../../i18n/ui';
 import { WOLT, PHONE_JELLY } from '../../site.config.mjs';
-import { JELLY_MENU, itemCount, type MenuItem } from '../../data/jelly-menu';
+import { JELLY_MENU, itemCount, VERZIJA_JELOVNIKA, type MenuItem } from '../../data/jelly-menu';
 import { FAQ_JELLY } from '../../data/faq';
 import { price, sizeLabel } from '../../lib/format';
 import { img, srcset, single } from '../../lib/images';
@@ -75,7 +75,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <button type="button" role="tab" id={`tab-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`list-${c.id}`} tabindex={i === 0 ? 0 : -1}>{c.title[lang]}</button>
         ))}
       </div>
-      <div class="orbit-wrap">
+      <div class="orbit-wrap" data-jelovnik={VERZIJA_JELOVNIKA}>
         <div class="orbit-side">
           <div class="orbit" id="orbit">
             <div class="ring"></div>
@@ -116,7 +116,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
                 {g.title && <li class="gh" id={`g-${c.id}-${slug(g.title.hr)}`}>{g.title[lang]}{g.note && <small>{g.note[lang]}</small>}</li>}
                 {g.pairing && <li class="cn">{j.pairing} {g.pairing[lang]}</li>}
                 {g.items.map((it) => (
-                  <li><span class="it"><b>{it.name[lang]}</b>{it.desc && <span class="ds">{it.desc[lang]}</span>}{it.pairing && <span class="ds pp">{j.pairing} {it.pairing[lang]}</span>}{nt(it) && <small class="nt">{nt(it)}</small>}</span><span class="pr">{prices(it)}{vol(it) && <small>{vol(it)}</small>}</span></li>
+                  <li data-id={it.id}><span class="it"><b>{it.name[lang]}</b>{it.desc && <span class="ds">{it.desc[lang]}</span>}{it.pairing && <span class="ds pp">{j.pairing} {it.pairing[lang]}</span>}{nt(it) && <small class="nt">{nt(it)}</small>}</span><span class="pr">{prices(it)}{vol(it) && <small>{vol(it)}</small>}</span></li>
                 ))}
               </>))}
             </ul>

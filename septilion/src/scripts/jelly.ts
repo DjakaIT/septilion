@@ -5,6 +5,7 @@ import { initNav } from './core/nav';
 import { initChrome } from './core/chrome';
 import { Swarm } from './swarm';
 import { coverflow } from './jelly/coverflow';
+import { uzivo } from './core/uzivo';
 
 initNav();
 initChrome('jellyfish-in-space');
@@ -232,3 +233,4 @@ else job('swarm', (t, dt) => { if (!ckCover) swarm.step(t, dt); });
 job('orbit', (t, dt) => { if (orbitOn) orbitStep(t, dt); });
 job('gal', gal.step);
 if (!RM) job('cock', cock);
+uzivo(); // nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje
