@@ -1,7 +1,7 @@
 {
     "format": 1,
-    "verzija": 10,
-    "azurirano": "2026-10-21T15:22:29.012Z",
+    "verzija": 11,
+    "azurirano": "2026-10-21T15:23:19.009Z",
     "azurirao": "drajic",
     "kategorije": {
         "pasta-rhymes/strana-a": {
@@ -590,7 +590,7 @@
                         "hr": "Bubbly Cocktail, Kolarić Coletti Blanc Nature Pjenušac",
                         "en": ""
                     },
-                    "cijena": 100,
+                    "cijena": 9,
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
