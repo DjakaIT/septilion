@@ -1,7 +1,7 @@
 {
     "format": 1,
-    "verzija": 11,
-    "azurirano": "2026-10-21T15:23:19.009Z",
+    "verzija": 12,
+    "azurirano": "2026-10-21T15:49:17.066Z",
     "azurirao": "drajic",
     "kategorije": {
         "pasta-rhymes/strana-a": {
@@ -428,7 +428,7 @@
                         "hr": "Bertoša Malvazija",
                         "en": ""
                     },
-                    "cijena": 8,
+                    "cijena": 100,
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
