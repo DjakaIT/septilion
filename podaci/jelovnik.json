@@ -1,7 +1,7 @@
 {
     "format": 1,
-    "verzija": 12,
-    "azurirano": "2026-10-21T15:49:17.066Z",
+    "verzija": 13,
+    "azurirano": "2026-10-21T15:50:00.761Z",
     "azurirao": "drajic",
     "kategorije": {
         "pasta-rhymes/strana-a": {
@@ -417,18 +417,18 @@
                         "en": "Tacos turkey"
                     },
                     "opis": {
-                        "hr": "Trgana puretina, topljeni sir, kukuruz, guasacaca, kumkvat",
-                        "en": "Pulled turkey, processed cheese, corn, guasacaca, kumquat"
+                        "hr": "Trgana puretina, topljeni sir, kukuruz, guasacaca, kumkvat i još mnogo sasstojaka",
+                        "en": "Pulled turkey, processed cheese, corn, guasacaca, kumquat and many more"
                     },
                     "porcija": {
-                        "hr": "3 kom",
-                        "en": "3 pcs"
+                        "hr": "4 kom",
+                        "en": "4 pcs"
                     },
                     "preporuka": {
                         "hr": "Bertoša Malvazija",
                         "en": ""
                     },
-                    "cijena": 100,
+                    "cijena": 8,
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
