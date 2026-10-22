@@ -185,7 +185,9 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
   .orbit-ctl span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
   .js .chips{position:static;flex:none;margin:4px calc(var(--pad)*-1) 0;padding:4px var(--pad) 10px;background:none}
   .js .panel{flex:1}
-  .phead{--phw:min(36%,200px);gap:14px}
+  /* bez fotografije kategorije uz naslov: više mjesta za popis (izmjena naručitelja 22.10.2026.) */
+  .phead{grid-template-columns:minmax(0,1fr);gap:0}
+  .panel .phead .ph{display:none}
   .panel .phead h3{font-size:clamp(26px,7vw,34px)}
   .panel .phead .pdesc{margin-top:4px;font-size:14px}
   .js .panel .plist{margin-top:10px;overscroll-behavior:auto}
