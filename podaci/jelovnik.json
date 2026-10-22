@@ -1,7 +1,7 @@
 {
     "format": 2,
-    "verzija": 15,
-    "azurirano": "2026-10-22T09:37:18.975Z",
+    "verzija": 16,
+    "azurirano": "2026-10-22T09:37:33.167Z",
     "azurirao": "drajic",
     "kategorije": {
         "pasta-rhymes/strana-a": {
@@ -685,7 +685,7 @@
                         "hr": "Kentucky Mule",
                         "en": ""
                     },
-                    "cijena": 66,
+                    "cijena": 33,
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
