@@ -5,7 +5,6 @@ export const LANGS: Lang[] = ["hr", "en"];
 
 const hr = {
   locale: "hr_HR",
-  skip: "Preskoči na sadržaj",
   home: "Septillion, početna",
   chooseVenue: "Odaberi lokal",
   langSwitch: { label: "English", short: "EN", aria: "EN – English version" },
@@ -21,6 +20,7 @@ const hr = {
   nextPhoto: "Sljedeća fotografija",
   openPhoto: "Otvori fotografiju",
   googleReviews: "Google recenzije",
+  googleReview: "Google recenzija",
   leaveReview: "Ostavi recenziju",
   questions: "Pitanja",
   foot: { address: "Adresa", delivery: "Dostava", phone: "Telefon", social: "Društvene mreže" },
@@ -160,7 +160,6 @@ const hr = {
 
 const en: typeof hr = {
   locale: "en_GB",
-  skip: "Skip to content",
   home: "Septillion, home",
   chooseVenue: "Choose a venue",
   langSwitch: { label: "Hrvatski", short: "HR", aria: "HR – Hrvatska verzija" },
@@ -176,6 +175,7 @@ const en: typeof hr = {
   nextPhoto: "Next photo",
   openPhoto: "Open photo",
   googleReviews: "Google reviews",
+  googleReview: "Google review",
   leaveReview: "Leave a review",
   questions: "Questions",
   foot: { address: "Address", delivery: "Delivery", phone: "Phone", social: "Social media" },

@@ -15,7 +15,8 @@ export async function recenzije() {
   const lang = document.documentElement.lang === 'en' ? 'en' : 'hr';
   const txt = box.querySelector('.g-txt')!, au = box.querySelector<HTMLAnchorElement>('.g-au')!, kad = box.querySelector('.g-kad')!, n = box.querySelector('.g-n')!;
   const nav = box.querySelector<HTMLElement>('.g-nav')!;
-  const [ot, zt] = navodnici(lang);
+  // Pasta: kartica ima crveni navodnik (kao recenzije članaka), pa tekst ide bez navodnika
+  const [ot, zt] = el.hasAttribute('data-bez-navodnika') ? ['', ''] : navodnici(lang);
   let lista: Rec[] = (GOOGLE_RECENZIJE[kljuc]?.recenzije ?? []).map((r) => ({ ...r, autorUrl: null, kad: null }));
   let i = 0;
   const prikazi = () => {
@@ -25,7 +26,7 @@ export async function recenzije() {
     au.textContent = r.autor;
     if (r.autorUrl) au.href = r.autorUrl; else au.removeAttribute('href');
     const k = r.kad?.[lang] || r.kad?.hr || '';
-    kad.textContent = k ? `· ${k}` : '';
+    kad.textContent = k ? ` · ${k}` : '';
     n.textContent = `${i + 1} / ${lista.length}`;
     nav.hidden = lista.length < 2;
   };

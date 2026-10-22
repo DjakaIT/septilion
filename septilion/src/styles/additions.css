@@ -223,9 +223,20 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
 .g-nav[hidden] { display: none; }
 .g-nav button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; font-size: 18px; line-height: 1; }
 .g-n { min-width: 3.5em; text-align: center; font-variant-numeric: tabular-nums; }
-.rev-g .g-rec { flex: 1 1 320px; }
-.rev-g .g-txt { font: 400 15px/1.55 "Plex Mono"; color: rgba(20, 18, 16, 0.86); }
-.rev-g .g-by, .rev-g .g-n { font: 500 13px "Plex Mono"; }
+/* Pasta: Google recenzija je treća kartica u stilu recenzija članaka (.rq), desno ocjena, strelice i gumb
+   (izmjena naručitelja 22.10.2026.) */
+.rev-g { display: block; margin-top: 0; padding: 0; }
+.rev-g .g-rec { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 clamp(24px, 4vw, 64px); align-items: center; }
+.rev-g .rq { padding-right: 0; }
+/* bez rezanja redaka: overflow:hidden bi odrezao crveni navodnik (::before iznad teksta) */
+.rev-g .rq .g-txt { display: block; overflow: visible; }
+.rev-g .g-side { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.rev-g .g-nav { margin-top: 0; }
+.rev-g .g-n { font: 500 13px "Plex Mono"; }
+@media (max-width: 860px) {
+  .rev-g .g-rec { grid-template-columns: 1fr; }
+  .rev-g .g-side { padding-bottom: 8px; }
+}
 .jcard .g-txt { margin-top: 16px; font-family: "Instrument Serif"; font-style: italic; font-size: clamp(20px, 1.8vw, 26px); line-height: 1.25; -webkit-line-clamp: 7; }
 /* uski mobiteli: duža recenzija (npr. 330 znakova) stane cijela */
 @media (max-width: 600px) { .jcard .g-txt { -webkit-line-clamp: 10; } }
