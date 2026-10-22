@@ -1,7 +1,7 @@
 {
-    "format": 1,
-    "verzija": 14,
-    "azurirano": "2026-10-21T16:16:47.015Z",
+    "format": 2,
+    "verzija": 15,
+    "azurirano": "2026-10-22T09:37:18.975Z",
     "azurirao": "drajic",
     "kategorije": {
         "pasta-rhymes/strana-a": {
@@ -459,7 +459,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_tacos_beef",
                     "boja": null,
                     "galerija": true
                 },
@@ -486,7 +486,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_tuna_tartare",
                     "boja": null,
                     "galerija": true
                 },
@@ -513,7 +513,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_tuna_tataki",
                     "boja": null,
                     "galerija": true
                 },
@@ -685,7 +685,7 @@
                         "hr": "Kentucky Mule",
                         "en": ""
                     },
-                    "cijena": 33,
+                    "cijena": 66,
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
@@ -797,7 +797,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_ceviche",
                     "boja": null,
                     "galerija": true
                 },
@@ -905,7 +905,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_bao_shrimp",
                     "boja": null,
                     "galerija": true
                 },
@@ -1081,7 +1081,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_poke_losos",
                     "boja": null,
                     "galerija": true
                 },
@@ -1108,7 +1108,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_katsu_losos",
                     "boja": null,
                     "galerija": true
                 },
@@ -1503,7 +1503,7 @@
                     "kolicina": "",
                     "cijena2": 13,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_salmon_fig",
                     "boja": null,
                     "galerija": true
                 },
@@ -1719,7 +1719,7 @@
                     "kolicina": "",
                     "cijena2": 13,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_karage_roll",
                     "boja": null,
                     "galerija": true
                 },
@@ -1746,7 +1746,7 @@
                     "kolicina": "",
                     "cijena2": 13,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_tuna_olive",
                     "boja": null,
                     "galerija": true
                 },
@@ -1884,7 +1884,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_aburi_nigiri",
                     "boja": null,
                     "galerija": true
                 },
@@ -1981,7 +1981,7 @@
                     "kolicina": "",
                     "cijena2": null,
                     "kolicina2": "",
-                    "slika": null,
+                    "slika": "jf_jelo_gunkan",
                     "boja": null,
                     "galerija": true
                 },
