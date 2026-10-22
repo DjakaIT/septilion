@@ -37,6 +37,6 @@
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.4.299",
     "qrcode-generator": "^2.0.4",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }
