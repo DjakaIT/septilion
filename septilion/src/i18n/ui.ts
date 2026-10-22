@@ -35,7 +35,7 @@ const hr = {
     },
     jelly: {
       title: "Jellyfish in Space — sushi, street food i kokteli, Zagreb",
-      desc: "Jellyfish in Space na Kvatriću: sushi, bao buns, tacos, bowlovi i platoi nazvani po planetima, uz cocktail bar. Martićeva 71, Zagreb. Rezerviraj stol online.",
+      desc: "Jellyfish in Space na Kvatriću: sushi i All You Can Eat sushi srijedom i nedjeljom, bao buns, bowlovi i platoi, uz cocktail bar. Martićeva 71. Rezerviraj stol.",
     },
   },
   gate: {
@@ -182,7 +182,7 @@ const en: typeof hr = {
   meta: {
     gate: {
       title: "Septillion — Pasta Rhymes and Jellyfish in Space, Zagreb",
-      desc: "Septillion: two Zagreb restaurants. Pasta Rhymes, fresh homemade pasta at Hatzova 5, and Jellyfish in Space, sushi, street food and cocktails at Martićeva 71.",
+      desc: "Septillion is two Zagreb restaurants: Pasta Rhymes, fresh homemade pasta at Hatzova 5, and Jellyfish in Space, sushi, street food and cocktails at Martićeva 71.",
     },
     pasta: {
       title: "Pasta Rhymes — fresh homemade pasta in central Zagreb",
@@ -190,7 +190,7 @@ const en: typeof hr = {
     },
     jelly: {
       title: "Jellyfish in Space — sushi, street food and cocktails, Zagreb",
-      desc: "Jellyfish in Space in Kvatrić, Zagreb: sushi, bao buns, tacos, bowls and platters named after planets, plus a cocktail bar. Martićeva 71. Book a table online.",
+      desc: "Jellyfish in Space, Zagreb: sushi, all-you-can-eat sushi on Wednesdays and Sundays, bao buns, bowls and platters, and a cocktail bar. Martićeva 71. Book a table.",
     },
   },
   gate: {

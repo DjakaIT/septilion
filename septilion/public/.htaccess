@@ -37,6 +37,11 @@ ErrorDocument 503 /odrzavanje.html
   RewriteCond %{DOCUMENT_ROOT}/.odrzavanje !-f
   RewriteRule ^odrzavanje(\.html)?$ - [R=404,L]
 
+  # Google recenzije s Googlea postoje tek kad uredništvo ima API ključ; do tada prazan odgovor umjesto 404
+  # (stranica ionako ima odabrane recenzije, a 404 bi svaki posjet ostavio grešku u konzoli preglednika)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^recenzije\.json$ - [R=204,L]
+
   # /stranica.html -> /stranica (jedna kanonska adresa)
   RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html[\s?] [NC]
   RewriteRule ^ /%1 [R=301,L]

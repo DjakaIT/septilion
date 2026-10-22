@@ -10,9 +10,12 @@ import { price } from '../../lib/format';
 import { srcset, single } from '../../lib/images';
 import { HERO_STICKERS, stickerSvg } from '../../lib/stickers';
 import { tracksHtml } from '../../lib/tracks';
+import { GOOGLE_RECENZIJE, ocjenaTekst, navodnici } from '../../data/recenzije';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = ui[lang], p = t.pasta;
+// Google recenzije: prva je u HTML-u, strelice i izmjenu radi core/recenzije.ts
+const gr = GOOGLE_RECENZIJE.pasta, gq = navodnici(lang);
 const other: Lang = lang === 'hr' ? 'en' : 'hr';
 const wolt = WOLT['pasta-rhymes'];
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -209,8 +212,8 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
         ))}
       </div>
       <div class="rev-g rv" data-google="pasta">
-        <p class="gl"><b>{t.googleReviews}</b><span class="gscore g-ocjena">—,—</span></p>
-        <div class="gt g-rec" hidden><blockquote class="g-txt"></blockquote><p class="g-by"><span class="g-st" aria-hidden="true">★★★★★</span> <a class="g-au" target="_blank" rel="noopener"></a> <span class="g-kad"></span></p><p class="g-nav"><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n"></span><button class="g-next" type="button" aria-label={t.next}>→</button></p></div>
+        <p class="gl"><b>{t.googleReviews}</b><span class="gscore g-ocjena">{ocjenaTekst(gr.ocjena, lang)}</span></p>
+        <div class="gt g-rec"><blockquote class="g-txt">{gq[0]}{gr.recenzije[0].tekst[lang]}{gq[1]}</blockquote><p class="g-by"><span class="g-st" aria-hidden="true">★★★★★</span> <a class="g-au" target="_blank" rel="noopener">{gr.recenzije[0].autor}</a> <span class="g-kad"></span></p><p class="g-nav" hidden={gr.recenzije.length < 2}><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n">1 / {gr.recenzije.length}</span><button class="g-next" type="button" aria-label={t.next}>→</button></p></div>
         <a class="pr-btn solid" href={MAPS_PASTA} target="_blank" rel="noopener">{t.leaveReview}</a>
       </div>
     </div>

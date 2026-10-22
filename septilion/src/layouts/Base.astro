@@ -64,7 +64,7 @@ const preloadi = ['/fonts/tt-lakes-neue/tt-lakes-neue-400.woff2', ...preload].fi
 <script type="application/ld+json" set:html={jsonld} />
 </head>
 <body data-route={route} data-lang={lang}>
-<a class="skip" href="#main">{t.skip}</a>
+<span data-nosnippet><a class="skip" href="#main">{t.skip}</a></span>
 <Topbar lang={lang} route={route} />
 <slot name="before-main" />
 <main id="main">

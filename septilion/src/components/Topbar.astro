@@ -8,7 +8,7 @@ const other: Lang = lang === 'hr' ? 'en' : 'hr';
 ---
 <header class="topbar" aria-label="Septillion">
   <a class="home" href={href('gate', lang)} aria-label={t.home} data-nav="gate"><Fragment set:html={mark} /></a>
-  <div class="tb-r">
+  <div class="tb-r" data-nosnippet>
     <a class="lang" href={href(route, other)} hreflang={other} lang={other} aria-label={t.langSwitch.aria} data-nav-lang>{t.langSwitch.short}</a>
     <nav class="switch" aria-label={t.chooseVenue}>
       <span class="pill" aria-hidden="true"></span>

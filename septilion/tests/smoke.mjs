@@ -96,10 +96,8 @@ const naVrhuPopisa = (page, g) => page.evaluate((g) => [Math.round(document.getE
   await page.screenshot({ path: OUT + '/skupina-mobile.png' });
   const b9 = await blockState(page);
   ok(b0.inView && b9.inView && b0.h === b9.h, 'mobitel: orbita i jelovnik cijeli na ekranu, iste visine', JSON.stringify([b0, b9]));
-  await page.tap(`.pgroups:not([hidden]) button[data-target="${g.target}"]`); await page.waitForTimeout(2200);
-  await page.screenshot({ path: OUT + '/skupina-mobile-skok.png' });
-  const vis = await naVrhuPopisa(page, g);
-  ok(Math.abs(vis[0] - vis[1]) <= 2, `mobitel: skupina ${g.target} na vrhu popisa`, JSON.stringify(vis));
+  // skupine (npr. Nigiri | Uramaki) na mobitelu nisu traka gumba, samo naslovi u popisu
+  ok(!(await page.locator('.pgroups:not([hidden])').isVisible()) && await page.locator(`#${g.target}`).count() === 1, 'mobitel: bez vodoravne trake skupina, naslovi skupina u popisu');
   ok(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth) === 0, 'bez vodoravnog prelijevanja (jellyfish 390)');
   await page.goto(B + '/pasta-rhymes', { waitUntil: 'networkidle' });
   await page.evaluate(() => document.querySelector('#spraylist').scrollIntoView()); await page.waitForTimeout(500);

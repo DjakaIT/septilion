@@ -128,9 +128,9 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
 @media(min-width:1100px){.jf-foot .foot-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .foot-grid .soc a{display:flex;width:max-content}
 
-/* mobitel: bez vodoravne trake kategorija ispod orbite — kategorija se bira planetima i strelicama, kao na
-   računalu (izmjena naručitelja 22.10.2026.: preglednije) */
-@media(max-width:900px){.chips{display:none}}
+/* mobitel: ispod orbite nema vodoravnih traka (kategorije ni skupine) — kategorija se bira planetima i strelicama,
+   a naslovi skupina (npr. NIGIRI) ostaju u popisu (izmjena naručitelja 22.10.2026.: preglednije) */
+@media(max-width:900px){.chips,.pgroups{display:none!important}}
 
 /* ============ Jellyfish: orbita i jelovnik u jednom ekranu (izmjena naručitelja 02.10.2026.) ============
    Blok stalne visine: lijevo (na mobitelu gore) orbita s većim planetima, desno (dolje) zaglavlje
@@ -225,5 +225,7 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
 .rev-g .g-txt { font: 400 15px/1.55 "Plex Mono"; color: rgba(20, 18, 16, 0.86); }
 .rev-g .g-by, .rev-g .g-n { font: 500 13px "Plex Mono"; }
 .jcard .g-txt { margin-top: 16px; font-family: "Instrument Serif"; font-style: italic; font-size: clamp(20px, 1.8vw, 26px); line-height: 1.25; -webkit-line-clamp: 7; }
+/* uski mobiteli: duža recenzija (npr. 330 znakova) stane cijela */
+@media (max-width: 600px) { .jcard .g-txt { -webkit-line-clamp: 10; } }
 .jcard .g-by, .jcard .g-n { font-size: 14px; color: var(--jf-dim); }
 .jcard .g-au { display: inline; margin-top: 0; color: var(--jf-fg, #fff); }
