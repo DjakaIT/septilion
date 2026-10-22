@@ -160,6 +160,29 @@ describe(`sučelje uredništva (${POSLUZITELJ})`, { skip: preskoci }, () => {
     await page.getByRole('button', { name: 'Odbaci' }).click();
   });
 
+  test('Jellyfish: fotografija jela nije obavezna (Ukloni); jela s fotografijom su u galeriji na stranici', async () => {
+    await page.getByRole('button', { name: /^Predjela/ }).first().click();
+    const stavka = (naziv) => page.locator('.stavka', { has: page.locator('.sazetak .naziv', { hasText: new RegExp(`^${naziv}$`) }) });
+    assert.equal(await stavka('Tacos beef').locator('img.minijatura').count(), 1, 'zadana fotografija u popisu');
+    await stavka('Tacos beef').locator('.sazetak').click();
+    const tacos = stavka('Tacos beef');
+    await tacos.getByText('Fotografija jela (nije obavezna)').waitFor();
+    await tacos.getByRole('button', { name: 'Ukloni fotografiju: Fotografija jela (nije obavezna)' }).click();
+    await page.getByText('Fotografija uklonjena').waitFor();
+    assert.equal(await tacos.locator('.fotografija .prazna-slika').count(), 1);
+    assert.equal(await tacos.locator('img.minijatura').count(), 0, 'i minijatura u popisu');
+    await stavka('Tacos puretina').locator('.sazetak').click();
+    const jpeg = await sharp({ create: { width: 1200, height: 1500, channels: 3, background: '#c84' } }).jpeg().toBuffer();
+    await stavka('Tacos puretina').locator('input[type=file]').setInputFiles({ name: 'tacos.jpg', mimeType: 'image/jpeg', buffer: jpeg });
+    await stavka('Tacos puretina').locator('.fotografija img').waitFor(); // učitano (obavijest prethodnog testa može još stajati)
+    assert.equal(await stavka('Tacos puretina').locator('img.minijatura').count(), 1, 'minijatura u popisu');
+    await page.getByRole('button', { name: 'Spremi i objavi' }).click();
+    await pricekajObjavu();
+    const galerija = [...(await srv.stranica('/jellyfish-in-space')).matchAll(/aria-label="Fotografija \d+ od \d+: ([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(galerija[0], 'Tacos puretina', galerija.join(', '));
+    assert.ok(!galerija.includes('Tacos beef') && galerija.includes('Tuna tartare'), galerija.join(', '));
+  });
+
   test('brisanje (s poništavanjem) i redoslijed tipkovnicom', async () => {
     await page.getByRole('button', { name: /Strana B — salate/ }).click();
     const prije = await page.locator('.stavka').count();

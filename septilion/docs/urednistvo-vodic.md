@@ -60,8 +60,11 @@ Svaka pasta je jedna kaseta, pa uz naziv, opis i cijenu treba:
 - **Količina uz cijenu** — npr. `0,1 l` kod pića.
 - **Druga veličina** — za drugu cijenu, npr. čaša i boca (`0,75 l`) ili 4 i 8 komada.
 - **Porcija** i **Preporuka pića** — neobavezno.
+- **Fotografija jela** — neobavezna. Jela s fotografijom prikazuju se u galeriji *Što se još, osim meduza…*
+  (redom kao u jelovniku, a natpis je naziv jela). **Ukloni** makne fotografiju, a kvačica **Prikaži u galeriji
+  fotografija na stranici** skine jelo iz galerije bez brisanja fotografije.
 - **Postavke kategorije** (iznad popisa): naslov kategorije, fotografija koja se vidi na planetu u orbiti i iznad
-  popisa jela, te napomena na vrhu popisa.
+  popisa jela, te napomena na vrhu popisa. I te se fotografije mogu promijeniti ili ukloniti.
 
 ### Dodavanje, brisanje, redoslijed
 

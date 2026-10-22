@@ -2,8 +2,8 @@
 import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
 import { ui, href, plural, fill, type Lang } from '../../i18n/ui';
-import { WOLT, PHONE_JELLY, RESERVE_JELLY } from '../../site.config.mjs';
-import { JELLY_MENU, itemCount, VERZIJA_JELOVNIKA, type MenuItem } from '../../data/jelly-menu';
+import { WOLT, PHONE_JELLY, RESERVE_JELLY, MAPS_JELLY, INSTAGRAM_JELLY, FACEBOOK_JELLY } from '../../site.config.mjs';
+import { JELLY_MENU, JELLY_GALLERY, itemCount, VERZIJA_JELOVNIKA, type MenuItem } from '../../data/jelly-menu';
 import { FAQ_JELLY } from '../../data/faq';
 import { price, sizeLabel } from '../../lib/format';
 import { img, srcset, single } from '../../lib/images';
@@ -34,9 +34,9 @@ const COCK = [
   { k: 'jf_moon', bg: 'ckb_2', pos: '50% 45%' }, { k: 'jf_oldf', bg: 'ckb_3', pos: '50% 45%' },
   { k: 'jf_hand', bg: 'ckb_4', pos: '55% 50%' }, { k: 'jf_mart_wood', bg: 'ckb_5', pos: '50% 60%' },
 ];
-// galerija: najprodavanija (Wolt "Popular") i istaknuta jela, 12 kadrova; natpisi su nazivi s jelovnika (ui.ts gallery)
-const GAL = ['jf_bao_pork', 'jf_rainbow_roll', 'jf_katsu_bowl', 'jf_saturn', 'jf_bao_shrimp', 'jf_fried_uramaki', 'jf_galaxy', 'jf_sushi_dream', 'jf_spring_roll', 'jf_poke_losos', 'jf_mars', 'jf_tuna_bowl'];
-const galFull = await Promise.all(GAL.map((k) => single(k, 1600, 'webp')));
+// galerija: jela s fotografijom iz uredništva (redom kao u jelovniku); natpis je naziv jela
+const GAL = JELLY_GALLERY.map((i) => ({ k: i.img, cap: i.name[lang] }));
+const galFull = await Promise.all(GAL.map((g) => single(g.k, 1600, 'webp')));
 const chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>';
 const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>';
 ---
@@ -45,7 +45,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
   <section class="jf-hero" aria-labelledby="jf-h">
     <div>
       <Pic k="jf_logo" class="logo" alt={j.logoAlt} widths={[210, 420]} sizes="(max-width: 923px) 120px, 210px" loading="eager" fetchpriority="high" />
-      <h1 id="jf-h" class="serif">Somewhere out there, there is a jellyfish floating in space.</h1>
+      <h1 id="jf-h" class="serif"><span class="sr">Jellyfish in Space, Zagreb — </span>Somewhere out there, there is a jellyfish floating in space.</h1>
       <p class="sub">{j.sub}</p>
       <div class="cta">
         <a class="jf-btn solid" href={RESERVE_JELLY} target="_blank" rel="noopener">{t.reserveTable}</a>
@@ -154,7 +154,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     </div>
   </section>
 
-  <section class="jf-gal" id="galerija" aria-labelledby="jg-h">
+  {GAL.length > 0 && <section class="jf-gal" id="galerija" aria-labelledby="jg-h">
     <div class="jf-wrap">
       <div class="head rv">
         <h2 id="jg-h" class="serif">{j.galTitle[0]} <em>{j.galTitle[1]}</em></h2>
@@ -162,13 +162,13 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
       </div>
       <div class="cflow" id="pgrid" role="region" aria-roledescription={j.carousel} aria-label={j.galAria}>
         <div class="cf-stage" id="cf-stage">
-          {GAL.map((k, i) => (
-            <figure class="pg" data-i={i}><button class="pg-open" type="button" data-i={i} data-full={galFull[i]} aria-label={`${fill(j.photoOf, { n: i + 1, t: GAL.length })}: ${j.gallery[i]}`}><Pic k={k} alt={j.gallery[i]} widths={[300, 460, 800]} sizes="(max-width: 760px) 52vw, 360px" draggable="false" /></button></figure>
+          {GAL.map((g, i) => (
+            <figure class="pg" data-i={i}><button class="pg-open" type="button" data-i={i} data-full={galFull[i]} aria-label={`${fill(j.photoOf, { n: i + 1, t: GAL.length })}: ${g.cap}`}><Pic k={g.k} alt={g.cap} widths={[300, 460, 800]} sizes="(max-width: 760px) 52vw, 360px" draggable="false" /></button></figure>
           ))}
         </div>
         <div class="cf-ui">
           <button class="cf-nav p" type="button" aria-label={t.prevPhoto}><Fragment set:html={chevL} /></button>
-          <div class="cf-meta"><p class="cf-count"><b id="cf-n">01</b> / {pad(GAL.length)}</p><p class="cf-cap" id="cf-cap" aria-live="polite">{j.gallery[0]}</p></div>
+          <div class="cf-meta"><p class="cf-count"><b id="cf-n">01</b> / {pad(GAL.length)}</p><p class="cf-cap" id="cf-cap" aria-live="polite">{GAL[0].cap}</p></div>
           <button class="cf-nav n" type="button" aria-label={t.nextPhoto}><Fragment set:html={chevR} /></button>
         </div>
         <div class="cf-dots">
@@ -176,14 +176,14 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
         </div>
       </div>
     </div>
-  </section>
+  </section>}
 
   <section class="jf-rev" aria-labelledby="jr-h">
     <div class="jf-wrap">
       <h2 id="jr-h" class="serif rv">{j.revTitle}</h2>
       <div class="grid">
         <article class="jcard rv"><p class="src">{j.timeout.src}</p><blockquote>{j.timeout.q}</blockquote><p class="stars" role="img" aria-label={j.timeout.stars}>★★★★☆</p><p class="by">{j.timeout.by}</p></article>
-        <article class="jcard rv" data-google="jelly"><p class="src">{t.googleReviews}</p><p class="big g-ocjena">—,—</p><div class="g-rec" hidden><blockquote class="g-txt"></blockquote><p class="g-by"><span class="g-st" aria-hidden="true">★★★★★</span> <a class="g-au" target="_blank" rel="noopener"></a> <span class="g-kad"></span></p><p class="g-nav"><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n"></span><button class="g-next" type="button" aria-label={t.next}>→</button></p></div><a class="jf-btn line" href="https://www.google.com/maps/search/?api=1&query=Jellyfish+in+Space+Marti%C4%87eva+71+Zagreb" target="_blank" rel="noopener">{t.leaveReview}</a></article>
+        <article class="jcard rv" data-google="jelly"><p class="src">{t.googleReviews}</p><p class="big g-ocjena">—,—</p><div class="g-rec" hidden><blockquote class="g-txt"></blockquote><p class="g-by"><span class="g-st" aria-hidden="true">★★★★★</span> <a class="g-au" target="_blank" rel="noopener"></a> <span class="g-kad"></span></p><p class="g-nav"><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n"></span><button class="g-next" type="button" aria-label={t.next}>→</button></p></div><a class="jf-btn line" href={MAPS_JELLY} target="_blank" rel="noopener">{t.leaveReview}</a></article>
       </div>
     </div>
   </section>
@@ -197,6 +197,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
         <div><h3>{t.foot.address}</h3><p>Martićeva 71<br />10000 Zagreb</p></div>
         <div><h3>{t.foot.delivery}</h3><p><a href={wolt}>Wolt</a></p></div>
         <div><h3>{t.foot.phone}</h3><p><a href={PHONE_JELLY.href}>{PHONE_JELLY.label}</a></p></div>
+        <div><h3>{t.foot.social}</h3><p class="soc"><a href={INSTAGRAM_JELLY}>Instagram</a><a href={FACEBOOK_JELLY}>Facebook</a></p></div>
         <div><h3>Septillion</h3><p><a href={href('pasta-rhymes', lang)} data-nav="pasta-rhymes">Pasta Rhymes →</a></p></div>
       </div>
       <p class="foot-legal">{j.legal} · <a href={href('jellyfish-in-space', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>

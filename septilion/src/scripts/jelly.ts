@@ -221,18 +221,19 @@ const cgUp = () => {
 stage.addEventListener('pointerup', cgUp); stage.addEventListener('pointercancel', cgUp);
 
 /* ================= GALERIJA — karusel ================= */
-const gal = coverflow();
+// nema je dok ni jedno jelo u uredništvu nema fotografiju za galeriju
+const gal = document.getElementById('pgrid') ? coverflow() : null;
 
 /* ================= POKRETANJE ================= */
 const swarm = new Swarm($<HTMLCanvasElement>('#swarm'), { count: innerWidth < 700 ? 9 : 16, stars: true });
 addEventListener('resize', cMeasure); addEventListener('load', cMeasure);
 select(0);
-requestAnimationFrame(() => { cMeasure(); if (RM) cockStatic(); else cock(0, 0); gal.measure(); gal.render(); });
+requestAnimationFrame(() => { cMeasure(); if (RM) cockStatic(); else cock(0, 0); gal?.measure(); gal?.render(); });
 // smanjeno kretanje: nebo s meduzama je statičan kadar
 if (RM) { swarm.step(0, 0); addEventListener('resize', () => swarm.step(0, 0)); }
 else job('swarm', (t, dt) => { if (!ckCover) swarm.step(t, dt); });
 job('orbit', (t, dt) => { if (orbitOn) orbitStep(t, dt); });
-job('gal', gal.step);
+if (gal) job('gal', gal.step);
 if (!RM) job('cock', cock);
 uzivo(); // nove cijene i tekstovi iz uredništva odmah, bez čekanja izgradnje
 recenzije(); // Google recenzije (5★ s tekstom) iz /recenzije.json

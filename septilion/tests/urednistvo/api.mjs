@@ -211,6 +211,38 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     assert.ok((await srv.stranica('/pasta-rhymes')).includes('/_astro/'), 'stranica izgrađena');
   });
 
+  test('Jellyfish: stari jelovnik (format 1) dobije zadane fotografije jela; fotografija nije obavezna i vodi jelo u galeriju', async () => {
+    // jelovnik kakav je na hostingu prije nadogradnje: format 1, jela Jellyfisha bez fotografija
+    const dat = path.join(srv.podaci, 'jelovnik.json');
+    const stari = JSON.parse(fs.readFileSync(dat, 'utf8'));
+    stari.format = 1;
+    for (const [kk, k] of Object.entries(stari.kategorije)) if (kk.startsWith('jellyfish-in-space/')) for (const x of k.stavke) if (x.tip === 'jelo') x.slika = null;
+    fs.writeFileSync(dat, JSON.stringify(stari));
+    const j = (await t.k.z('GET', `${API}/jelovnik`)).j;
+    assert.equal(j.sadrzaj.format, 2);
+    const predjela = structuredClone(j.sadrzaj.kategorije['jellyfish-in-space/predjela']);
+    const jelo = (naziv) => predjela.stavke.find((x) => x.naziv?.hr === naziv);
+    assert.equal(jelo('Tacos beef').slika, 'jf_jelo_tacos_beef', 'zadana fotografija prema nazivu');
+    assert.equal(jelo('Tacos puretina').slika, null);
+    assert.ok(j.lokali.find((l) => l.id === 'jellyfish-in-space').kategorije[0].polja.includes('slikaJela'));
+    // urednik makne jednu, doda drugu i jednu skine iz galerije
+    jelo('Tacos beef').slika = null;
+    jelo('Tacos puretina').slika = 'jf_jelo_ceviche';
+    jelo('Tuna tataki').galerija = false;
+    const r = await t.k.z('PUT', `${API}/kategorija`, { kljuc: 'jellyfish-in-space/predjela', verzija: j.sadrzaj.verzija, kategorija: predjela });
+    assert.equal(r.status, 200, JSON.stringify(r.j));
+    const disk = JSON.parse(fs.readFileSync(dat, 'utf8'));
+    assert.equal(disk.format, 2, 'nadograđeni jelovnik je spremljen');
+    assert.equal(disk.kategorije['jellyfish-in-space/predjela'].stavke.find((x) => x.naziv?.hr === 'Tacos beef').slika, null, 'maknuta fotografija se ne vraća');
+    assert.equal(disk.kategorije['jellyfish-in-space/sushi'].stavke.find((x) => x.naziv?.hr === 'Aburi nigiri').slika, 'jf_jelo_aburi_nigiri', 'ostale kategorije su nadograđene');
+    await srv.objavljeno();
+    const html = await srv.stranica('/jellyfish-in-space');
+    const galerija = [...html.matchAll(/aria-label="Fotografija \d+ od \d+: ([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(galerija[0], 'Tacos puretina', galerija.join(', '));
+    assert.ok(!galerija.includes('Tacos beef') && !galerija.includes('Tuna tataki'), galerija.join(', '));
+    assert.ok(galerija.includes('Tuna tartare') && galerija.includes('Aburi nigiri'), galerija.join(', '));
+  });
+
   test('povijest: stara verzija se vraća kao nova i objavljuje', async () => {
     const p = (await t.k.z('GET', `${API}/povijest`)).j;
     assert.ok(p.length >= 3);

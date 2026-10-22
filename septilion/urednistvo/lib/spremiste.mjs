@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { citajJson, pisiJson, brava } from './datoteke.mjs';
-import { provjeri, pocetniSadrzaj, Kategorija } from '../../src/data/sadrzaj.mjs';
+import { provjeri, pocetniSadrzaj, migriraj, Kategorija } from '../../src/data/sadrzaj.mjs';
 import { LOKALI, kljucKategorije } from '../../src/data/lokali.mjs';
 import { ROOT } from './postavke.mjs';
 
@@ -30,10 +30,10 @@ export function spremiste(podaciDir, { slikaPostoji }) {
     for (const f of sve.slice(0, Math.max(0, sve.length - ZADRZI_VERZIJA))) fs.rmSync(path.join(povijestDir, f));
   }
 
-  /** trenutni jelovnik; prvi put se stvara iz lokalnih podataka stranice */
+  /** trenutni jelovnik (stariji format nadograđen, na disk ide pri sljedećem spremanju); prvi put se stvara iz lokalnih podataka stranice */
   function ucitaj() {
     const s = citajJson(datoteka);
-    if (s) return s;
+    if (s) return migriraj(s);
     const pocetni = pocetniSadrzaj(ROOT);
     pisiJson(datoteka, pocetni);
     snimiVerziju(pocetni, 'Početni sadržaj');

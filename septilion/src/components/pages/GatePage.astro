@@ -7,7 +7,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const m = ui[lang].meta.gate;
 ---
-<Base lang={lang} route="gate" title={m.title} description={m.desc} jsonld={graph('gate', lang)} ogImage="pr_hero"
+<Base lang={lang} route="gate" title={m.title} description={m.desc} jsonld={await graph('gate', lang)} ogImage="pr_hero"
   preload={['/fonts/tt-lakes-neue/tt-lakes-neue-expanded-400.woff2']}>
   <GateView lang={lang} />
 </Base>

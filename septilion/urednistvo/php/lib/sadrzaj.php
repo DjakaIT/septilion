@@ -4,7 +4,7 @@
 // Greške su { putanja: [...], poruka } — uredništvo ih prikazuje uz polje.
 declare(strict_types=1);
 
-const FORMAT_SADRZAJA = 1;
+const FORMAT_SADRZAJA = 2;
 const KLJUC_SLIKE = '/^(?:[a-z0-9_]{1,40}|n-[a-f0-9]{24})$/';
 const ID_STAVKE = '/^[a-z0-9]{6,32}$/';
 
@@ -118,6 +118,26 @@ final class Provjera
         return ['format' => $v['format'], 'verzija' => $v['verzija'], 'azurirano' => $this->niz($v['azurirano'], ['azurirano'], 40),
             'azurirao' => $this->niz($v['azurirao'], ['azurirao'], 40), 'kategorije' => $kategorije];
     }
+}
+
+/**
+ * Nadogradnja starijeg sadržaja (kao migriraj u sadrzaj.mjs). Format 1 -> 2: jela Jellyfisha bez fotografije dobiju
+ * zadanu prema nazivu (konfiguracija.json: zadaneFotografije). Ostalo ide dalje nepromijenjeno — provjera ga ionako odbije.
+ */
+function migriraj_sadrzaj(mixed $s, array $zadane): mixed
+{
+    if (!is_array($s) || ($s['format'] ?? null) !== 1 || !is_array($s['kategorije'] ?? null)) return $s;
+    $kljuc = fn (mixed $n) => is_string($n) ? trim(preg_replace('/\s+/u', ' ', mb_strtolower($n, 'UTF-8'))) : '';
+    foreach ($s['kategorije'] as $kk => $k) {
+        if (!str_starts_with((string) $kk, 'jellyfish-in-space/') || !is_array($k['stavke'] ?? null)) continue;
+        foreach ($k['stavke'] as $i => $x) {
+            if (!is_array($x) || ($x['tip'] ?? null) !== 'jelo' || !array_key_exists('slika', $x) || $x['slika'] !== null) continue;
+            $z = $zadane[$kljuc($x['naziv']['hr'] ?? null)] ?? null;
+            if (is_string($z)) $s['kategorije'][$kk]['stavke'][$i]['slika'] = $z;
+        }
+    }
+    $s['format'] = 2;
+    return $s;
 }
 
 /** pravila po kategoriji (lokali: polja koja kategorija ima) — kao provjeriKategoriju u sadrzaj.mjs */

@@ -10,6 +10,7 @@
     "fonts": "node scripts/build-fonts.mjs",
     "menu": "node scripts/menu/convert.mjs",
     "pdf": "node scripts/pdf/compress-menu.mjs",
+    "ikone": "node scripts/ikone.mjs",
     "predev": "node scripts/build-fonts.mjs",
     "dev": "astro dev",
     "prebuild": "node scripts/build-fonts.mjs",

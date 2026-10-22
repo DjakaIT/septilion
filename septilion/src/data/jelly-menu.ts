@@ -3,7 +3,7 @@
 // Oblik se provjerava pri buildu — kriva cijena ili prazan naziv ruše build umjesto da odu na stranicu.
 import { z } from 'astro/zod';
 import raw from './jelly-menu.json';
-import { ucitajZaBuild, uJelly } from './sadrzaj.mjs';
+import { ucitajZaBuild, uJelly, zadanaFotografijaJela } from './sadrzaj.mjs';
 
 const L = z.object({ hr: z.string().min(1), en: z.string().min(1) });
 const Price = z.object({ amount: z.number().positive(), size: z.string().optional() });
@@ -16,6 +16,9 @@ const Item = z.object({
   portion: L.nullable(),
   pairing: L.nullable(),
   prices: z.array(Price).min(1),
+  // fotografija jela (uredništvo; bez nje jelo nije u galeriji) i smije li u galeriju
+  img: Img.nullable().default(null),
+  gallery: z.boolean().default(true),
 });
 const Group = z.object({ title: L.nullable(), note: L.nullable(), pairing: L.nullable(), items: z.array(Item).min(1) });
 const Category = z.object({
@@ -35,7 +38,11 @@ export type MenuCategory = z.infer<typeof Category>;
 const izUrednistva = ucitajZaBuild();
 /** verzija jelovnika iz uredništva s kojom je stranica izgrađena (novije cijene i tekstove stranica preuzme odmah: core/uzivo.ts) */
 export const VERZIJA_JELOVNIKA: number = izUrednistva?.verzija ?? 0;
-export const JELLY_MENU = Menu.parse(izUrednistva ? { categories: uJelly(izUrednistva) } : raw).categories;
+// bez uredništva: jelly-menu.json + zadane fotografije jela (kao početni sadržaj uredništva)
+const izJsona = { categories: raw.categories.map((c) => ({ ...c, groups: c.groups.map((g) => ({ ...g, items: g.items.map((i) => ({ ...i, img: zadanaFotografijaJela(i.name.hr) })) })) })) };
+export const JELLY_MENU = Menu.parse(izUrednistva ? { categories: uJelly(izUrednistva) } : izJsona).categories;
+/** galerija "Što se još, osim meduza…": jela s fotografijom i kvačicom za galeriju, redom kao u jelovniku; natpis je naziv jela */
+export const JELLY_GALLERY = JELLY_MENU.flatMap((c) => c.groups.flatMap((g) => g.items)).filter((i): i is MenuItem & { img: string } => Boolean(i.img) && i.gallery);
 export const itemCount = (c: MenuCategory) => c.groups.reduce((n, g) => n + g.items.length, 0);
 /** cijene plata za opis stranice; ako kategorije Plate nema, sve cijene hrane */
 export const platePrices = () => {

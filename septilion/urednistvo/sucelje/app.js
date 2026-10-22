@@ -412,12 +412,20 @@ async function pripremiFotografiju(f) {
   return blob ?? f;
 }
 
-function poljeSlike(obj, kljuc, oznaka, { id, opis } = {}) {
+function poljeSlike(obj, kljuc, oznaka, { id, opis, ukloni = false } = {}) {
   const unos = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp,image/avif', hidden: true });
   const prikaz = () => (obj[kljuc] ? h('img', { src: `/urednistvo/api/slike/${obj[kljuc]}`, alt: '' }) : h('span', { class: 'prazna-slika' }, 'Nema fotografije', h('small', {}, 'klikni ili dovuci')));
   let slikaEl = prikaz();
   const tekst = h('span', {}, obj[kljuc] ? 'Promijeni fotografiju' : 'Dodaj fotografiju');
   const gumb = h('button', { class: 'gumb', type: 'button', 'data-putanja': `${id}:${kljuc}`, 'aria-label': `${tekst.textContent}: ${oznaka}`, onclick: () => unos.click() }, ikona('slika'), tekst);
+  // neobavezna fotografija (Jellyfish: jelo, kategorija, planet) smije se i maknuti
+  const makni = ukloni ? h('button', { class: 'gumb tih', type: 'button', hidden: !obj[kljuc], 'aria-label': `Ukloni fotografiju: ${oznaka}`, onclick: () => {
+    obj[kljuc] = null; oznaciPromjenu();
+    const novo = prikaz(); slikaEl.replaceWith(novo); slikaEl = novo;
+    tekst.textContent = 'Dodaj fotografiju'; gumb.setAttribute('aria-label', `${tekst.textContent}: ${oznaka}`); makni.hidden = true;
+    osvjeziSazetak(id); gumb.focus();
+    obavijest('Fotografija uklonjena. Ne zaboravi spremiti.');
+  } }, ikona('brisi'), 'Ukloni') : null;
   async function ucitaj(f) {
     if (!f) return;
     if (!f.type.startsWith('image/')) { obavijest('To nije fotografija (JPG, PNG, WebP).', { vrsta: 'greska' }); return; }
@@ -428,6 +436,7 @@ function poljeSlike(obj, kljuc, oznaka, { id, opis } = {}) {
       const r = await api('POST', '/slike', datoteka, { sirovo: true, vrsta: datoteka.type || 'application/octet-stream' });
       obj[kljuc] = r.kljuc; oznaciPromjenu();
       const novo = prikaz(); slikaEl.replaceWith(novo); slikaEl = novo;
+      if (makni) makni.hidden = false;
       ocistiGresku(`${id}:${kljuc}`); osvjeziSazetak(id);
       obavijest('Fotografija učitana. Ne zaboravi spremiti.');
     } catch (err) { if (err.status !== 401) obavijest(err.message, { vrsta: 'greska', trajanje: 8000 }); }
@@ -443,7 +452,7 @@ function poljeSlike(obj, kljuc, oznaka, { id, opis } = {}) {
     ondragleave: () => okvir.classList.remove('povlaci'),
     ondrop: (e) => { e.preventDefault(); okvir.classList.remove('povlaci'); ucitaj(e.dataTransfer?.files?.[0]); },
     onclick: (e) => { if (e.target === slikaEl || slikaEl.contains(e.target)) unos.click(); },
-  }, slikaEl, gumb, unos);
+  }, slikaEl, gumb, makni, unos);
   return h('div', { class: 'polje' }, h('span', { class: 'oznaka' }, oznaka), okvir, opis ? h('small', {}, opis) : null);
 }
 
@@ -453,8 +462,8 @@ function crtajPostavkeKategorije(polja) {
   return h('details', { class: 'postavke' }, h('summary', {}, 'Postavke kategorije (naslov, fotografija, napomena)'),
     h('div', { class: 'obrazac' },
       polja.has('naslov') ? dvojezicno(k.naslov, 'Naslov', { id, polje: 'naslov' }) : null,
-      polja.has('slikaKategorije') ? poljeSlike(k, 'slika', 'Fotografija kategorije', { id, opis: 'Vidi se na planetu u orbiti i iznad popisa jela.' }) : null,
-      polja.has('planet') ? poljeSlike(k, 'planet', 'Slika planeta (samo ako nema fotografije kategorije)', { id }) : null,
+      polja.has('slikaKategorije') ? poljeSlike(k, 'slika', 'Fotografija kategorije', { id, ukloni: true, opis: 'Vidi se na planetu u orbiti i iznad popisa jela.' }) : null,
+      polja.has('planet') ? poljeSlike(k, 'planet', 'Slika planeta (samo ako nema fotografije kategorije)', { id, ukloni: true }) : null,
       polja.has('napomena') ? dvojezicno(k.napomena, 'Napomena na vrhu popisa', { visered: true, id, polje: 'napomena' }) : null));
 }
 
@@ -467,6 +476,8 @@ function cijenaStavke(s) {
   return h('span', { class: 'cijena' }, eur(s.cijena), s.kolicina ? h('small', {}, s.kolicina) : null,
     s.cijena2 !== null ? h('small', {}, `${eur(s.cijena2)}${s.kolicina2 ? ` · ${s.kolicina2}` : ''}`) : null);
 }
+
+const minijatura = (s) => (s.slika ? h('img', { class: 'minijatura', src: `/urednistvo/api/slike/${s.slika}`, alt: '', loading: 'lazy' }) : h('span', { class: 'minijatura prazna', 'aria-hidden': 'true' }, ikona('slika')));
 
 function crtajStavku(s, i, polja) {
   const otvoreno = S.otvoreno.has(s.id);
@@ -481,7 +492,7 @@ function crtajStavku(s, i, polja) {
   const red = h('div', { class: 'red' },
     rucka,
     polja.has('boja') && s.tip === 'jelo' ? h('span', { class: 'boja-oznaka', 'aria-hidden': 'true' }) : null,
-    polja.has('slika') && s.tip === 'jelo' ? (s.slika ? h('img', { class: 'minijatura', src: `/urednistvo/api/slike/${s.slika}`, alt: '', loading: 'lazy' }) : h('span', { class: 'minijatura prazna', 'aria-hidden': 'true' }, ikona('slika'))) : null,
+    (polja.has('slika') || polja.has('slikaJela')) && s.tip === 'jelo' ? minijatura(s) : null,
     sazetak, cijenaStavke(s),
     h('span', { class: 'akcije' },
       h('button', { class: 'gumb ikona tih gore-dolje', type: 'button', 'aria-label': 'Pomakni gore', disabled: i === 0, onclick: () => pomakni(i, -1) }, ikona('gore')),
@@ -505,6 +516,7 @@ function obrazacJela(s, polja) {
     polja.has('porcija') ? dvojezicno(s.porcija, 'Porcija', { id, polje: 'porcija', opis: 'npr. 3 kom ili 4 ili 8 zalogaja' }) : null,
     polja.has('preporuka') ? dvojezicno(s.preporuka, 'Preporuka pića', { id, polje: 'preporuka' }) : null,
     polja.has('slika') ? poljeSlike(s, 'slika', 'Fotografija jela', { id, opis: 'Klikni ili dovuci fotografiju na okvir. Može ravno s mobitela — sama se smanji, a stranica radi manje verzije.' }) : null,
+    polja.has('slikaJela') ? poljeSlike(s, 'slika', 'Fotografija jela (nije obavezna)', { id, ukloni: true, opis: 'Jela s fotografijom prikazuju se u galeriji „Što se još, osim meduza…”, redom kao u jelovniku, a natpis je naziv jela. Može ravno s mobitela.' }) : null,
     polja.has('boja') ? h('fieldset', { class: 'boje', 'data-putanja': `${id}:boja` }, h('legend', { class: 'oznaka' }, 'Boja naljepnice na kaseti'),
       S.jelovnik.boje.map((b) => { const sw = h('span', {}); sw.style.backgroundColor = b.vrijednost; return h('label', { class: 'boja', title: b.naziv },
         h('input', { type: 'radio', name: `boja-${id}`, value: b.vrijednost, checked: (s.boja ?? '').toLowerCase() === b.vrijednost.toLowerCase(), 'aria-label': b.naziv,
@@ -558,7 +570,7 @@ function osvjeziSazetak(id) {
   const n = $('.naziv', li); n.textContent = z.naziv; n.classList.toggle('novo', Boolean(z.novo));
   const o = $('.sazetak .opis', li); if (o) o.textContent = z.opis ?? ''; else if (z.opis) $('.sazetak', li).append(h('span', { class: 'opis' }, z.opis));
   const c = $('.cijena', li); if (c) c.replaceWith(cijenaStavke(s));
-  const m = $('img.minijatura', li); if (m && s.slika) m.src = `/urednistvo/api/slike/${s.slika}`;
+  const m = $('.minijatura', li); if (m) m.replaceWith(minijatura(s));
 }
 
 // ----- radnje nad popisom -----

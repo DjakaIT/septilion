@@ -72,7 +72,8 @@ export default defineConfig({
   prefetch: { prefetchAll: false, defaultStrategy: 'hover' },
   integrations: [
     sitemap({
-      i18n: { defaultLocale: 'hr', locales: { hr: 'hr-HR', en: 'en' } },
+      // hreflang kao u <head> stranica (hr, en)
+      i18n: { defaultLocale: 'hr', locales: { hr: 'hr', en: 'en' } },
       // stranica za održavanje (503) nije za tražilice
       filter: (adresa) => !/\/odrzavanje\/?$/.test(adresa),
     }),

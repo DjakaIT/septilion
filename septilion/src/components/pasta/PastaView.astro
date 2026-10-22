@@ -3,7 +3,7 @@ import wordmark from '../../assets/svg/pasta-wordmark.svg?raw';
 import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
 import { ui, href, type Lang } from '../../i18n/ui';
-import { WOLT, RESERVE_PASTA, INSTAGRAM_PASTA } from '../../site.config.mjs';
+import { WOLT, RESERVE_PASTA, INSTAGRAM_PASTA, MAPS_PASTA } from '../../site.config.mjs';
 import { SIDE_A, SALADS, SIDES, nameOf, VERZIJA_JELOVNIKA } from '../../data/pasta';
 import { FAQ_PASTA } from '../../data/faq';
 import { price } from '../../lib/format';
@@ -211,7 +211,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
       <div class="rev-g rv" data-google="pasta">
         <p class="gl"><b>{t.googleReviews}</b><span class="gscore g-ocjena">—,—</span></p>
         <div class="gt g-rec" hidden><blockquote class="g-txt"></blockquote><p class="g-by"><span class="g-st" aria-hidden="true">★★★★★</span> <a class="g-au" target="_blank" rel="noopener"></a> <span class="g-kad"></span></p><p class="g-nav"><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n"></span><button class="g-next" type="button" aria-label={t.next}>→</button></p></div>
-        <a class="pr-btn solid" href="https://www.google.com/maps/search/?api=1&query=Pasta+Rhymes+Ulica+Pavla+Hatza+5+Zagreb" target="_blank" rel="noopener">{t.leaveReview}</a>
+        <a class="pr-btn solid" href={MAPS_PASTA} target="_blank" rel="noopener">{t.leaveReview}</a>
       </div>
     </div>
   </section>

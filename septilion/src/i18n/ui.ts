@@ -23,19 +23,19 @@ const hr = {
   googleReviews: "Google recenzije",
   leaveReview: "Ostavi recenziju",
   questions: "Pitanja",
-  foot: { address: "Adresa", delivery: "Dostava", phone: "Telefon" },
+  foot: { address: "Adresa", delivery: "Dostava", phone: "Telefon", social: "Društvene mreže" },
   meta: {
     gate: {
       title: "Septillion — Pasta Rhymes i Jellyfish in Space, Zagreb",
-      desc: "Septillion su Pasta Rhymes u Hatzovoj 5, sa svježom domaćom tjesteninom, i Jellyfish in Space u Martićevoj 71, sa sushijem, street foodom i koktelima.",
+      desc: "Septillion su dva restorana u Zagrebu: Pasta Rhymes, svježa domaća tjestenina u Hatzovoj 5, i Jellyfish in Space, sushi, street food i kokteli u Martićevoj 71.",
     },
     pasta: {
       title: "Pasta Rhymes — svježa domaća tjestenina u centru Zagreba",
-      desc: "Rap beats. Hot eats. Svježa domaća tjestenina u Ulici Pavla Hatza 5, od {min} do {max}, a ploču biraš sam. Dostava preko Wolta.",
+      desc: "Pasta Rhymes u centru Zagreba: svježa domaća tjestenina od {min} do {max} i jela bez mesa, a ploču biraš sam. Jedi kod nas u Hatzovoj 5 ili naruči preko Wolta.",
     },
     jelly: {
       title: "Jellyfish in Space — sushi, street food i kokteli, Zagreb",
-      desc: "Sushi, bao buns, gyoze i bowlovi u Martićevoj 71, uz cocktail bar za duge noći. Platoi nazvani po planetima, od {min} do {max}. Dostava preko Wolta.",
+      desc: "Jellyfish in Space na Kvatriću: sushi, bao buns, tacos, bowlovi i platoi nazvani po planetima, uz cocktail bar. Martićeva 71, Zagreb. Rezerviraj stol online.",
     },
   },
   gate: {
@@ -147,20 +147,6 @@ const hr = {
     galAria: "Galerija Jellyfish in Space",
     carousel: "karusel",
     photoOf: "Fotografija {n} od {t}",
-    gallery: [
-      "Bao buns pork",
-      "Rainbow roll",
-      "Katsu losos bowl",
-      "Saturn",
-      "Bao buns shrimp",
-      "Fried uramaki losos",
-      "Galaxy salata",
-      "Sushi Dream",
-      "Spring roll piletina",
-      "Poke losos bowl",
-      "Mars",
-      "Tuna bowl",
-    ],
     revTitle: "Signali sa Zemlje",
     timeout: {
       src: "Time Out · Preporuka",
@@ -192,19 +178,19 @@ const en: typeof hr = {
   googleReviews: "Google reviews",
   leaveReview: "Leave a review",
   questions: "Questions",
-  foot: { address: "Address", delivery: "Delivery", phone: "Phone" },
+  foot: { address: "Address", delivery: "Delivery", phone: "Phone", social: "Social media" },
   meta: {
     gate: {
       title: "Septillion — Pasta Rhymes and Jellyfish in Space, Zagreb",
-      desc: "Septillion is Pasta Rhymes at Hatzova 5, with fresh homemade pasta, and Jellyfish in Space at Martićeva 71, with sushi, street food and cocktails.",
+      desc: "Septillion: two Zagreb restaurants. Pasta Rhymes, fresh homemade pasta at Hatzova 5, and Jellyfish in Space, sushi, street food and cocktails at Martićeva 71.",
     },
     pasta: {
       title: "Pasta Rhymes — fresh homemade pasta in central Zagreb",
-      desc: "Rap beats. Hot eats. Fresh homemade pasta at Ulica Pavla Hatza 5, from {min} to {max}, and you pick the record. Delivery via Wolt.",
+      desc: "Pasta Rhymes in central Zagreb: fresh homemade pasta from {min} to {max} and meat-free dishes, and you pick the record. Eat in at Hatzova 5 or order via Wolt.",
     },
     jelly: {
       title: "Jellyfish in Space — sushi, street food and cocktails, Zagreb",
-      desc: "Sushi, bao buns, gyoza and bowls at Martićeva 71, plus a cocktail bar for long nights. Platters named after planets, from {min} to {max}. Delivery via Wolt.",
+      desc: "Jellyfish in Space in Kvatrić, Zagreb: sushi, bao buns, tacos, bowls and platters named after planets, plus a cocktail bar. Martićeva 71. Book a table online.",
     },
   },
   gate: {
@@ -319,20 +305,6 @@ const en: typeof hr = {
     galAria: "Jellyfish in Space gallery",
     carousel: "carousel",
     photoOf: "Photo {n} of {t}",
-    gallery: [
-      "Bao buns pork",
-      "Rainbow roll",
-      "Katsu salmon bowl",
-      "Saturn",
-      "Bao buns shrimp",
-      "Fried uramaki salmon",
-      "Galaxy salad",
-      "Sushi Dream",
-      "Spring roll chicken",
-      "Poke salmon bowl",
-      "Mars",
-      "Tuna bowl",
-    ],
     revTitle: "Signals from Earth",
     timeout: {
       src: "Time Out · Recommended",

@@ -13,6 +13,8 @@ final class Konfiguracija
     public readonly array $boje;
     public readonly string $origin;
     public readonly array $lokalneSlike;
+    /** zadane fotografije jela Jellyfisha (naziv malim slovima -> ključ slike) za nadogradnju formata 1 */
+    public readonly array $zadaneFotografije;
 
     public function __construct(public readonly string $dir)
     {
@@ -22,6 +24,7 @@ final class Konfiguracija
         $this->boje = $k['boje'];
         $this->origin = rtrim($k['origin'], '/');
         $this->lokalneSlike = array_flip($k['lokalneSlike']);
+        $this->zadaneFotografije = $k['zadaneFotografije'] ?? [];
     }
 
     public function pocetni(): array { return citaj_json($this->dir . '/pocetni.json'); }
@@ -64,14 +67,17 @@ final class Spremiste
         foreach (array_slice($sve, 0, max(0, count($sve) - ZADRZI_VERZIJA)) as $f) @unlink($f);
     }
 
+    /** stariji format nadograđen (na disk ide pri sljedećem spremanju) */
+    private function migriraj(mixed $s): mixed { return migriraj_sadrzaj($s, $this->konf->zadaneFotografije); }
+
     /** trenutni jelovnik; prvi put se stvara iz početnog sadržaja stranice */
     public function ucitaj(): array
     {
         $s = citaj_json($this->datoteka);
-        if (is_array($s)) return $s;
+        if (is_array($s)) return $this->migriraj($s);
         return s_bravom($this->dir, function () {
             $s = citaj_json($this->datoteka);
-            if (is_array($s)) return $s;
+            if (is_array($s)) return $this->migriraj($s);
             $pocetni = array_merge($this->konf->pocetni(), ['verzija' => 1, 'azurirano' => iso_vrijeme(), 'azurirao' => 'početni sadržaj']);
             pisi_json($this->datoteka, $pocetni);
             $this->snimiVerziju($pocetni, 'Početni sadržaj');
@@ -94,7 +100,7 @@ final class Spremiste
     {
         $this->ucitaj();
         return s_bravom($this->dir, function () use ($kljuc, $kategorija, $baznaVerzija, $ime) {
-            $trenutni = citaj_json($this->datoteka);
+            $trenutni = $this->migriraj(citaj_json($this->datoteka));
             if (!array_key_exists($kljuc, $trenutni['kategorije'])) throw new Greska(404, 'Nepoznata kategorija');
             if ($trenutni['verzija'] !== $baznaVerzija) throw new Greska(409, 'Jelovnik je u međuvremenu promijenjen', ['verzija' => $trenutni['verzija']]);
             $p = new Provjera();
@@ -127,7 +133,7 @@ final class Spremiste
             if ($trenutni['verzija'] !== $bazna) throw new Greska(409, 'Jelovnik je u međuvremenu promijenjen', ['verzija' => $trenutni['verzija']]);
             $stara = citaj_json(sprintf('%s/%06d.json', $this->povijestDir, $verzija));
             if (!$stara) throw new Greska(404, 'Verzija ne postoji');
-            $novi = array_merge($stara['sadrzaj'], ['verzija' => $trenutni['verzija'] + 1, 'azurirano' => iso_vrijeme(), 'azurirao' => $ime]);
+            $novi = array_merge($this->migriraj($stara['sadrzaj']), ['verzija' => $trenutni['verzija'] + 1, 'azurirano' => iso_vrijeme(), 'azurirao' => $ime]);
             return $this->spremi($novi, $ime, "Vraćena verzija $verzija");
         });
     }

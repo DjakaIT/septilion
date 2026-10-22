@@ -72,6 +72,10 @@ ErrorDocument 503 /odrzavanje.html
   <FilesMatch "\.pdf$">
     Header set Cache-Control "public, max-age=86400"
   </FilesMatch>
+  # ikone nemaju hash u imenu (scripts/ikone.mjs): tjedan dana
+  <FilesMatch "^(favicon.*|apple-touch-icon\.png|web-app-manifest-.*\.png|site\.webmanifest|septillion-icon\.svg)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
 </IfModule>
 
 # /fonts/* nemaju hash u imenu: kraći cache
@@ -89,4 +93,6 @@ ErrorDocument 503 /odrzavanje.html
   AddType font/woff2 .woff2
   AddType image/avif .avif
   AddType image/webp .webp
+  AddType image/x-icon .ico
+  AddType application/manifest+json .webmanifest
 </IfModule>

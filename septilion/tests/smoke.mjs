@@ -83,15 +83,16 @@ const naVrhuPopisa = (page, g) => page.evaluate((g) => [Math.round(document.getE
   ok(errs.length === 0, 'bez JS grešaka (3)', errs.join(' | '));
   await ctx.close(); }
 
-// 4) mobitel: učitavanje ne skače, kategorije, skupine, kaseta
+// 4) mobitel: učitavanje ne skače, kategorije (planetima: traka kategorija na mobitelu ne postoji od 22.10.2026.), skupine, kaseta
 { const { ctx, page, errs } = await mk({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   await page.goto(B + '/jellyfish-in-space', { waitUntil: 'networkidle' }); await page.waitForTimeout(400);
   ok(await page.evaluate(() => scrollY) === 0, 'jellyfish se na mobitelu otvara na vrhu');
   await page.evaluate(() => document.querySelector('#orbita').scrollIntoView()); await page.waitForTimeout(500);
-  await page.tap('#chips button:nth-child(1)'); await page.waitForTimeout(1200);
+  ok(!(await page.locator('#chips').isVisible()), 'mobitel: bez vodoravne trake kategorija ispod orbite');
+  await page.tap('.planet[data-i="0"]', { force: true }); await page.waitForTimeout(1200);
   const b0 = await blockState(page);
   const g = await skupinaZaTest(page);
-  await page.tap(`#chips button:nth-child(${g.i + 1})`); await page.waitForTimeout(1200);
+  await page.tap(`.planet[data-i="${g.i}"]`, { force: true }); await page.waitForTimeout(1200);
   await page.screenshot({ path: OUT + '/skupina-mobile.png' });
   const b9 = await blockState(page);
   ok(b0.inView && b9.inView && b0.h === b9.h, 'mobitel: orbita i jelovnik cijeli na ekranu, iste visine', JSON.stringify([b0, b9]));

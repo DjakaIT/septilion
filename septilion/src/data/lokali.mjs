@@ -3,7 +3,7 @@
 // ne dodaju ni brišu (orbita i kaseta računaju na njih), samo se uređuje njihov sadržaj.
 
 /**
- * @typedef {'naslov'|'slikaKategorije'|'planet'|'napomena'|'skupine'|'slika'|'boja'|'galerija'|'porcija'|'preporuka'|'kolicina'|'cijena2'} Polje
+ * @typedef {'naslov'|'slikaKategorije'|'planet'|'napomena'|'skupine'|'slika'|'slikaJela'|'boja'|'galerija'|'porcija'|'preporuka'|'kolicina'|'cijena2'} Polje
  * @typedef {{ kljuc: string, naziv: string, polja: Polje[] }} KategorijaKonfig
  * @typedef {{ id: 'pasta-rhymes'|'jellyfish-in-space', naziv: string, kategorije: KategorijaKonfig[] }} LokalKonfig
  */
@@ -19,8 +19,9 @@ export const BOJE = [
   { naziv: 'Crvena', vrijednost: '#FE0000' },
 ];
 
+// slika = obavezna fotografija jela (Pasta, kaseta); slikaJela = neobavezna (Jellyfish: jela s fotografijom idu u galeriju)
 /** @type {Polje[]} */
-const JELLY = ['naslov', 'slikaKategorije', 'planet', 'napomena', 'skupine', 'porcija', 'preporuka', 'kolicina', 'cijena2'];
+const JELLY = ['naslov', 'slikaKategorije', 'planet', 'napomena', 'skupine', 'slikaJela', 'galerija', 'porcija', 'preporuka', 'kolicina', 'cijena2'];
 
 /** @type {LokalKonfig[]} */
 export const LOKALI = [

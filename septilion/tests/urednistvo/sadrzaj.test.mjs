@@ -1,7 +1,7 @@
 // Sadržaj uredništva: početni sadržaj, provjera pravila po kategoriji, pretvorba u oblik stranice.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pocetniSadrzaj, provjeri, uPasta, uJelly, tinta, praznoJelo } from '../../src/data/sadrzaj.mjs';
+import { pocetniSadrzaj, provjeri, uPasta, uJelly, tinta, praznoJelo, migriraj, FORMAT, ZADANE_FOTOGRAFIJE_JELA } from '../../src/data/sadrzaj.mjs';
 import { LOCAL_SIDE_A, LOCAL_SALADS } from '../../src/data/pasta-local.mjs';
 import jelly from '../../src/data/jelly-menu.json' with { type: 'json' };
 
@@ -17,8 +17,14 @@ test('početni sadržaj je ispravan i u stranici daje iste podatke kao lokalni',
   assert.deepEqual(p.SIDE_A.map((x) => [x.name, x.price, x.img, x.color, x.ink, x.gallery]), LOCAL_SIDE_A.map((x) => [x.name, x.price, x.img, x.color, x.ink, x.gallery !== false]));
   assert.deepEqual(p.SALADS.map((x) => [x.name, x.nameEn, x.desc]), LOCAL_SALADS.map((x) => [x.name, x.nameEn, x.desc]));
   const j = uJelly(s);
-  const bezId = (c) => JSON.parse(JSON.stringify(c, (k, v) => (k === 'id' && typeof v === 'string' && v.length === 12 ? undefined : v)));
-  const lokalno = jelly.categories.map((c) => ({ ...c, groups: c.groups.map((g) => ({ ...g, items: g.items.map(({ id, ...it }) => it) })) }));
+  // fotografije jela (galerija) nisu u jelly-menu.json: zadane su prema nazivu
+  const sJelima = j.flatMap((c) => c.groups.flatMap((g) => g.items)).filter((i) => i.img);
+  assert.deepEqual(sJelima.map((i) => i.img).sort(), Object.values(ZADANE_FOTOGRAFIJE_JELA).sort(), 'svaka zadana fotografija ima svoje jelo');
+  assert.ok(sJelima.every((i) => i.gallery));
+  const bezId = (c) => JSON.parse(JSON.stringify(c, (k, v) => (k === 'id' && typeof v === 'string' && v.length === 12 ? undefined : k === 'img' && v !== null && typeof v !== 'string' ? undefined : v)));
+  for (const c of j) for (const g of c.groups) for (const i of g.items) { delete i.img; delete i.gallery; }
+  // planet deserta je zadan (sadrzaj.mjs ZADANI_PLANETI) dok ga urednik ne postavi
+  const lokalno = jelly.categories.map((c) => ({ ...c, pimg: c.pimg ?? (c.id === 'desert' ? 'jf_desert' : null), groups: c.groups.map((g) => ({ ...g, items: g.items.map(({ id, ...it }) => it) })) }));
   assert.deepEqual(bezId(j), lokalno);
 });
 
@@ -70,4 +76,28 @@ test('skupine: ravan popis -> skupine; jela prije prvog naslova su skupina bez n
 
 test('tinta naljepnice po kontrastu (sve boje iz prototipa)', () => {
   for (const [c, t] of [['#FFCE53', '#000'], ['#FF8800', '#000'], ['#63CFFE', '#000'], ['#108A11', '#000'], ['#F5EAD4', '#000'], ['#8B3A96', '#fff'], ['#FE0000', '#000']]) assert.equal(tinta(c), t, c);
+});
+
+test('nadogradnja formata 1 -> 2: jela Jellyfisha bez fotografije dobiju zadanu prema nazivu, ništa drugo se ne mijenja', () => {
+  assert.equal(FORMAT, 2);
+  const s = pocetni();
+  const stari = structuredClone(s); stari.format = 1;
+  const jela = (x) => Object.entries(x.kategorije).filter(([kk]) => kk.startsWith('jellyfish-in-space/')).flatMap(([, k]) => k.stavke.filter((i) => i.tip === 'jelo'));
+  for (const x of jela(stari)) x.slika = null;
+  const tacos = jela(stari).find((x) => x.naziv.hr === 'Tacos beef');
+  tacos.naziv.hr = '  tacos   BEEF '; // velika slova i razmaci nisu bitni
+  const vlastita = jela(stari).find((x) => x.naziv.hr === 'Tuna tartare'); vlastita.slika = 'n-0123456789abcdef01234567';
+  const prije = JSON.stringify(stari);
+  const m = migriraj(stari);
+  assert.equal(JSON.stringify(stari), prije, 'ulaz se ne mijenja');
+  assert.equal(m.format, 2);
+  assert.equal(jela(m).find((x) => x.naziv.hr === '  tacos   BEEF ').slika, 'jf_jelo_tacos_beef');
+  assert.equal(jela(m).find((x) => x.naziv.hr === 'Tuna tartare').slika, 'n-0123456789abcdef01234567', 'urednikova fotografija ostaje');
+  assert.equal(jela(m).filter((x) => x.slika).length, Object.keys(ZADANE_FOTOGRAFIJE_JELA).length);
+  assert.deepEqual(m.kategorije['pasta-rhymes/strana-a'], s.kategorije['pasta-rhymes/strana-a'], 'Pasta se ne dira');
+  // format 2 (urednik je maknuo fotografiju) ostaje kakav jest; provjera prima i stari format
+  const novi = structuredClone(m); jela(novi)[0].slika = null;
+  assert.equal(migriraj(novi), novi);
+  assert.ok(provjeri(stari, () => true).ok);
+  assert.ok(!provjeri({ ...stari, format: 3 }, () => true).ok, 'nepoznat format se odbija');
 });

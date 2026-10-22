@@ -2,8 +2,9 @@
 // koji stranica koristi. Čisti JS — dijele ga build stranice (src/data/*.ts) i poslužitelj uredništva.
 //
 // Oblik datoteke:
-// { format: 1, verzija, azurirano, azurirao, kategorije: { "pasta-rhymes/strana-a": { naslov, slika, planet, napomena, stavke: [...] } } }
+// { format: 2, verzija, azurirano, azurirao, kategorije: { "pasta-rhymes/strana-a": { naslov, slika, planet, napomena, stavke: [...] } } }
 // stavke su ravan popis kao na stranici: { tip: 'jelo', ... } ili { tip: 'skupina', naslov, ... } (naslov skupine pića).
+// Format 2 (22.10.2026.): jela Jellyfisha imaju fotografije (galerija na stranici); format 1 se pri čitanju nadogradi (migriraj).
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -11,7 +12,40 @@ import { z } from 'astro/zod';
 import { BOJE, LOKALI, kljucKategorije, sveKategorije } from './lokali.mjs';
 import { LOCAL_SIDE_A, LOCAL_SALADS, LOCAL_SIDES } from './pasta-local.mjs';
 
-export const FORMAT = 1;
+export const FORMAT = 2;
+
+/** fotografije jela Jellyfisha (src/assets/img) koje jela dobiju pri prelasku na format 2 — prema nazivu (hr), dok ih urednik ne promijeni */
+export const ZADANE_FOTOGRAFIJE_JELA = {
+  'tacos beef': 'jf_jelo_tacos_beef',
+  'tuna tartare': 'jf_jelo_tuna_tartare',
+  'tuna tataki': 'jf_jelo_tuna_tataki',
+  'ceviche od brancina': 'jf_jelo_ceviche',
+  'bao buns shrimp': 'jf_jelo_bao_shrimp',
+  'poke losos bowl': 'jf_jelo_poke_losos',
+  'katsu losos bowl': 'jf_jelo_katsu_losos',
+  'salmon fig & cheese roll': 'jf_jelo_salmon_fig',
+  'karage roll': 'jf_jelo_karage_roll',
+  'tuna olive roll': 'jf_jelo_tuna_olive',
+  'aburi nigiri': 'jf_jelo_aburi_nigiri',
+  'gunkan shrimp tartare': 'jf_jelo_gunkan',
+};
+/** zadana fotografija jela prema nazivu (velika/mala slova i razmaci nisu bitni) */
+export const zadanaFotografijaJela = (naziv) => ZADANE_FOTOGRAFIJE_JELA[String(naziv ?? '').toLowerCase().replace(/\s+/g, ' ').trim()] ?? null;
+
+/**
+ * Nadogradnja starijeg sadržaja na FORMAT (ne mijenja ulaz). Format 1 -> 2: jela Jellyfisha bez fotografije
+ * dobiju zadanu prema nazivu. Sve ostalo (i nepoznat oblik) ide dalje nepromijenjeno — provjera ga ionako odbije.
+ */
+export function migriraj(s) {
+  if (!s || typeof s !== 'object' || s.format !== 1 || !s.kategorije || typeof s.kategorije !== 'object') return s;
+  const kategorije = {};
+  for (const [kk, k] of Object.entries(s.kategorije)) {
+    kategorije[kk] = kk.startsWith('jellyfish-in-space/') && Array.isArray(k?.stavke)
+      ? { ...k, stavke: k.stavke.map((x) => (x?.tip === 'jelo' && x.slika === null && zadanaFotografijaJela(x.naziv?.hr) ? { ...x, slika: zadanaFotografijaJela(x.naziv.hr) } : x)) }
+      : k;
+  }
+  return { ...s, format: 2, kategorije };
+}
 /** ključ slike: lokalna (src/assets/img, npr. pr_shrimp) ili učitana u uredništvu (podaci/slike/n-<24 hex>.webp) */
 export const KLJUC_SLIKE = /^(?:[a-z0-9_]{1,40}|n-[a-f0-9]{24})$/;
 export const ID_STAVKE = /^[a-z0-9]{6,32}$/;
@@ -104,7 +138,7 @@ export function provjeriKategoriju(kat, k, slikaPostoji = () => true) {
  * @returns {{ ok: true, sadrzaj: z.infer<typeof Sadrzaj> } | { ok: false, greske: { putanja: (string|number)[], poruka: string }[] }}
  */
 export function provjeri(ulaz, slikaPostoji) {
-  const r = Sadrzaj.safeParse(ulaz);
+  const r = Sadrzaj.safeParse(migriraj(ulaz));
   if (!r.success) return { ok: false, greske: r.error.issues.map((i) => ({ putanja: i.path, poruka: i.message })) };
   const greske = [];
   const ocekivano = new Set(sveKategorije().map(({ lokal, kat }) => kljucKategorije(lokal.id, kat.kljuc)));
@@ -149,6 +183,7 @@ export function pocetniSadrzaj(root = process.cwd()) {
         stavke.push({
           ...praznoJelo(), naziv: Tl(it.name), opis: Tl(it.desc), porcija: Tl(it.portion), preporuka: Tl(it.pairing),
           cijena: it.prices[0].amount, kolicina: it.prices[0].size ?? '', cijena2: it.prices[1]?.amount ?? null, kolicina2: it.prices[1]?.size ?? '',
+          slika: zadanaFotografijaJela(it.name?.hr),
         });
       }
     });
@@ -199,6 +234,7 @@ export function uJelly(s) {
       cur.items.push({
         id: x.id, name: L(x.naziv), desc: Lnull(x.opis), portion: Lnull(x.porcija), pairing: Lnull(x.preporuka),
         prices: [price(x.cijena, x.kolicina), ...(x.cijena2 !== null ? [price(x.cijena2, x.kolicina2)] : [])],
+        img: x.slika, gallery: x.galerija,
       });
     }
     return { id: kat.kljuc, title: L(k.naslov), img: k.slika, pimg: k.planet ?? ZADANI_PLANETI[kat.kljuc] ?? null, note: Lnull(k.napomena), groups: groups.filter((g) => g.items.length) };

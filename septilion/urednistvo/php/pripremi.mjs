@@ -1,5 +1,5 @@
 // Priprema PHP uredništva za hosting: iz istih izvora kao stranica (src/data, src/assets/img) zapisuje u <izlaz>:
-//   konfiguracija.json  lokali, kategorije, boje naljepnica, javna adresa, popis lokalnih slika
+//   konfiguracija.json  lokali, kategorije, boje naljepnica, javna adresa, popis lokalnih slika, zadane fotografije jela
 //   pocetni.json        početni jelovnik (dok uredništvo još nema svoj podaci/jelovnik.json)
 //   minijature/*.webp   male verzije lokalnih slika za uredništvo (480 px)
 // Poziva je objava (.github/workflows/objava.yml) i testovi. Upotreba: node urednistvo/php/pripremi.mjs <izlaz>
@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { LOKALI, BOJE } from '../../src/data/lokali.mjs';
-import { pocetniSadrzaj } from '../../src/data/sadrzaj.mjs';
+import { pocetniSadrzaj, ZADANE_FOTOGRAFIJE_JELA } from '../../src/data/sadrzaj.mjs';
 import { SITE_URL } from '../../src/site.config.mjs';
 import { ROOT } from '../lib/postavke.mjs';
 
@@ -19,6 +19,7 @@ export async function pripremi(izlaz, { origin = SITE_URL } = {}) {
   fs.mkdirSync(path.join(izlaz, 'minijature'), { recursive: true });
   fs.writeFileSync(path.join(izlaz, 'konfiguracija.json'), JSON.stringify({
     format: 1, origin, lokali: LOKALI, boje: BOJE, lokalneSlike: lokalne.map((f) => f.replace(/\.[^.]+$/, '')),
+    zadaneFotografije: ZADANE_FOTOGRAFIJE_JELA,
   }, null, 1));
   fs.writeFileSync(path.join(izlaz, 'pocetni.json'), JSON.stringify(pocetniSadrzaj(ROOT), null, 1));
   for (const f of lokalne) {

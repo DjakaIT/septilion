@@ -12,3 +12,12 @@
 
 /fonts/*
   Cache-Control: public, max-age=604800
+
+/favicon*
+  Cache-Control: public, max-age=604800
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+/web-app-manifest-*
+  Cache-Control: public, max-age=604800

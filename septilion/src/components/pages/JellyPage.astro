@@ -21,7 +21,7 @@ const bytes = fs.existsSync(pdfPath) ? fs.statSync(pdfPath).size : 0;
 const mb = bytes / 1024 / 1024;
 const pdfSize = bytes ? `${(lang === 'hr' ? mb.toFixed(1).replace('.', ',') : mb.toFixed(1))} MB` : undefined;
 ---
-<Base lang={lang} route="jellyfish-in-space" title={m.title} description={desc} jsonld={graph('jellyfish-in-space', lang, FAQ_JELLY)} ogImage="jf_platter"
+<Base lang={lang} route="jellyfish-in-space" title={m.title} description={desc} jsonld={await graph('jellyfish-in-space', lang, FAQ_JELLY)} ogImage="jf_platter"
   preload={[serifItalic]}>
   <canvas id="swarm" aria-hidden="true" slot="before-main"></canvas>
   <JellyView lang={lang} pdfSize={pdfSize} />

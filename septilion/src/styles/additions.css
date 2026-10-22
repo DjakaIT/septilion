@@ -122,6 +122,16 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
   .plist li.gh{scroll-margin-top:150px}
 }
 
+/* Jellyfish podnožje: peti stupac su društvene mreže (izmjena naručitelja 22.10.2026.); mobitel ostaje 2 stupca,
+   tablet 3 (u 5 bi se broj telefona prelamao) */
+@media(min-width:801px){.jf-foot .foot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1100px){.jf-foot .foot-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.foot-grid .soc a{display:flex;width:max-content}
+
+/* mobitel: bez vodoravne trake kategorija ispod orbite — kategorija se bira planetima i strelicama, kao na
+   računalu (izmjena naručitelja 22.10.2026.: preglednije) */
+@media(max-width:900px){.chips{display:none}}
+
 /* ============ Jellyfish: orbita i jelovnik u jednom ekranu (izmjena naručitelja 02.10.2026.) ============
    Blok stalne visine: lijevo (na mobitelu gore) orbita s većim planetima, desno (dolje) zaglavlje
    kategorije — fotka i naslov u istom redu — pa popis koji se skrola iznutra.
