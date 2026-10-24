@@ -13,7 +13,8 @@ export async function recenzije() {
   if (!el || !box) return;
   const kljuc = el.dataset.google as keyof typeof GOOGLE_RECENZIJE;
   const lang = document.documentElement.lang === 'en' ? 'en' : 'hr';
-  const txt = box.querySelector('.g-txt')!, au = box.querySelector<HTMLAnchorElement>('.g-au')!, kad = box.querySelector('.g-kad')!, n = box.querySelector('.g-n')!;
+  const txt = box.querySelector('.g-txt')!, kad = box.querySelector('.g-kad')!, n = box.querySelector('.g-n')!;
+  let au = box.querySelector<HTMLElement>('.g-au')!;
   const nav = box.querySelector<HTMLElement>('.g-nav')!;
   // Pasta: kartica ima crveni navodnik (kao recenzije članaka), pa tekst ide bez navodnika
   const [ot, zt] = el.hasAttribute('data-bez-navodnika') ? ['', ''] : navodnici(lang);
@@ -23,8 +24,11 @@ export async function recenzije() {
     const r = lista[i];
     if (!r) return;
     txt.textContent = `${ot}${r.tekst[lang] || r.tekst.hr}${zt}`;
+    // autor je poveznica samo kad ima profil (recenzije s Googlea); bez adrese je tekst — <a> bez href tražilice ne vole
+    const tag = r.autorUrl ? 'A' : 'SPAN';
+    if (au.tagName !== tag) { const novi = document.createElement(tag); novi.className = au.className; au.replaceWith(novi); au = novi; }
     au.textContent = r.autor;
-    if (r.autorUrl) au.href = r.autorUrl; else au.removeAttribute('href');
+    if (au instanceof HTMLAnchorElement) { au.href = r.autorUrl!; au.target = '_blank'; au.rel = 'noopener'; }
     const k = r.kad?.[lang] || r.kad?.hr || '';
     kad.textContent = k ? ` · ${k}` : '';
     n.textContent = `${i + 1} / ${lista.length}`;

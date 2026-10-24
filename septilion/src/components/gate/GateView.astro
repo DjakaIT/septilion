@@ -32,12 +32,13 @@ const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     <div class="gate-sides">
       <a class="side a" href={href('pasta-rhymes', lang)} data-side="a" data-astro-prefetch="viewport">
         <span class="logo" set:html={pastaLogo} />
-        <span class="sr">Pasta Rhymes</span>
+        <h2 class="sr">Pasta Rhymes</h2>
         <span class="meta">{t.gate.aMeta[0]}<br />{t.gate.aMeta[1]}</span>
         <span class="go">{t.gate.aGo} <Fragment set:html={arrow} /></span>
       </a>
       <a class="side b" href={href('jellyfish-in-space', lang)} data-side="b" data-astro-prefetch="viewport">
         <Pic k="jf_logo" class="logo" alt="Jellyfish in Space" widths={[260, 520]} sizes="(max-width: 760px) 150px, 260px" loading="eager" />
+        <h2 class="sr">Jellyfish in Space</h2>
         <span class="meta">{t.gate.bMeta[0]}<br />{t.gate.bMeta[1]}</span>
         <span class="go">{t.gate.bGo} <Fragment set:html={arrow} /></span>
       </a>

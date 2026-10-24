@@ -94,7 +94,11 @@ ErrorDocument 503 /odrzavanje.html
   AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml text/plain application/xml
 </IfModule>
 
+# HTML, CSS, JS, JSON i XML uvijek s charset=utf-8 u zaglavlju (neki SEO alati ne čitaju <meta charset>)
+AddDefaultCharset UTF-8
+
 <IfModule mod_mime.c>
+  AddCharset utf-8 .css .js .mjs .json .xml .txt .webmanifest
   AddType font/woff2 .woff2
   AddType image/avif .avif
   AddType image/webp .webp

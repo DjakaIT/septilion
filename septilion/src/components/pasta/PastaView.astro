@@ -214,7 +214,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
       <!-- Google recenzija kao kartice članaka iznad (crveni navodnik umjesto navodnika u tekstu), desno ocjena i strelice -->
       <div class="rev-g rv" data-google="pasta" data-bez-navodnika>
         <div class="g-rec">
-          <figure class="rq"><blockquote class="g-txt">{gr.recenzije[0].tekst[lang]}</blockquote><figcaption><b><a class="g-au" target="_blank" rel="noopener">{gr.recenzije[0].autor}</a></b><span><span class="g-st" aria-hidden="true">★★★★★</span> {t.googleReview}<span class="g-kad"></span></span></figcaption></figure>
+          <figure class="rq"><blockquote class="g-txt">{gr.recenzije[0].tekst[lang]}</blockquote><figcaption><b><span class="g-au">{gr.recenzije[0].autor}</span></b><span><span class="g-st" aria-hidden="true">★★★★★</span> {t.googleReview}<span class="g-kad"></span></span></figcaption></figure>
           <div class="g-side">
             <p class="gl"><b>{t.googleReviews}</b><span class="gscore g-ocjena">{ocjenaTekst(gr.ocjena, lang)}</span></p>
             <p class="g-nav" hidden={gr.recenzije.length < 2}><button class="g-prev" type="button" aria-label={t.prev}>←</button><span class="g-n">1 / {gr.recenzije.length}</span><button class="g-next" type="button" aria-label={t.next}>→</button></p>
