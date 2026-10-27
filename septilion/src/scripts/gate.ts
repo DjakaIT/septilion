@@ -127,24 +127,24 @@ function polys(t: number) {
   return { a: `polygon(0 0,${A.join(',')},0 100%)`, b: `polygon(${A.join(',')},100% 100%,100% 0)` };
 }
 
-let mx = 0.5, my = 0.5;
+let mx = 0.5, my = 0.5, prstom = false;
 sec.addEventListener('pointermove', (e) => {
   if (e.pointerType !== 'mouse') return;
-  pointerIn = true;
+  pointerIn = true; prstom = false;
   const r = sec.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width; my = (e.clientY - r.top) / r.height;
 });
 sec.addEventListener('pointerleave', () => { pointerIn = false; });
-// mobitel: prst kao miš — dok klizi po ulazu, šav ga prati i ističe stranu pod prstom; izbor ostaje nakon
-// podizanja prsta, a kratki dodir i dalje otvara lokal (klizanje ne otvara ništa)
+// mobitel: prst vuče šav — klizanje prema dolje (desno) bira Pasta Rhymes, prema gore (lijevo) Jellyfish; izbor
+// ostaje nakon podizanja prsta, a kratki dodir i dalje otvara lokal (klizanje ne otvara ništa)
 const prst = (e: TouchEvent) => {
   const t = e.touches[0]; if (!t || flooding) return;
-  pointerIn = true;
+  pointerIn = true; prstom = true;
   const r = sec.getBoundingClientRect(); mx = (t.clientX - r.left) / r.width; my = (t.clientY - r.top) / r.height;
 };
 sec.addEventListener('touchstart', prst, { passive: true });
 sec.addEventListener('touchmove', prst, { passive: true });
 for (const s of [sideA, sideB]) {
-  s.addEventListener('focus', () => { pointerIn = true; mx = s === sideA ? 0.15 : 0.85; my = s === sideA ? 0.25 : 0.75; });
+  s.addEventListener('focus', () => { pointerIn = true; prstom = false; mx = s === sideA ? 0.15 : 0.85; my = s === sideA ? 0.25 : 0.75; });
   s.addEventListener('blur', () => { pointerIn = false; });
   s.addEventListener('click', (e) => {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -177,7 +177,7 @@ function frame(t: number, dt: number) {
     if (k >= 1) { const f = flooding; unjob('gate'); draw(t); goFade(f.to, f.url); return; }
   } else {
     if (arriving) target = 0.5;
-    else if (pointerIn) target = vert ? 0.5 + (0.5 - my) * 0.34 : 0.5 + (0.5 - mx) * 0.38;
+    else if (pointerIn) { const s = prstom ? -1 : 1; target = vert ? 0.5 + (0.5 - my) * 0.34 * s : 0.5 + (0.5 - mx) * 0.38 * s; }
     else target = 0.5 + Math.sin(t * (vert ? 0.55 : 0.4)) * (vert ? 0.055 : 0.035);
     seam = lerp(seam, clamp(target, 0.2, 0.8), RM ? 1 : dt * 3.2); amp = lerp(amp, 1, dt * 3);
     if (arriving && Math.abs(seam - 0.5) < 0.01) arriving = false;
