@@ -38,6 +38,8 @@ html.sx-fade #main{opacity:0;animation:sxIn .45s 1.2s forwards}
 /* ulaz: klik bilo gdje na strani vodi u taj lokal (gate.ts), pa cijeli ulaz pokazuje ruku kao poveznica
    (prototip je imao cursor:default, pa se akcija nije vidjela) */
 .js .view-gate{cursor:pointer}
+/* ulaz na mobitelu: klizanje prstom bira lokal (gate.ts), pa povlačenje prema dolje ne smije osvježiti stranicu */
+html:has(body[data-route="gate"]),body[data-route="gate"]{overscroll-behavior-y:none}
 
 /* Pasta: anker "The Spraylist ↓" i Jellyfish "Jelovnik ↓" ne smiju završiti ispod trake */
 #spraylist,#orbita{scroll-margin-top:64px}

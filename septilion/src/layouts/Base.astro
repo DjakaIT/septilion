@@ -53,7 +53,9 @@ const preloadi = ['/fonts/tt-lakes-neue/tt-lakes-neue-400.woff2', ...preload].fi
 <meta property="og:locale" content={t.locale} />
 <meta property="og:locale:alternate" content={lang === 'hr' ? ui.en.locale : ui.hr.locale} />
 <meta name="twitter:card" content="summary_large_image" />
-<!-- ikone: scripts/ikone.mjs (Google u rezultatima pretrage uzima ikonu s naslovnice: višekratnik 48 px) -->
+{/* ikone: scripts/ikone.mjs (Google u rezultatima pretrage uzima ikonu s naslovnice: višekratnik 48 px) */}
+{/* only light: preglednici s prisilnim tamnim načinom (Samsung Internet, Chrome na Androidu) ne prebojavaju stranicu */}
+<meta name="color-scheme" content="only light" />
 <link rel="icon" href="/favicon.ico" sizes="48x48" />
 <link rel="icon" href="/favicon-96x96.png" sizes="96x96" type="image/png" />
 <link rel="icon" href="/septillion-icon.svg" type="image/svg+xml" />

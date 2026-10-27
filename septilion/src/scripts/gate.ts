@@ -134,6 +134,15 @@ sec.addEventListener('pointermove', (e) => {
   const r = sec.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width; my = (e.clientY - r.top) / r.height;
 });
 sec.addEventListener('pointerleave', () => { pointerIn = false; });
+// mobitel: prst kao miš — dok klizi po ulazu, šav ga prati i ističe stranu pod prstom; izbor ostaje nakon
+// podizanja prsta, a kratki dodir i dalje otvara lokal (klizanje ne otvara ništa)
+const prst = (e: TouchEvent) => {
+  const t = e.touches[0]; if (!t || flooding) return;
+  pointerIn = true;
+  const r = sec.getBoundingClientRect(); mx = (t.clientX - r.left) / r.width; my = (t.clientY - r.top) / r.height;
+};
+sec.addEventListener('touchstart', prst, { passive: true });
+sec.addEventListener('touchmove', prst, { passive: true });
 for (const s of [sideA, sideB]) {
   s.addEventListener('focus', () => { pointerIn = true; mx = s === sideA ? 0.15 : 0.85; my = s === sideA ? 0.25 : 0.75; });
   s.addEventListener('blur', () => { pointerIn = false; });

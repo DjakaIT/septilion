@@ -70,8 +70,8 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 
   <section class="pr-menu" id="spraylist" aria-labelledby="sl-h" data-jelovnik={VERZIJA_JELOVNIKA}>
     <div class="pr-wrap">
-      <!-- desktop: lijevi stupac naslov + popis, desni uvod + kaseta; stupci dijele gornji i donji rub.
-           mobitel/tablet: .sl-l/.sl-r su display:contents, redoslijed naslov, uvod, popis (additions.css) -->
+      {/* desktop: lijevi stupac naslov + popis, desni uvod + kaseta; stupci dijele gornji i donji rub.
+          mobitel/tablet: .sl-l/.sl-r su display:contents, redoslijed naslov, uvod, popis (additions.css) */}
       <div class="tapes">
         <div class="sl-l">
           <h2 id="sl-h" class="lemon rv"><span class="graf">The</span>Spraylist</h2>
@@ -211,7 +211,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <figure class="rq rv"><blockquote>{r.q}</blockquote><figcaption><b>{r.b}</b><span>{r.s}</span></figcaption></figure>
         ))}
       </div>
-      <!-- Google recenzija kao kartice članaka iznad (crveni navodnik umjesto navodnika u tekstu), desno ocjena i strelice -->
+      {/* Google recenzija kao kartice članaka iznad (crveni navodnik umjesto navodnika u tekstu), desno ocjena i strelice */}
       <div class="rev-g rv" data-google="pasta" data-bez-navodnika>
         <div class="g-rec">
           <figure class="rq"><blockquote class="g-txt">{gr.recenzije[0].tekst[lang]}</blockquote><figcaption><b><span class="g-au">{gr.recenzije[0].autor}</span></b><span><span class="g-st" aria-hidden="true">★★★★★</span> {t.googleReview}<span class="g-kad"></span></span></figcaption></figure>
