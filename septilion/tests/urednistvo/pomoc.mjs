@@ -84,6 +84,16 @@ function lazniGitHub({ token, naObjavu }) {
     if (artefakt) artefakti.set(run.id, artefakt);
     return run;
   }
+  /** datoteka na vrhu grane (Buffer) ili null */
+  const datoteka = (put, grana = 'sadrzaj') => { const c = commiti.get(grane.get(grana)); const b = c && stabla.get(c.tree).get(put); return b ? blobovi.get(b) : null; };
+  /** commit mimo uredništva (administrator s računala): jedna datoteka na grani, ostale ostaju */
+  function postaviDatoteku(put, sadrzaj, grana = 'sadrzaj') {
+    const b = id(sadrzaj); blobovi.set(b, Buffer.from(sadrzaj));
+    const roditelj = grane.get(grana);
+    const t = new Map(roditelj ? stabla.get(commiti.get(roditelj).tree) : []); t.set(put, b);
+    const st = id([...t]); stabla.set(st, t);
+    const c = id(st); commiti.set(c, { tree: st, parents: roditelj ? [roditelj] : [], message: `Ručno: ${put}` }); grane.set(grana, c);
+  }
   const server = http.createServer(async (req, res) => {
     const dijelovi = []; for await (const d of req) dijelovi.push(d);
     const tijelo = dijelovi.length ? JSON.parse(Buffer.concat(dijelovi).toString('utf8')) : null;
@@ -105,6 +115,11 @@ function lazniGitHub({ token, naObjavu }) {
     if (req.method === 'GET' && (r = /^\/git\/ref\/heads\/(.+)$/.exec(p))) return grane.has(r[1]) ? odg(200, { object: { sha: grane.get(r[1]) } }) : odg(404, { message: 'Not Found' });
     if (req.method === 'GET' && (r = /^\/git\/commits\/(\w+)$/.exec(p))) return odg(200, { sha: r[1], tree: { sha: commiti.get(r[1]).tree } });
     if (req.method === 'GET' && (r = /^\/git\/trees\/(\w+)$/.exec(p))) return odg(200, { tree: [...stabla.get(r[1]).keys()].map((path) => ({ path, type: 'blob' })) });
+    // kao GitHub: base64 u recima od 60 znakova
+    if (req.method === 'GET' && (r = /^\/contents\/(.+)$/.exec(p))) {
+      const b = datoteka(decodeURIComponent(r[1]), u.searchParams.get('ref') || 'main');
+      return b ? odg(200, { type: 'file', encoding: 'base64', sha: id(r[1]), content: b.toString('base64').replace(/(.{60})/g, '$1\n') }) : odg(404, { message: 'Not Found' });
+    }
     if (req.method === 'POST' && p === '/git/blobs') { const sha = id(tijelo); blobovi.set(sha, Buffer.from(tijelo.content, tijelo.encoding === 'base64' ? 'base64' : 'utf8')); return odg(201, { sha }); }
     if (req.method === 'POST' && p === '/git/trees') {
       const t = new Map(tijelo.base_tree ? stabla.get(tijelo.base_tree) : []);
@@ -139,8 +154,7 @@ function lazniGitHub({ token, naObjavu }) {
     odg(404, { message: `Nepoznato: ${req.method} ${p}` });
   });
   return {
-    server, grane, commiti, runovi, zahtjevi, stat, noviRun,
-    datoteka: (put, grana = 'sadrzaj') => { const c = commiti.get(grane.get(grana)); const b = c && stabla.get(c.tree).get(put); return b ? blobovi.get(b) : null; },
+    server, grane, commiti, runovi, zahtjevi, stat, noviRun, datoteka, postaviDatoteku,
     gotovo: () => gradnja,
   };
 }

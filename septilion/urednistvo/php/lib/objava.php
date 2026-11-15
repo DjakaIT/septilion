@@ -268,6 +268,21 @@ final class Objava
         }
     }
 
+    /** jelovnik s grane sadrzaj (null: nema veze s GitHubom ili datoteke) — uredništvo ga preuzme kad je noviji od svog */
+    public function sadrzajSGrane(): ?array
+    {
+        $gh = $this->github();
+        if (!$gh) return null;
+        $grana = $this->postavke()['grana'] ?? 'sadrzaj';
+        [$st, $j] = $gh->zahtjev('GET', '/contents/podaci/jelovnik.json?ref=' . rawurlencode($grana));
+        if ($st !== 200 || !is_array($j)) return null;
+        $b64 = (string) ($j['content'] ?? '');
+        // datoteku veću od 1 MB GitHub ne šalje u ovom odgovoru: blob po sha
+        if ($b64 === '' && is_string($j['sha'] ?? null)) $b64 = (string) ($gh->mora('GET', '/git/blobs/' . $j['sha'])['content'] ?? '');
+        $s = json_decode((string) base64_decode($b64), true);
+        return is_array($s) ? $s : null;
+    }
+
     private static function kljuceviSlika(array $s): array
     {
         $k = [];

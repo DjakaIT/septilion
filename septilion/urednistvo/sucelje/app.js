@@ -45,6 +45,8 @@ function ikona(ime) {
 }
 
 const eur = (n) => (typeof n === 'number' && Number.isFinite(n) ? `${n.toFixed(2).replace('.', ',')} €` : '—');
+/** "2026-09-10" -> "10. 9. 2026." */
+const datumHr = (iso) => { const [g, m, d] = iso.split('-').map(Number); return `${d}. ${m}. ${g}.`; };
 const brojUTekst = (n) => (typeof n === 'number' && Number.isFinite(n) ? n.toFixed(2).replace('.', ',') : '');
 /** "8,90" / "8.90" / "8" -> 8.9; null ako nije broj */
 function uBroj(s) {
@@ -513,6 +515,10 @@ function obrazacJela(s, polja) {
     h('div', { class: `cijene${polja.has('kolicina') ? '' : ' jedna'}` }, poljeCijene(s, 'cijena', 'Cijena'), polja.has('kolicina') ? tekstPolje(s, 'kolicina', 'Količina uz cijenu', { id, putanja: `${id}:kolicina`, mjesto: 'npr. 0,1 l' }) : null),
     druga ? h('details', { class: 'druga', open: s.cijena2 !== null }, h('summary', {}, 'Druga veličina (npr. boca ili 8 komada)'),
       h('div', { class: `cijene${polja.has('kolicina') ? '' : ' jedna'}` }, poljeCijene(s, 'cijena2', 'Druga cijena', { obavezno: false }), polja.has('kolicina') ? tekstPolje(s, 'kolicina2', 'Količina uz drugu cijenu', { id, putanja: `${id}:kolicina2`, mjesto: 'npr. 0,75 l' }) : null)) : null,
+    // bazna cijena (zakon, od 17. 11. 2026.) stoji na stranici uz cijenu; postavlja je poslužitelj, ovdje se samo vidi
+    h('p', { class: 'bazna' }, s.bazna
+      ? ['Bazna cijena na stranici: ', h('b', {}, [s.bazna.cijena, s.bazna.cijena2].filter((v) => v !== null).map(eur).join(' / ')), ` (cijena na ${datumHr(s.bazna.datum)}). Ne mijenja se kad promijeniš cijenu.`]
+      : 'Bazna cijena: pri spremanju postaje današnja cijena i datum (prikazuje se na stranici uz cijenu).'),
     polja.has('porcija') ? dvojezicno(s.porcija, 'Porcija', { id, polje: 'porcija', opis: 'npr. 3 kom ili 4 ili 8 zalogaja' }) : null,
     polja.has('preporuka') ? dvojezicno(s.preporuka, 'Preporuka pića', { id, polje: 'preporuka' }) : null,
     polja.has('slika') ? poljeSlike(s, 'slika', 'Fotografija jela', { id, opis: 'Klikni ili dovuci fotografiju na okvir. Može ravno s mobitela — sama se smanji, a stranica radi manje verzije.' }) : null,
@@ -578,7 +584,7 @@ function noviId() { const b = new Uint8Array(8); crypto.getRandomValues(b); retu
 function dodaj(tip) {
   const t = { hr: '', en: '' };
   const s = tip === 'jelo'
-    ? { id: noviId(), tip: 'jelo', naziv: { ...t }, opis: { ...t }, porcija: { ...t }, preporuka: { ...t }, cijena: null, kolicina: '', cijena2: null, kolicina2: '', slika: null, boja: null, galerija: true }
+    ? { id: noviId(), tip: 'jelo', naziv: { ...t }, opis: { ...t }, porcija: { ...t }, preporuka: { ...t }, cijena: null, kolicina: '', cijena2: null, kolicina2: '', slika: null, boja: null, galerija: true, bazna: null }
     : { id: noviId(), tip: 'skupina', naslov: { ...t }, napomena: { ...t }, preporuka: { ...t } };
   S.radna.stavke.push(s); S.otvoreno.add(s.id); oznaciPromjenu(); crtajUrednik();
   const li = $(`#stavka-${s.id}`); li?.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });

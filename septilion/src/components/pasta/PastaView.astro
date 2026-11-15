@@ -2,11 +2,12 @@
 import wordmark from '../../assets/svg/pasta-wordmark.svg?raw';
 import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
+import Bazna from '../Bazna.astro';
 import { ui, href, type Lang } from '../../i18n/ui';
 import { WOLT, RESERVE_PASTA, INSTAGRAM_PASTA, MAPS_PASTA } from '../../site.config.mjs';
-import { SIDE_A, SALADS, SIDES, nameOf, VERZIJA_JELOVNIKA } from '../../data/pasta';
+import { SIDE_A, SALADS, SIDES, nameOf, baseOf, VERZIJA_JELOVNIKA } from '../../data/pasta';
 import { FAQ_PASTA } from '../../data/faq';
-import { price } from '../../lib/format';
+import { price, type Base } from '../../lib/format';
 import { srcset, single } from '../../lib/images';
 import { HERO_STICKERS, stickerSvg } from '../../lib/stickers';
 import { tracksHtml } from '../../lib/tracks';
@@ -19,17 +20,19 @@ const gr = GOOGLE_RECENZIJE.pasta;
 const other: Lang = lang === 'hr' ? 'en' : 'hr';
 const wolt = WOLT['pasta-rhymes'];
 const pad = (n: number) => String(n).padStart(2, '0');
+// oznake pjesama na Strani B (B1–B4, B5) prate broj jela iz uredništva
+const trake = (od: number, doo: number) => (od === doo ? `B${od}` : `B${od}–B${doo}`);
 
 // kaseta: slike za prozorčić (JS ih mijenja po odabranoj pjesmi)
 const tapes = await Promise.all(SIDE_A.map((x) => srcset(x.img!, [480, 900], 'webp')));
 const first = SIDE_A[0];
 
 // galerija: 9 kadrova kao u prototipu
-const gal: { k: string; alt?: string; b?: string; s?: string }[] = [
+const gal: { k: string; alt?: string; b?: string; s?: string; bz?: Base }[] = [
   // prva dva kadra bez natpisa (samo opis za tražilice i čitače zaslona)
   { k: 'pr_hero', alt: p.heroAlt },
   { k: 'pr_phone', alt: p.phoneAlt },
-  ...SIDE_A.filter((x) => x.gallery !== false).map((x) => ({ k: x.img!, b: nameOf(x, lang), s: price(x.price, lang) })),
+  ...SIDE_A.filter((x) => x.gallery !== false).map((x) => ({ k: x.img!, b: nameOf(x, lang), s: price(x.price, lang), bz: baseOf(x) })),
 ];
 const galFull = await Promise.all(gal.map((g) => single(g.k, 1600, 'webp')));
 const chevL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -80,7 +83,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
               <li class="sp" style={`--c:${x.color};--t:${x.ink}`}><button class="spine" type="button" aria-expanded="false" aria-controls="deck"
                 data-i={i} data-id={x.id} data-n={nameOf(x, lang)} data-d={x.desc[lang]} data-now={price(x.price, lang)} data-src={tapes[i].src} data-srcset={tapes[i].srcset}>
                 <span class="no">{pad(i + 1)}</span><span class="nm">{nameOf(x, lang)}</span>
-                <span class="pr"><b>{price(x.price, lang)}</b></span></button></li>
+                <span class="pr"><b>{price(x.price, lang)}</b><Bazna base={baseOf(x)} lang={lang} /></span></button></li>
             ))}
           </ol>
         </div>
@@ -125,10 +128,10 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <div class="inlay">
             <span class="ispine" aria-hidden="true">Pasta Rhymes® · {p.sideB} · 1</span>
             <div class="inner">
-              <div class="chead"><h3 id="cd1">{p.salads}</h3><span>B1–B4</span></div>
+              <div class="chead"><h3 id="cd1">{p.salads}</h3><span>{trake(1, SALADS.length)}</span></div>
               <ol class="tl">
                 {SALADS.map((x, i) => (
-                  <li data-id={x.id}><span class="i">B{i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
+                  <li data-id={x.id}><span class="i">B{i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b><Bazna base={baseOf(x)} lang={lang} /></span></li>
                 ))}
               </ol>
               <div class="cfoot"><p>{p.cfootA[0]}<br />{p.cfootA[1]}</p><span class="code" aria-hidden="true"><i></i></span></div>
@@ -140,10 +143,10 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
           <div class="inlay">
             <span class="ispine" aria-hidden="true">Pasta Rhymes® · {p.sideB} · 2</span>
             <div class="inner">
-              <div class="chead"><h3 id="cd2">{p.sides}</h3><span>B5</span></div>
+              <div class="chead"><h3 id="cd2">{p.sides}</h3><span>{trake(SALADS.length + 1, SALADS.length + SIDES.length)}</span></div>
               <ol class="tl">
                 {SIDES.map((x, i) => (
-                  <li data-id={x.id}><span class="i">B{SALADS.length + i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b></span></li>
+                  <li data-id={x.id}><span class="i">B{SALADS.length + i + 1}</span><span class="n">{nameOf(x, lang)}<small class="dd">{x.desc[lang]}</small></span><span class="t"><b>{price(x.price, lang)}</b><Bazna base={baseOf(x)} lang={lang} /></span></li>
                 ))}
               </ol>
               <a class="bonus" href={wolt}>{p.bonusTrack}</a>
@@ -168,7 +171,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     </div>
     <div class="gtrack" id="gtrack" tabindex="0" aria-label={p.galleryAria}>
       {gal.map((g, i) => (
-        <figure class="gcard"><button class="gopen" type="button" data-i={i} data-full={galFull[i]} aria-label={`${t.openPhoto}: ${g.alt ?? g.b ?? ''}`}><Pic k={g.k} alt={g.alt ?? g.b ?? ''} widths={i === 0 ? [320, 520, 820, 1200] : [320, 480, 660]} sizes={i === 0 ? '(max-width: 760px) 56vw, 33vw' : '(max-width: 760px) 56vw, 21vw'} /></button>{g.b && <figcaption><b>{g.b}</b><span>{g.s}</span></figcaption>}</figure>
+        <figure class="gcard"><button class="gopen" type="button" data-i={i} data-full={galFull[i]} aria-label={`${t.openPhoto}: ${g.alt ?? g.b ?? ''}`}><Pic k={g.k} alt={g.alt ?? g.b ?? ''} widths={i === 0 ? [320, 520, 820, 1200] : [320, 480, 660]} sizes={i === 0 ? '(max-width: 760px) 56vw, 33vw' : '(max-width: 760px) 56vw, 21vw'} /></button>{g.b && <figcaption><b>{g.b}</b><span>{g.s}</span></figcaption>}{g.bz && <Bazna base={g.bz} lang={lang} />}</figure>
       ))}
     </div>
     <div class="pr-wrap"><div class="gbar"><i id="g-bar"></i></div><p class="ghint">{p.galleryHint}</p></div>
@@ -236,7 +239,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
         <div><h3>Instagram</h3><p><a href={INSTAGRAM_PASTA}>@pasta_rhymes__</a></p></div>
         <div><h3>Septillion</h3><p><a href={href('jellyfish-in-space', lang)} data-nav="jellyfish-in-space">Jellyfish in Space →</a></p></div>
       </div>
-      <p class="foot-legal">{p.legal} · <a href={href('pasta-rhymes', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>
+      <p class="foot-legal">{p.legal} · <a href="/cjenik/pasta-rhymes.csv" download>{t.priceList}</a> · <a href={href('pasta-rhymes', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>
     </div>
   </footer>
 </div>

@@ -23,6 +23,8 @@ const hr = {
   googleReview: "Google recenzija",
   leaveReview: "Ostavi recenziju",
   questions: "Pitanja",
+  basePrice: "Bazna cijena",
+  priceList: "Cjenik (CSV)",
   foot: { address: "Adresa", delivery: "Dostava", phone: "Telefon", social: "Društvene mreže" },
   meta: {
     gate: {
@@ -110,7 +112,7 @@ const hr = {
     pairing: "Preporuka:",
     items: ["stavka", "stavke", "stavki"],
     legalNote:
-      "PDV i couvert uključeni u cijenu. Za alergene u hrani i piću pitajte naše osoblje. Alkohol ne poslužujemo osobama mlađim od 18 godina.",
+      "PDV i couvert uključeni u cijenu. Ispod cijene je bazna cijena: cijena na navedeni dan. Za alergene u hrani i piću pitajte naše osoblje. Alkohol ne poslužujemo osobama mlađim od 18 godina.",
     kick: "Cocktail bar · #jellygoodbar",
     ckTitle: ["Kokteli za", "bestežinsko stanje."],
     ckNav: "Skrolaj ili povuci karticu",
@@ -178,6 +180,8 @@ const en: typeof hr = {
   googleReview: "Google review",
   leaveReview: "Leave a review",
   questions: "Questions",
+  basePrice: "Base price",
+  priceList: "Price list (CSV)",
   foot: { address: "Address", delivery: "Delivery", phone: "Phone", social: "Social media" },
   meta: {
     gate: {
@@ -265,7 +269,7 @@ const en: typeof hr = {
     pairing: "Pairs with:",
     items: ["item", "items", "items"],
     legalNote:
-      "VAT and couvert included. Ask our staff about allergens in food and drinks. We do not serve alcohol to anyone under 18.",
+      "VAT and couvert included. Below each price is the base price: the price on the date shown. Ask our staff about allergens in food and drinks. We do not serve alcohol to anyone under 18.",
     kick: "Cocktail bar · #jellygoodbar",
     ckTitle: ["Cocktails for", "zero gravity."],
     ckNav: "Scroll or swipe the card",

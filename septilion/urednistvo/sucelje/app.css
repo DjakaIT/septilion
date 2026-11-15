@@ -163,6 +163,8 @@ button.oznaka-odrzavanja:hover { text-decoration: underline; text-underline-offs
 .unos-cijene { position: relative; }
 .unos-cijene input { padding-right: 32px; font-variant-numeric: tabular-nums; }
 .unos-cijene::after { content: "€"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--tekst-3); pointer-events: none; }
+.bazna { margin: -4px 0 0; font-size: 13px; color: var(--tekst-3); }
+.bazna b { color: var(--tekst-2); font-variant-numeric: tabular-nums; }
 .druga { border: 1px solid var(--crta); border-radius: var(--r-malo); padding: 0 14px; }
 .druga > summary { cursor: pointer; padding: 12px 0; font-weight: 600; font-size: 14px; color: var(--tekst-2); min-height: 44px; display: flex; align-items: center; }
 .druga[open] { padding-bottom: 14px; }

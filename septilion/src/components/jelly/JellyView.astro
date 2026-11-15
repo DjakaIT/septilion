@@ -1,6 +1,7 @@
 ---
 import Pic from '../Pic.astro';
 import Faq from '../Faq.astro';
+import Bazna from '../Bazna.astro';
 import { ui, href, plural, fill, type Lang } from '../../i18n/ui';
 import { WOLT, PHONE_JELLY, RESERVE_JELLY, MAPS_JELLY, INSTAGRAM_JELLY, FACEBOOK_JELLY } from '../../site.config.mjs';
 import { JELLY_MENU, JELLY_GALLERY, itemCount, VERZIJA_JELOVNIKA, type MenuItem } from '../../data/jelly-menu';
@@ -119,7 +120,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
                 {g.title && <li class="gh" id={`g-${c.id}-${slug(g.title.hr)}`}>{g.title[lang]}{g.note && <small>{g.note[lang]}</small>}</li>}
                 {g.pairing && <li class="cn">{j.pairing} {g.pairing[lang]}</li>}
                 {g.items.map((it) => (
-                  <li data-id={it.id}><span class="it"><b>{it.name[lang]}</b>{it.desc && <span class="ds">{it.desc[lang]}</span>}{it.pairing && <span class="ds pp">{j.pairing} {it.pairing[lang]}</span>}{nt(it) && <small class="nt">{nt(it)}</small>}</span><span class="pr">{prices(it)}{vol(it) && <small>{vol(it)}</small>}</span></li>
+                  <li data-id={it.id}><span class="it"><b>{it.name[lang]}</b>{it.desc && <span class="ds">{it.desc[lang]}</span>}{it.pairing && <span class="ds pp">{j.pairing} {it.pairing[lang]}</span>}{nt(it) && <small class="nt">{nt(it)}</small>}</span><span class="pr">{prices(it)}{vol(it) && <small>{vol(it)}</small>}<Bazna base={it.base} lang={lang} /></span></li>
                 ))}
               </>))}
             </ul>
@@ -203,7 +204,7 @@ const chevR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
         <div><h3>{t.foot.social}</h3><p class="soc"><a href={INSTAGRAM_JELLY}>Instagram</a><a href={FACEBOOK_JELLY}>Facebook</a></p></div>
         <div><h3>Septillion</h3><p><a href={href('pasta-rhymes', lang)} data-nav="pasta-rhymes">Pasta Rhymes →</a></p></div>
       </div>
-      <p class="foot-legal">{j.legal} · <a href={href('jellyfish-in-space', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>
+      <p class="foot-legal">{j.legal} · <a href="/cjenik/jellyfish-in-space.csv" download>{t.priceList}</a> · <a href={href('jellyfish-in-space', other)} hreflang={other} lang={other}>{t.langSwitch.label}</a></p>
     </div>
   </footer>
 </div>

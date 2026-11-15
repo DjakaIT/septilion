@@ -145,7 +145,9 @@ const gSync = () => { if (!gHold && !gSettled()) gk = gFromScroll(); gUpd(); };
 setTimeout(gSync, 50); addEventListener('resize', gSync); gUpd();
 const lb = lightbox(cards.map((c) => {
   const b = $<HTMLButtonElement>('.gopen', c), im = $<HTMLImageElement>('img', c);
-  return { src: b.dataset.full!, alt: im.alt, title: $('figcaption b', c)?.textContent || '', sub: $('figcaption span', c)?.textContent || '' };
+  // cijena i bazna cijena (Bazna.astro ispod natpisa)
+  const sub = [$('figcaption span', c)?.textContent, $('.bz', c)?.textContent].filter(Boolean).join(' · ');
+  return { src: b.dataset.full!, alt: im.alt, title: $('figcaption b', c)?.textContent || '', sub };
 }));
 $$<HTMLButtonElement>('.gopen', gt).forEach((b) => b.addEventListener('click', () => lb.open(+b.dataset.i!)));
 

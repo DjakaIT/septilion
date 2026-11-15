@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { citajJson, pisiJson, brava } from './datoteke.mjs';
-import { provjeri, pocetniSadrzaj, migriraj, Kategorija } from '../../src/data/sadrzaj.mjs';
+import { provjeri, pocetniSadrzaj, migriraj, popuniBazne, Kategorija } from '../../src/data/sadrzaj.mjs';
 import { LOKALI, kljucKategorije } from '../../src/data/lokali.mjs';
 import { ROOT } from './postavke.mjs';
 
@@ -61,7 +61,8 @@ export function spremiste(podaciDir, { slikaPostoji }) {
       if (!k.success) throw new Greska(422, 'Sadržaj nije ispravan', { greske: k.error.issues.map((i) => ({ putanja: ['kategorije', kljuc, ...i.path], poruka: i.message })) });
       const [lokal, kk] = kljuc.split('/');
       const naziv = LOKALI.find((l) => l.id === lokal)?.kategorije.find((c) => c.kljuc === kk)?.naziv || k.data.naslov.hr || kk;
-      const novi = { ...trenutni, verzija: trenutni.verzija + 1, azurirano: new Date().toISOString(), azurirao: ime, kategorije: { ...trenutni.kategorije, [kljuc]: k.data } };
+      // nova jela dobiju baznu cijenu (današnja cijena i datum), postojeća zadrže svoju
+      const novi = { ...trenutni, verzija: trenutni.verzija + 1, azurirano: new Date().toISOString(), azurirao: ime, kategorije: { ...trenutni.kategorije, [kljuc]: popuniBazne(k.data) } };
       return spremi(novi, ime, `${LOKALI.find((l) => l.id === lokal)?.naziv}: ${naziv}`);
     }),
     povijest() {

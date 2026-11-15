@@ -116,6 +116,22 @@ html:has(body[data-route="gate"]),body[data-route="gate"]{overscroll-behavior-y:
 }
 /* volumen pića sitno ispod cijene (stil .panel li .pr small iz prototipa) */
 .plist .pr small{margin-top:2px;white-space:nowrap}
+/* bazna cijena (Bazna.astro) u retku sitnog teksta ispod cijene iz prototipa (.spine .pr / .tl .t / .panel li .pr small):
+   datum i cijena se ne lome, a kad nema mjesta (mobitel) cijena ide ispod datuma, pa stupac cijene nije širi od cijene */
+.plist .pr .bz,.spine .pr .bz,.tl .t .bz{white-space:normal}
+.bz time,.bz .bc{white-space:nowrap}
+/* skriveni "Bazna cijena" (.sr, position:absolute) ostaje u oznaci: inače bi ga klizač galerije ili popis Jellyfisha
+   pustili van i stranica bi na mobitelu bila šira od ekrana */
+.bz{position:relative}
+/* gdje je stupac cijene uzak, datum je u svom retku — inače bi oznaka stisnula naziv (Jellyfish) ili opis (Strana B) */
+@media(max-width:900px){.plist .pr .bz time{display:block}}
+@media(min-width:821px){.tl .t .bz time{display:block}}
+/* Strana B: kad jela iz uredništva ne stanu u kutiju CD-a (omjer 1.1:1), kutija naraste umjesto da odreže podnožje;
+   omjer ostaje najmanja visina, a druga kutija u retku se rastegne na istu visinu (kao prototip na 821–1100 px) */
+@media(min-width:1101px){.case .inlay{height:auto;min-height:100%}}
+/* galerija: bazna cijena ispod natpisa, a natpis (naziv i cijena) ostaje kakav je bio */
+.gcard>.bz{display:block;margin-top:4px;padding:0 2px;font:400 11.5px "Plex Mono";color:rgba(255,255,255,.72);text-align:right}
+@media(max-width:760px){.gcard>.bz{text-align:left}}
 /* natpis planeta mora stati u tetivu kruga pri dnu, inače se reže ("GLAVNA JELA") */
 .planet:not(.sphere) span{padding:0 13%;line-height:1.1}
 @media(max-width:900px){

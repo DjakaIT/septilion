@@ -3,10 +3,12 @@
 // Oblik se provjerava pri buildu — kriva cijena ili prazan naziv ruše build umjesto da odu na stranicu.
 import { z } from 'astro/zod';
 import raw from './jelly-menu.json';
-import { ucitajZaBuild, uJelly, zadanaFotografijaJela } from './sadrzaj.mjs';
+import { ucitajZaBuild, uJelly, zadanaFotografijaJela, BAZNI_DATUM } from './sadrzaj.mjs';
 
 const L = z.object({ hr: z.string().min(1), en: z.string().min(1) });
 const Price = z.object({ amount: z.number().positive(), size: z.string().optional() });
+// bazna cijena (cijene istim redom kao prices) i dan na koji vrijedi — prikazuje se uz svaku cijenu
+const Base = z.object({ prices: z.array(z.number().positive()).min(1), date: z.string() });
 // slika: ključ slike (src/assets/img ili podaci/slike — vidi src/lib/images.ts)
 const Img = z.string();
 const Item = z.object({
@@ -16,6 +18,7 @@ const Item = z.object({
   portion: L.nullable(),
   pairing: L.nullable(),
   prices: z.array(Price).min(1),
+  base: Base,
   // fotografija jela (uredništvo; bez nje jelo nije u galeriji) i smije li u galeriju
   img: Img.nullable().default(null),
   gallery: z.boolean().default(true),
@@ -38,8 +41,9 @@ export type MenuCategory = z.infer<typeof Category>;
 const izUrednistva = ucitajZaBuild();
 /** verzija jelovnika iz uredništva s kojom je stranica izgrađena (novije cijene i tekstove stranica preuzme odmah: core/uzivo.ts) */
 export const VERZIJA_JELOVNIKA: number = izUrednistva?.verzija ?? 0;
-// bez uredništva: jelly-menu.json + zadane fotografije jela (kao početni sadržaj uredništva)
-const izJsona = { categories: raw.categories.map((c) => ({ ...c, groups: c.groups.map((g) => ({ ...g, items: g.items.map((i) => ({ ...i, img: zadanaFotografijaJela(i.name.hr) })) })) })) };
+// bez uredništva: jelly-menu.json + zadane fotografije jela i cijene na referentni dan (kao početni sadržaj uredništva)
+const izJsona = { categories: raw.categories.map((c) => ({ ...c, groups: c.groups.map((g) => ({ ...g, items: g.items.map((i) => ({
+  ...i, img: zadanaFotografijaJela(i.name.hr), base: { prices: i.prices.map((p) => p.amount), date: BAZNI_DATUM } })) })) })) };
 export const JELLY_MENU = Menu.parse(izUrednistva ? { categories: uJelly(izUrednistva) } : izJsona).categories;
 /** galerija "Što se još, osim meduza…": jela s fotografijom i kvačicom za galeriju, redom kao u jelovniku; natpis je naziv jela */
 export const JELLY_GALLERY = JELLY_MENU.flatMap((c) => c.groups.flatMap((g) => g.items)).filter((i): i is MenuItem & { img: string } => Boolean(i.img) && i.gallery);

@@ -2,9 +2,11 @@
 // koji stranica koristi. Čisti JS — dijele ga build stranice (src/data/*.ts) i poslužitelj uredništva.
 //
 // Oblik datoteke:
-// { format: 2, verzija, azurirano, azurirao, kategorije: { "pasta-rhymes/strana-a": { naslov, slika, planet, napomena, stavke: [...] } } }
+// { format: 3, verzija, azurirano, azurirao, kategorije: { "pasta-rhymes/strana-a": { naslov, slika, planet, napomena, stavke: [...] } } }
 // stavke su ravan popis kao na stranici: { tip: 'jelo', ... } ili { tip: 'skupina', naslov, ... } (naslov skupine pića).
-// Format 2 (22.10.2026.): jela Jellyfisha imaju fotografije (galerija na stranici); format 1 se pri čitanju nadogradi (migriraj).
+// Format 2 (22.10.2026.): jela Jellyfisha imaju fotografije (galerija na stranici).
+// Format 3 (15.11.2026.): jela imaju baznu cijenu (Zakon o zaštiti potrošača, od 17.11.2026.): cijena na 10.9.2026., a jelo
+// uvedeno kasnije cijenu i datum prvog spremanja. Stariji format se pri čitanju nadogradi (migriraj).
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -12,7 +14,12 @@ import { z } from 'astro/zod';
 import { BOJE, LOKALI, kljucKategorije, sveKategorije } from './lokali.mjs';
 import { LOCAL_SIDE_A, LOCAL_SALADS, LOCAL_SIDES } from './pasta-local.mjs';
 
-export const FORMAT = 2;
+export const FORMAT = 3;
+
+/** referentni dan bazne cijene: uz svaku cijenu na stranici stoji cijena tog dana */
+export const BAZNI_DATUM = '2026-09-10';
+/** današnji datum u Zagrebu (YYYY-MM-DD): bazna cijena novog jela je cijena s kojom je uvedeno */
+export const danas = (d = new Date()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zagreb', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
 
 /** fotografije jela Jellyfisha (src/assets/img) koje jela dobiju pri prelasku na format 2 — prema nazivu (hr), dok ih urednik ne promijeni */
 export const ZADANE_FOTOGRAFIJE_JELA = {
@@ -34,17 +41,21 @@ export const zadanaFotografijaJela = (naziv) => ZADANE_FOTOGRAFIJE_JELA[String(n
 
 /**
  * Nadogradnja starijeg sadržaja na FORMAT (ne mijenja ulaz). Format 1 -> 2: jela Jellyfisha bez fotografije
- * dobiju zadanu prema nazivu. Sve ostalo (i nepoznat oblik) ide dalje nepromijenjeno — provjera ga ionako odbije.
+ * dobiju zadanu prema nazivu. Format 2 -> 3: jela dobiju baznu cijenu — svoju cijenu na BAZNI_DATUM (do tada se
+ * cijene nisu mijenjale). Sve ostalo (i nepoznat oblik) ide dalje nepromijenjeno — provjera ga ionako odbije.
  */
 export function migriraj(s) {
-  if (!s || typeof s !== 'object' || s.format !== 1 || !s.kategorije || typeof s.kategorije !== 'object') return s;
-  const kategorije = {};
-  for (const [kk, k] of Object.entries(s.kategorije)) {
-    kategorije[kk] = kk.startsWith('jellyfish-in-space/') && Array.isArray(k?.stavke)
-      ? { ...k, stavke: k.stavke.map((x) => (x?.tip === 'jelo' && x.slika === null && zadanaFotografijaJela(x.naziv?.hr) ? { ...x, slika: zadanaFotografijaJela(x.naziv.hr) } : x)) }
-      : k;
+  if (!s || typeof s !== 'object' || !s.kategorije || typeof s.kategorije !== 'object') return s;
+  const jela = (s, fn) => Object.fromEntries(Object.entries(s.kategorije).map(([kk, k]) => [kk, Array.isArray(k?.stavke)
+    ? { ...k, stavke: k.stavke.map((x) => (x?.tip === 'jelo' ? fn(x, kk) : x)) } : k]));
+  if (s.format === 1) {
+    s = { ...s, format: 2, kategorije: jela(s, (x, kk) => (kk.startsWith('jellyfish-in-space/') && x.slika === null && zadanaFotografijaJela(x.naziv?.hr)
+      ? { ...x, slika: zadanaFotografijaJela(x.naziv.hr) } : x)) };
   }
-  return { ...s, format: 2, kategorije };
+  if (s.format === 2) {
+    s = { ...s, format: 3, kategorije: jela(s, (x) => ('bazna' in x ? x : { ...x, bazna: { cijena: x.cijena, cijena2: x.cijena2 ?? null, datum: BAZNI_DATUM } })) };
+  }
+  return s;
 }
 /** ključ slike: lokalna (src/assets/img, npr. pr_shrimp) ili učitana u uredništvu (podaci/slike/n-<24 hex>.webp) */
 export const KLJUC_SLIKE = /^(?:[a-z0-9_]{1,40}|n-[a-f0-9]{24})$/;
@@ -56,6 +67,13 @@ const tekst = (max) => z.object({ hr: z.string().trim().max(max), en: z.string()
 const dvijeDecimale = (v) => Math.abs(Math.round(v * 100) - v * 100) < 1e-6;
 const cijena = z.number().positive('Cijena mora biti veća od 0').max(9999, 'Provjeri cijenu').refine(dvijeDecimale, 'Najviše dvije decimale');
 const slika = z.string().regex(KLJUC_SLIKE).nullable();
+const DATUM = /^(\d{4})-(\d{2})-(\d{2})$/;
+const datum = z.string().regex(DATUM, 'Neispravan datum').refine((d) => {
+  const [, g, m, dan] = DATUM.exec(d).map(Number), t = new Date(Date.UTC(g, m - 1, dan));
+  return t.getUTCMonth() === m - 1 && t.getUTCDate() === dan;
+}, 'Neispravan datum');
+/** bazna cijena: cijena (i druga cijena) na dan `datum`; null = novo jelo, pri spremanju dobije današnju (popuniBazne) */
+const Bazna = z.object({ cijena, cijena2: cijena.nullable(), datum }).strict();
 
 const Jelo = z.object({
   id: z.string().regex(ID_STAVKE),
@@ -71,6 +89,8 @@ const Jelo = z.object({
   slika,
   boja: z.string().regex(/^#[0-9A-Fa-f]{6}$/).nullable(),
   galerija: z.boolean(),
+  // starije sučelje uredništva (otvorena kartica) šalje jela bez ovog polja: kao novo jelo
+  bazna: Bazna.nullable().default(null),
 }).strict();
 const Skupina = z.object({
   id: z.string().regex(ID_STAVKE),
@@ -96,7 +116,19 @@ export const Sadrzaj = z.object({
 
 /** prazne vrijednosti za novu stavku (uredništvo ih popunjava) */
 export const praznoJelo = () => ({ id: noviId(), tip: 'jelo', naziv: { hr: '', en: '' }, opis: { hr: '', en: '' }, porcija: { hr: '', en: '' }, preporuka: { hr: '', en: '' },
-  cijena: 1, kolicina: '', cijena2: null, kolicina2: '', slika: null, boja: null, galerija: true });
+  cijena: 1, kolicina: '', cijena2: null, kolicina2: '', slika: null, boja: null, galerija: true, bazna: null });
+
+/**
+ * Bazne cijene pri spremanju kategorije: novo jelo (bazna null) dobije svoju cijenu i današnji datum; promjena cijene
+ * postojećeg jela baznu ne mijenja. Druga cijena prati drugu veličinu (nova veličina dobije svoju cijenu).
+ */
+export function popuniBazne(k, dan = danas()) {
+  return { ...k, stavke: k.stavke.map((x) => {
+    if (x.tip !== 'jelo') return x;
+    const b = x.bazna ?? { cijena: x.cijena, cijena2: x.cijena2, datum: dan };
+    return { ...x, bazna: { ...b, cijena2: x.cijena2 === null ? null : b.cijena2 ?? x.cijena2 } };
+  }) };
+}
 
 // ---------------- provjera pravila po kategoriji ----------------
 /**
@@ -169,6 +201,7 @@ export function pocetniSadrzaj(root = process.cwd()) {
           slika: kat.polja.includes('slika') ? x.img ?? null : null,
           boja: kat.polja.includes('boja') ? x.color ?? null : null,
           galerija: x.gallery !== false,
+          bazna: { cijena: x.price, cijena2: null, datum: BAZNI_DATUM },
         })),
       };
       continue;
@@ -184,6 +217,7 @@ export function pocetniSadrzaj(root = process.cwd()) {
           ...praznoJelo(), naziv: Tl(it.name), opis: Tl(it.desc), porcija: Tl(it.portion), preporuka: Tl(it.pairing),
           cijena: it.prices[0].amount, kolicina: it.prices[0].size ?? '', cijena2: it.prices[1]?.amount ?? null, kolicina2: it.prices[1]?.size ?? '',
           slika: zadanaFotografijaJela(it.name?.hr),
+          bazna: { cijena: it.prices[0].amount, cijena2: it.prices[1]?.amount ?? null, datum: BAZNI_DATUM },
         });
       }
     });
@@ -206,11 +240,16 @@ export function tinta(hex) {
 }
 
 const jela = (k) => k.stavke.filter((s) => s.tip === 'jelo');
+/** bazna cijena za stranicu (cijene istim redom kao cijene jela); jelo bez nje ima svoju cijenu na BAZNI_DATUM */
+const baza = (x) => {
+  const b = x.bazna ?? { cijena: x.cijena, cijena2: x.cijena2, datum: BAZNI_DATUM };
+  return { prices: [b.cijena, ...(x.cijena2 !== null ? [b.cijena2 ?? x.cijena2] : [])], date: b.datum };
+};
 
 /** Pasta Rhymes: SIDE_A / SALADS / SIDES (src/data/pasta.ts) */
 export function uPasta(s) {
   const k = (kljuc) => s.kategorije[kljucKategorije('pasta-rhymes', kljuc)];
-  const osnovno = (x) => ({ id: x.id, name: x.naziv.hr, nameEn: x.naziv.en || x.naziv.hr, desc: x.opis.hr ? L(x.opis) : { hr: '', en: '' }, price: x.cijena });
+  const osnovno = (x) => ({ id: x.id, name: x.naziv.hr, nameEn: x.naziv.en || x.naziv.hr, desc: x.opis.hr ? L(x.opis) : { hr: '', en: '' }, price: x.cijena, base: baza(x) });
   const SIDE_A = jela(k('strana-a')).map((x) => {
     const color = /^#[0-9a-f]{6}$/i.test(x.boja ?? '') ? x.boja : '#FE0000';
     return { ...osnovno(x), img: x.slika, color, ink: tinta(color), gallery: x.galerija };
@@ -234,7 +273,7 @@ export function uJelly(s) {
       cur.items.push({
         id: x.id, name: L(x.naziv), desc: Lnull(x.opis), portion: Lnull(x.porcija), pairing: Lnull(x.preporuka),
         prices: [price(x.cijena, x.kolicina), ...(x.cijena2 !== null ? [price(x.cijena2, x.kolicina2)] : [])],
-        img: x.slika, gallery: x.galerija,
+        base: baza(x), img: x.slika, gallery: x.galerija,
       });
     }
     return { id: kat.kljuc, title: L(k.naslov), img: k.slika, pimg: k.planet ?? ZADANI_PLANETI[kat.kljuc] ?? null, note: Lnull(k.napomena), groups: groups.filter((g) => g.items.length) };

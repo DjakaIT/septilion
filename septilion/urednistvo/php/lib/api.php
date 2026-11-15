@@ -326,8 +326,13 @@ final class Urednistvo
 
             // cPanel Cron Job (svakih 5 min): postavi novu izgradnju s GitHuba (promjene koda, zatvoren preglednik); bez prijave
             case 'GET /osvjezi': {
-                $this->json(200, $this->objava->osvjezi());
-                $this->nakonOdgovora(fn () => $this->recenzije->osvjezi()); // Google recenzije: jednom dnevno
+                $r = $this->objava->osvjezi();
+                $this->json(200, $r);
+                $this->nakonOdgovora(function () use ($r) {
+                    // GitHub se pita kad i za izgradnje (ne pri svakom pozivu): noviji jelovnik s grane sadrzaj
+                    if (!in_array($r['stanje'], ['pricekaj', 'nije-postavljeno'], true)) $this->uvezi();
+                    $this->recenzije->osvjezi(); // Google recenzije: jednom dnevno
+                });
                 return;
             }
 
@@ -493,6 +498,20 @@ final class Urednistvo
             pisi_atomarno($this->p['javno'] . '/jelovnik-uzivo.json', u_json(['verzija' => $s['verzija'], 'jela' => $kat]), 0644);
         } catch (Throwable $e) {
             error_log('[uredništvo] jelovnik-uzivo: ' . $e->getMessage()); // spremanje je uspjelo; stranica čeka izgradnju
+        }
+    }
+
+    /**
+     * Jelovnik objavljen izravno na grani sadrzaj (administrator, mimo uredništva) uredništvo preuzme kad je noviji od
+     * njegovog: tada ga i pokazuje, a sljedeće spremanje gradi na njemu umjesto da ga prepiše. Stranica ga već ima.
+     */
+    private function uvezi(): void
+    {
+        try {
+            $s = $this->spremiste->uvezi($this->objava->sadrzajSGrane());
+            if ($s) $this->uzivo($s);
+        } catch (Throwable $e) {
+            error_log('[uredništvo] uvoz jelovnika s grane sadrzaj: ' . $e->getMessage());
         }
     }
 

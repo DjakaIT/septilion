@@ -1,0 +1,9 @@
+---
+// Bazna cijena sitno ispod (na mobitelu uz) cijene: cijena jela na dan iz uredništva (Zakon o zaštiti potrošača, od
+// 17. 11. 2026.). Oblik kako preporučuje Ministarstvo: datum pa cijena. Stil daje roditelj (.pr / .t small iz prototipa).
+import { ui, type Lang } from '../i18n/ui';
+import { price, dateShort, type Base } from '../lib/format';
+interface Props { base: Base; lang: Lang }
+const { base, lang } = Astro.props;
+---
+<small class="bz"><span class="sr">{ui[lang].basePrice} </span><time datetime={base.date}>{dateShort(base.date, lang)}:</time> <span class="bc">{base.prices.map((p) => price(p, lang)).join(' / ')}</span></small>

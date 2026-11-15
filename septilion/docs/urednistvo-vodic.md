@@ -40,6 +40,9 @@ Lijevo su lokali i kategorije (na mobitelu: izbornik **Kategorija** na vrhu). Br
 - **Naziv i opis** imaju hrvatsku i englesku verziju. Ako englesku ostaviš praznu, na engleskoj stranici piše
   hrvatski tekst.
 - **Cijena** se upisuje kao na jelovniku: `8,90` (može i `8.90` ili `9`).
+- **Bazna cijena** (zakon, od 17. 11. 2026.) stoji na stranici sitno uz cijenu, npr. *10. 9. 2026.: 16,00 €*. Ne upisuješ
+  je: postojeća jela imaju cijenu od 10. 9. 2026., a novo jelo pri prvom spremanju dobije svoju cijenu i taj dan. Kad
+  promijeniš cijenu, bazna ostaje — u obrascu jela piše koja je. Cjenik za inspekciju (CSV) je u podnožju stranice.
 - Crveno označeno polje znači da nešto nedostaje — poruka ispod kaže što. Čim ga ispraviš, oznaka nestaje.
 
 ### Pasta Rhymes — Strana A (paste)

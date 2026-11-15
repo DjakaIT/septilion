@@ -67,12 +67,26 @@ Prijelaz između lokala ide preko client-side routera (trenutni prototip
 koristi hash rute `#/`, `#/pasta-rhymes`, `#/jellyfish-in-space` — u
 produkciji ide na prave path rute s prerenderom, ne hash, radi SEO-a).
 
-## Cijene — sidrene cijene UKINUTE
+## Cijene — bazne cijene (od 17.11.2026.)
 
-Zakon o obveznom isticanju sidrene cijene (od 01.10.2026.) je **ukinut**.
-Sidrene cijene se **ne implementiraju nigdje** na stranici — ni u podatkovnom
-modelu, ni u UI-ju, ni u strukturiranim podacima (schema.org). Stari dizajn ih
-je imao i sve je uklonjeno; ne vraćati ih ni u jednom budućem retrou.
+Obveza isticanja sidrene (dodatne) cijene nije ukinuta nego **odgođena**: od
+**17.11.2026.** uz svaku cijenu na stranici stoji i **bazna cijena** — cijena jela
+na **10.9.2026.**, a za jelo uvedeno kasnije cijena i datum uvođenja (Zakon o
+zaštiti potrošača NN 59/2026, Pravilnik o isticanju bazne cijene). Potvrdio
+naručitelj 15.11.2026.: cijene 10.9. bile su iste kao na stranici prije izmjena.
+
+- **Podaci:** jelovnik iz uredništva, format 3 — svako jelo ima
+  `bazna: { cijena, cijena2, datum }` (src/data/sadrzaj.mjs, urednistvo/php/lib/sadrzaj.php).
+  Novo jelo je dobije pri prvom spremanju (današnja cijena i datum); promjena
+  cijene u uredništvu baznu ne mijenja. U uredništvu se samo vidi, ne uređuje.
+- **Prikaz:** `Bazna.astro` sitno ispod cijene ("10. 9. 2026.: 16,00 €", kako
+  preporučuje Ministarstvo) — Pasta (Strana A i B, galerija), Jellyfish (popis);
+  i u tekstu česta pitanja gdje se spominje cijena.
+- **Cjenik:** `/cjenik/pasta-rhymes.csv` i `/cjenik/jellyfish-in-space.csv`
+  (src/pages/cjenik/[lokal].csv.ts), poveznica u podnožju; osvježava ga svaka
+  objava. Oblik stupaca prilagoditi kad pravilnik o objavi cjenika izađe u NN.
+- **Nije pokriveno:** PDF jelovnik Jellyfisha (dokument naručitelja) nema
+  bazne cijene; arhiva prethodnih cjenika (30 dana) se ne vodi.
 
 **Stanje po lokalu:**
 
@@ -95,7 +109,7 @@ je imao i sve je uklonjeno; ne vraćati ih ni u jednom budućem retrou.
     ovoliko kategorija ni za strukturu pića-po-tipu-alkohola). Treba posebna
     odluka o prikazu bara (vjerojatno zaseban prikaz/filter odvojen od hrane,
     ne u istoj orbiti).
-  - PDF ne sadrži sidrene cijene (potvrđuje da je zakon ukinut).
+  - PDF ne sadrži sidrene cijene (izrađen prije 17.11.2026.; vidi Cijene).
   - Slike u PDF-u (hero planeti, astronaut itd.) su layout/mood slike samog
     PDF-a, **ne nužno** iste slike koje idu na stranicu — provjeriti s
     naručiteljem prije upotrebe.
@@ -141,7 +155,7 @@ starih adresa, 301 na svaku, stara domena aktivna barem godinu dana.
   stranicu.
 - `<title>`, meta description, Open Graph i Twitter card po ruti/lokalu.
 - JSON-LD: `Restaurant`/`FoodEstablishment` shema po lokalu, `Menu`/`MenuSection`/
-  `MenuItem` sa stvarnim cijenama (bez sidrene cijene — ukinuto), `FAQPage` iz
+  `MenuItem` sa stvarnim cijenama (bazna cijena samo u prikazu i cjeniku), `FAQPage` iz
   vidljivih FAQ pitanja (princip iz prototipa: generira se iz DOM-a, ne piše
   se ručno duplo).
 - `hreflang` ispravan za hr/en/treći jezik, čim se jezici odluče.
@@ -180,7 +194,7 @@ starih adresa, 301 na svaku, stara domena aktivna barem godinu dana.
 - Dizajn — finaliziran (v4 HTML), ide u produkciju
 - Pasta cijene — Wolt jelovnik, potvrđeno
 - Jellyfish cjenik — stigao kao PDF, treba uneseno u novi podatkovni model
-- Sidrene cijene — zakon ukinut, ne implementira se
+- Bazne (sidrene) cijene — obvezne od 17.11.2026., implementirane (vidi Cijene)
 - Datum otvaranja — nema fiksnog, rok ne ovisi o tome
 - Septillion identitet — ne postoji knjiga standarda; boje i tipografsku
   skalu izvodimo iz znaka i TT Lakes Neuea, uz odobrenje naručitelja

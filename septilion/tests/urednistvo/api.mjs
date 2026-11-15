@@ -179,6 +179,35 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     assert.equal(s.stanje, 'spremno', 'sučelje vidi da je objava gotova');
   });
 
+  test('bazne cijene: nova cijena ne mijenja baznu; novo jelo (i iz starijeg sučelja) dobije današnju; na stranici uz cijenu i u cjeniku (CSV)', async () => {
+    const j = (await t.k.z('GET', `${API}/jelovnik`)).j;
+    assert.equal(j.sadrzaj.format, 3);
+    const kat = structuredClone(j.sadrzaj.kategorije['pasta-rhymes/prilozi']);
+    const stara = kat.stavke[0].cijena;
+    assert.deepEqual(kat.stavke[0].bazna, { cijena: stara, cijena2: null, datum: '2026-09-10' }, 'postojeće jelo: cijena na 10. 9. 2026.');
+    kat.stavke[0].cijena = stara + 0.5;
+    // novo jelo kakvo šalje starije sučelje (otvorena kartica prije nadogradnje): bez polja bazna
+    kat.stavke.push({ id: 'kremjuha001', tip: 'jelo', naziv: { hr: 'Krem juha', en: 'Cream soup' }, opis: { hr: 'Karfiol, krumpir, luk', en: '' }, porcija: { hr: '', en: '' },
+      preporuka: { hr: '', en: '' }, cijena: 4, kolicina: '', cijena2: null, kolicina2: '', slika: null, boja: null, galerija: true });
+    const r = await t.k.z('PUT', `${API}/kategorija`, { kljuc: 'pasta-rhymes/prilozi', verzija: j.sadrzaj.verzija, kategorija: kat });
+    assert.equal(r.status, 200, JSON.stringify(r.j));
+    const danas = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zagreb', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    assert.deepEqual(r.j.kategorija.stavke[0].bazna, { cijena: stara, cijena2: null, datum: '2026-09-10' }, 'bazna ostaje uz novu cijenu');
+    assert.deepEqual(r.j.kategorija.stavke[1].bazna, { cijena: 4, cijena2: null, datum: danas }, 'novo jelo: današnja cijena i datum');
+    const losa = structuredClone(r.j.kategorija); losa.stavke[0].bazna.datum = '2026-13-01';
+    assert.equal((await t.k.z('PUT', `${API}/kategorija`, { kljuc: 'pasta-rhymes/prilozi', verzija: r.j.verzija, kategorija: losa })).status, 422, 'kriv datum bazne cijene');
+    await srv.objavljeno();
+    const html = await srv.stranica('/pasta-rhymes');
+    const [d, m, g] = danas.split('-').reverse().map(Number);
+    assert.ok(html.includes('<time datetime="2026-09-10">10. 9. 2026.:</time> <span class="bc">2,00 €</span>'), 'bazna cijena uz novu cijenu');
+    assert.ok(html.includes(`<time datetime="${danas}">${d}. ${m}. ${g}.:</time> <span class="bc">4,00 €</span>`), 'novo jelo s datumom uvođenja');
+    const bajtovi = Buffer.from(await (await fetch(`${srv.url}/cjenik/pasta-rhymes.csv`)).arrayBuffer());
+    assert.equal(bajtovi.subarray(0, 3).toString('hex'), 'efbbbf', 'UTF-8 s BOM-om (Excel)');
+    const csv = bajtovi.subarray(3).toString('utf8');
+    assert.ok(csv.startsWith('Naziv;Kategorija;Količina;Maloprodajna cijena (EUR);Posebni oblik prodaje;Bazna cijena (EUR);Datum bazne cijene\r\n'), csv.slice(0, 200));
+    assert.ok(csv.includes('Focaccia;Prilozi;;2,50;ne;2,00;10.09.2026.') && csv.includes(`Krem juha;Prilozi;;4,00;ne;4,00;${danas.split('-').reverse().join('.')}.`), csv);
+  });
+
   test('fotografije: samo prave slike; EXIF/GPS se uklanja; nasumično ime; minijatura samo prijavljenima; objavljuje se s jelovnikom', async () => {
     assert.equal((await t.k.z('POST', `${API}/slike`, Buffer.from('<?php system($_GET[1]); ?>'), { sirovo: true, vrsta: 'image/png' })).status, 415);
     assert.equal((await t.k.z('POST', `${API}/slike`, Buffer.from('x'), { sirovo: true, vrsta: 'text/html' })).status, 415);
@@ -219,7 +248,7 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     for (const [kk, k] of Object.entries(stari.kategorije)) if (kk.startsWith('jellyfish-in-space/')) for (const x of k.stavke) if (x.tip === 'jelo') x.slika = null;
     fs.writeFileSync(dat, JSON.stringify(stari));
     const j = (await t.k.z('GET', `${API}/jelovnik`)).j;
-    assert.equal(j.sadrzaj.format, 2);
+    assert.equal(j.sadrzaj.format, 3);
     const predjela = structuredClone(j.sadrzaj.kategorije['jellyfish-in-space/predjela']);
     const jelo = (naziv) => predjela.stavke.find((x) => x.naziv?.hr === naziv);
     assert.equal(jelo('Tacos beef').slika, 'jf_jelo_tacos_beef', 'zadana fotografija prema nazivu');
@@ -232,7 +261,7 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     const r = await t.k.z('PUT', `${API}/kategorija`, { kljuc: 'jellyfish-in-space/predjela', verzija: j.sadrzaj.verzija, kategorija: predjela });
     assert.equal(r.status, 200, JSON.stringify(r.j));
     const disk = JSON.parse(fs.readFileSync(dat, 'utf8'));
-    assert.equal(disk.format, 2, 'nadograđeni jelovnik je spremljen');
+    assert.equal(disk.format, 3, 'nadograđeni jelovnik je spremljen');
     assert.equal(disk.kategorije['jellyfish-in-space/predjela'].stavke.find((x) => x.naziv?.hr === 'Tacos beef').slika, null, 'maknuta fotografija se ne vraća');
     assert.equal(disk.kategorije['jellyfish-in-space/sushi'].stavke.find((x) => x.naziv?.hr === 'Aburi nigiri').slika, 'jf_jelo_aburi_nigiri', 'ostale kategorije su nadograđene');
     await srv.objavljeno();
@@ -404,6 +433,41 @@ describe(`uredništvo (${POSLUZITELJ})`, { skip: preskoci }, () => {
     gh.noviRun({ event: 'workflow_dispatch', artefakt: paket({ 'index.html': html }) });
     assert.equal(await osvjezi(), 'postavljeno');
     assert.ok(!(await srv.stranica('/')).includes('novi-kod'));
+  });
+
+  test('jelovnik objavljen izravno na grani sadrzaj (php): Cron Job ga preuzme kad je noviji i ispravan; uredništvo ga pokazuje i gradi na njemu', { skip: !PHP && 'grana sadrzaj je veza hostinga s GitHubom' }, async () => {
+    const gh = srv.github;
+    const osvjezi = async () => (await (await fetch(`${srv.url}/urednistvo/api/osvjezi`)).json()).stanje;
+    const jelovnik = async () => (await t.k.z('GET', `${API}/jelovnik`)).j.sadrzaj;
+    const prije = await jelovnik();
+    const s = structuredClone(prije);
+    s.verzija = prije.verzija + 3; s.azurirao = 'administrator';
+    s.kategorije['pasta-rhymes/salate'].stavke[1].cijena = 9;
+    gh.postaviDatoteku('podaci/jelovnik.json', JSON.stringify(s));
+    await osvjezi();
+    let sad = await jelovnik();
+    assert.equal(sad.verzija, s.verzija, 'uredništvo je preuzelo noviji jelovnik s grane');
+    assert.equal(sad.kategorije['pasta-rhymes/salate'].stavke[1].cijena, 9);
+    assert.deepEqual(sad.kategorije['pasta-rhymes/salate'].stavke[1].bazna, prije.kategorije['pasta-rhymes/salate'].stavke[1].bazna, 'bazna cijena ostaje');
+    assert.match(fs.readFileSync(path.join(srv.podaci, 'dnevnik.log'), 'utf8'), /"ime":"GitHub","radnja":"spremanje"/);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(srv.dir, 'stranica', 'jelovnik-uzivo.json'), 'utf8')).verzija, s.verzija, 'stranica odmah dobije nove cijene');
+    // stariji ili neispravan jelovnik na grani se ne preuzima
+    const stariji = structuredClone(s); stariji.verzija = 2; stariji.kategorije['pasta-rhymes/salate'].stavke[1].cijena = 1;
+    gh.postaviDatoteku('podaci/jelovnik.json', JSON.stringify(stariji));
+    await osvjezi();
+    const los = structuredClone(s); los.verzija = s.verzija + 1; los.kategorije['pasta-rhymes/salate'].stavke[1].cijena = -1;
+    gh.postaviDatoteku('podaci/jelovnik.json', JSON.stringify(los));
+    await osvjezi();
+    sad = await jelovnik();
+    assert.equal(sad.verzija, s.verzija); assert.equal(sad.kategorije['pasta-rhymes/salate'].stavke[1].cijena, 9);
+    // sljedeće spremanje gradi na preuzetom jelovniku (ne prepisuje ga starim)
+    const kat = structuredClone(sad.kategorije['pasta-rhymes/salate']); kat.stavke[0].opis.hr = 'Nakon uvoza';
+    const r = await t.k.z('PUT', `${API}/kategorija`, { kljuc: 'pasta-rhymes/salate', verzija: sad.verzija, kategorija: kat });
+    assert.equal(r.status, 200, JSON.stringify(r.j)); assert.equal(r.j.verzija, s.verzija + 1);
+    await srv.objavljeno();
+    const naGrani = JSON.parse(gh.datoteka('podaci/jelovnik.json').toString('utf8'));
+    assert.equal(naGrani.kategorije['pasta-rhymes/salate'].stavke[1].cijena, 9);
+    assert.equal(naGrani.kategorije['pasta-rhymes/salate'].stavke[0].opis.hr, 'Nakon uvoza');
   });
 
   test('Google recenzije (php): ključ samo na poslužitelju; na stranicu idu samo 5★ s tekstom (hr/en); osvježavanje jednom dnevno', { skip: !PHP && 'recenzije povlači samo hosting' }, async () => {

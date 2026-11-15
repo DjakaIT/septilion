@@ -109,8 +109,23 @@ final class Spremiste
             $c = $this->konf->kategorija($kljuc);
             $naziv = ($c['kat']['naziv'] ?? '') ?: ($k['naslov']['hr'] ?: $kljuc);
             $novi = array_merge($trenutni, ['verzija' => $trenutni['verzija'] + 1, 'azurirano' => iso_vrijeme(), 'azurirao' => $ime]);
-            $novi['kategorije'][$kljuc] = $k;
+            // nova jela dobiju baznu cijenu (današnja cijena i datum), postojeća zadrže svoju
+            $novi['kategorije'][$kljuc] = popuni_bazne($k);
             return $this->spremi($novi, $ime, ($c['lokal']['naziv'] ?? '') . ": $naziv");
+        });
+    }
+
+    /**
+     * Jelovnik objavljen izravno na grani sadrzaj (administrator, mimo uredništva) postaje trenutni kad je noviji od
+     * lokalnog — inače bi ga prvo sljedeće spremanje u uredništvu prepisalo. Provjera kao kod spremanja; null = ništa novo.
+     */
+    public function uvezi(mixed $s): ?array
+    {
+        if (!is_array($s) || !is_int($s['verzija'] ?? null)) return null;
+        $this->ucitaj();
+        return s_bravom($this->dir, function () use ($s) {
+            if ($s['verzija'] <= (citaj_json($this->datoteka)['verzija'] ?? 0)) return null;
+            return $this->spremi($this->migriraj($s), 'GitHub', "Objavljeno izravno na GitHubu (verzija {$s['verzija']})");
         });
     }
 

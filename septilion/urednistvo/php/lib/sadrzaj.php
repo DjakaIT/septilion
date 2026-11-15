@@ -4,7 +4,9 @@
 // Greške su { putanja: [...], poruka } — uredništvo ih prikazuje uz polje.
 declare(strict_types=1);
 
-const FORMAT_SADRZAJA = 2;
+const FORMAT_SADRZAJA = 3;
+/** referentni dan bazne cijene (kao BAZNI_DATUM u sadrzaj.mjs) */
+const BAZNI_DATUM = '2026-09-10';
 const KLJUC_SLIKE = '/^(?:[a-z0-9_]{1,40}|n-[a-f0-9]{24})$/';
 const ID_STAVKE = '/^[a-z0-9]{6,32}$/';
 
@@ -56,6 +58,16 @@ final class Provjera
         return $v;
     }
 
+    /** bazna cijena { cijena, cijena2, datum }; null = novo jelo (popuni_bazne pri spremanju) */
+    private function bazna(mixed $v, array $put): ?array
+    {
+        if ($v === null) return null;
+        if (!$this->objekt($v, $put, ['cijena', 'cijena2', 'datum'])) return null;
+        $d = $v['datum'];
+        if (!is_string($d) || !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $d, $m) || !checkdate((int) $m[2], (int) $m[3], (int) $m[1])) $this->g([...$put, 'datum'], 'Neispravan datum');
+        return ['cijena' => $this->cijena($v['cijena'], [...$put, 'cijena']), 'cijena2' => $this->cijena($v['cijena2'], [...$put, 'cijena2'], true), 'datum' => is_string($d) ? $d : ''];
+    }
+
     private function id(mixed $v, array $put): string
     {
         if (!is_string($v) || !preg_match(ID_STAVKE, $v)) { $this->g($put, 'Neispravan id stavke'); return ''; }
@@ -66,7 +78,9 @@ final class Provjera
     {
         $tip = is_array($v) ? ($v['tip'] ?? null) : null;
         if ($tip === 'jelo') {
-            if (!$this->objekt($v, $put, ['id', 'tip', 'naziv', 'opis', 'porcija', 'preporuka', 'cijena', 'kolicina', 'cijena2', 'kolicina2', 'slika', 'boja', 'galerija'])) return null;
+            // starije sučelje uredništva (otvorena kartica) šalje jela bez bazne cijene: kao novo jelo
+            if (!array_key_exists('bazna', $v)) $v['bazna'] = null;
+            if (!$this->objekt($v, $put, ['id', 'tip', 'naziv', 'opis', 'porcija', 'preporuka', 'cijena', 'kolicina', 'cijena2', 'kolicina2', 'slika', 'boja', 'galerija', 'bazna'])) return null;
             $boja = $v['boja'];
             if ($boja !== null && (!is_string($boja) || !preg_match('/^#[0-9A-Fa-f]{6}$/', $boja))) { $this->g([...$put, 'boja'], 'Neispravna boja'); $boja = null; }
             if (!is_bool($v['galerija'])) $this->g([...$put, 'galerija'], 'Očekuje se da/ne');
@@ -77,6 +91,7 @@ final class Provjera
                 'cijena' => $this->cijena($v['cijena'], [...$put, 'cijena']), 'kolicina' => $this->niz($v['kolicina'], [...$put, 'kolicina'], 20),
                 'cijena2' => $this->cijena($v['cijena2'], [...$put, 'cijena2'], true), 'kolicina2' => $this->niz($v['kolicina2'], [...$put, 'kolicina2'], 20),
                 'slika' => $this->slika($v['slika'], [...$put, 'slika']), 'boja' => $boja, 'galerija' => (bool) $v['galerija'],
+                'bazna' => $this->bazna($v['bazna'], [...$put, 'bazna']),
             ];
         }
         if ($tip === 'skupina') {
@@ -122,22 +137,51 @@ final class Provjera
 
 /**
  * Nadogradnja starijeg sadržaja (kao migriraj u sadrzaj.mjs). Format 1 -> 2: jela Jellyfisha bez fotografije dobiju
- * zadanu prema nazivu (konfiguracija.json: zadaneFotografije). Ostalo ide dalje nepromijenjeno — provjera ga ionako odbije.
+ * zadanu prema nazivu (konfiguracija.json: zadaneFotografije). Format 2 -> 3: jela dobiju baznu cijenu — svoju cijenu
+ * na BAZNI_DATUM. Ostalo ide dalje nepromijenjeno — provjera ga ionako odbije.
  */
 function migriraj_sadrzaj(mixed $s, array $zadane): mixed
 {
-    if (!is_array($s) || ($s['format'] ?? null) !== 1 || !is_array($s['kategorije'] ?? null)) return $s;
-    $kljuc = fn (mixed $n) => is_string($n) ? trim(preg_replace('/\s+/u', ' ', mb_strtolower($n, 'UTF-8'))) : '';
-    foreach ($s['kategorije'] as $kk => $k) {
-        if (!str_starts_with((string) $kk, 'jellyfish-in-space/') || !is_array($k['stavke'] ?? null)) continue;
-        foreach ($k['stavke'] as $i => $x) {
-            if (!is_array($x) || ($x['tip'] ?? null) !== 'jelo' || !array_key_exists('slika', $x) || $x['slika'] !== null) continue;
-            $z = $zadane[$kljuc($x['naziv']['hr'] ?? null)] ?? null;
-            if (is_string($z)) $s['kategorije'][$kk]['stavke'][$i]['slika'] = $z;
+    if (!is_array($s) || !is_array($s['kategorije'] ?? null)) return $s;
+    if (($s['format'] ?? null) === 1) {
+        $kljuc = fn (mixed $n) => is_string($n) ? trim(preg_replace('/\s+/u', ' ', mb_strtolower($n, 'UTF-8'))) : '';
+        foreach ($s['kategorije'] as $kk => $k) {
+            if (!str_starts_with((string) $kk, 'jellyfish-in-space/') || !is_array($k['stavke'] ?? null)) continue;
+            foreach ($k['stavke'] as $i => $x) {
+                if (!is_array($x) || ($x['tip'] ?? null) !== 'jelo' || !array_key_exists('slika', $x) || $x['slika'] !== null) continue;
+                $z = $zadane[$kljuc($x['naziv']['hr'] ?? null)] ?? null;
+                if (is_string($z)) $s['kategorije'][$kk]['stavke'][$i]['slika'] = $z;
+            }
         }
+        $s['format'] = 2;
     }
-    $s['format'] = 2;
+    if (($s['format'] ?? null) === 2) {
+        foreach ($s['kategorije'] as $kk => $k) {
+            if (!is_array($k['stavke'] ?? null)) continue;
+            foreach ($k['stavke'] as $i => $x) {
+                if (!is_array($x) || ($x['tip'] ?? null) !== 'jelo' || array_key_exists('bazna', $x)) continue;
+                $s['kategorije'][$kk]['stavke'][$i]['bazna'] = ['cijena' => $x['cijena'] ?? null, 'cijena2' => $x['cijena2'] ?? null, 'datum' => BAZNI_DATUM];
+            }
+        }
+        $s['format'] = 3;
+    }
     return $s;
+}
+
+/**
+ * Bazne cijene pri spremanju kategorije (kao popuniBazne u sadrzaj.mjs): novo jelo (bazna null) dobije svoju cijenu i
+ * današnji datum; promjena cijene postojećeg jela baznu ne mijenja. Druga cijena prati drugu veličinu.
+ */
+function popuni_bazne(array $k, ?string $dan = null): array
+{
+    $dan ??= (new DateTimeImmutable('now', new DateTimeZone('Europe/Zagreb')))->format('Y-m-d');
+    foreach ($k['stavke'] as $i => $x) {
+        if ($x['tip'] !== 'jelo') continue;
+        $b = $x['bazna'] ?? ['cijena' => $x['cijena'], 'cijena2' => $x['cijena2'], 'datum' => $dan];
+        $b['cijena2'] = $x['cijena2'] === null ? null : ($b['cijena2'] ?? $x['cijena2']);
+        $k['stavke'][$i]['bazna'] = $b;
+    }
+    return $k;
 }
 
 /** pravila po kategoriji (lokali: polja koja kategorija ima) — kao provjeriKategoriju u sadrzaj.mjs */
