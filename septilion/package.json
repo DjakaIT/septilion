@@ -26,16 +26,16 @@
     "paket": "node scripts/paket-hosting.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.3.5",
+    "@astrojs/sitemap": "^3.7.5",
+    "astro": "^7.4.12",
     "sharp": "^0.35.5",
     "subset-font": "^2.9.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@playwright/test": "^1.63.0",
+    "@astrojs/check": "^0.9.12",
+    "@playwright/test": "^1.65.1",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^6.4.299",
+    "pdfjs-dist": "^6.5.438",
     "qrcode-generator": "^2.0.4",
     "typescript": "^5.9.3"
   }
